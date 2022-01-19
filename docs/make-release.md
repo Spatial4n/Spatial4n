@@ -129,7 +129,7 @@ git push <remote-name> <release-branch> --tags
 
 ### Creating a GitHub Release
 
-Go to the [GitHub Releases Page](https://github.com/synhershko/Spatial4n/releases) and click on the "Draft a new release" button.
+Go to the [GitHub Releases Page](https://github.com/Spatial4n/Spatial4n/releases) and click on the "Draft a new release" button.
 
 Select the tag that was created in the previous step, and also enter it as the title of the release.
 
@@ -167,7 +167,7 @@ To upload to NuGet.org, login to the [Azure DevOps Release Pipeline](https://dev
 
 After the release has been uploaded to NuGet.org:
 
-1. Open the [GitHub Releases Page](https://github.com/synhershko/Spatial4n/releases)
+1. Open the [GitHub Releases Page](https://github.com/Spatial4n/Spatial4n/releases)
 2. Edit the current draft release that was created in [Creating a GitHub Release](#creating-a-github-release)
 3. Review to ensure proper spelling, links, etc.
 4. Scroll to the bottom of the page and click on "Publish release"
