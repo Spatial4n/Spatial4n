@@ -185,8 +185,8 @@ namespace Spatial4n.Core.IO
         public virtual void TestPolygonRepair()
         {
             //because we're going to test validation
-            //System.setProperty(NtsGeometry.SYSPROP_ASSERT_VALIDATE, "false"); // TODO: Figure this out...
-            Environment.SetEnvironmentVariable(NtsGeometry.SYSPROP_ASSERT_VALIDATE, bool.FalseString);
+            //System.setProperty(NtsGeometry.SYSPROP_ASSERT_VALIDATE, "false");
+            NtsGeometry.AssertValidate = false; // Spatial4n specific: Changed to a static public property rather than a system property
 
             //note: doesn't repair all cases; this case isn't:
             //ctx.readShapeFromWkt("POLYGON((0 0, 10 0, 10 20))");//doesn't connect around

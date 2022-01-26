@@ -39,8 +39,14 @@ namespace Spatial4n.Core.Shapes.Nts
     /// </summary>
     public class NtsGeometry : IShape
     {
-        /// <summary>System property boolean that can disable auto validation in an assert.</summary>
-        public static readonly string SYSPROP_ASSERT_VALIDATE = "spatial4n.NtsGeometry.assertValidate";
+        [Obsolete("Set AssertValidate to true or false rather than configuring an environment variable. This static field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static readonly string SYSPROP_ASSERT_VALIDATE = "spatial4j.NtsGeometry.assertValidate";
+
+        /// <summary>
+        /// When set to <c>false</c>, the automatic validation on instances of <see cref="NtsGeometry"/> will be disabled.
+        /// The default setting is <c>true</c>.
+        /// </summary>
+        public static bool AssertValidate { get; set; } = true;
 
         private readonly IGeometry geom;//cannot be a direct instance of GeometryCollection as it doesn't support relate()
         private readonly bool _hasArea;
@@ -82,8 +88,12 @@ namespace Spatial4n.Core.Shapes.Nts
 
                 //Cuts an unwrapped geometry back into overlaid pages in the standard geo bounds.
                 geom = CutUnwrappedGeomInto360(geom); //returns same or new geom
-                Debug.Assert(geom.EnvelopeInternal.Width <= 360);
-                Debug.Assert(geom.GetType() != typeof(GeometryCollection)); //double check
+
+                // Spatial4n specific - keep the validation in place to warn users if they do something wrong (these were asserts in Java)
+                if (geom.EnvelopeInternal.Width > 360)
+                    throw new InvalidShapeException("EnvelopeInternal.Width must be less than or equal to 360.");
+                if (geom.GetType() == typeof(GeometryCollection))
+                    throw new ArgumentException("NtsGeometry does not support GeometryCollection but does support its subclasses."); //double check
 
                 //Compute bbox
                 bbox = ComputeGeoBBox(geom);
@@ -98,7 +108,7 @@ namespace Spatial4n.Core.Shapes.Nts
             var _ = geom.EnvelopeInternal;//ensure envelope is cached internally, which is lazy evaluated. Keeps this thread-safe.
 
             this.geom = geom;
-            Debug.Assert(AssertValidate());//kinda expensive but caches valid state
+            DoAssertValidate();//kinda expensive but caches valid state - in Spatial4n we have to make this available in the compile by not using Debug.Assert().
 
             this._hasArea = !((geom is ILineal) || (geom is IPuntal));
         }
@@ -106,19 +116,18 @@ namespace Spatial4n.Core.Shapes.Nts
         /// <summary>
         /// called via assertion
         /// </summary>
-        private bool AssertValidate()
+        private void DoAssertValidate()
         {
-            string assertValidate = Environment.GetEnvironmentVariable(SYSPROP_ASSERT_VALIDATE); //System.getProperty(SYSPROP_ASSERT_VALIDATE);
-            if (assertValidate is null || bool.Parse(assertValidate))
+            if (AssertValidate)
                 Validate();
-            return true;
         }
 
         /// <summary>
         /// Validates the shape, throwing a descriptive error if it isn't valid. Note that this
-        /// is usually called automatically by default, but that can be disabled.
+        /// is usually called automatically by default, but that can be disabled by setting <see cref="AssertValidate"/>
+        /// to <c>false</c>.
         /// </summary>
-        /// <exception cref="InvalidShapeException">with descriptive error if the shape isn't valid</exception>
+        /// <exception cref="InvalidShapeException">with descriptive error if the shape isn't valid.</exception>
         public virtual void Validate()
         {
             if (!validated)
