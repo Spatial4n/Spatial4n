@@ -43,9 +43,9 @@ namespace Spatial4n.Core.IO.Nts
                   : base(ctx, factory)
         {
             this.m_ctx = ctx;
-            this.m_datelineRule = factory.datelineRule;
-            this.m_validationRule = factory.validationRule;
-            this.m_autoIndex = factory.autoIndex;
+            this.m_datelineRule = factory.DatelineRule;
+            this.m_validationRule = factory.ValidationRule;
+            this.m_autoIndex = factory.AutoIndex;
         }
 
         /// <summary>
@@ -269,20 +269,20 @@ namespace Spatial4n.Core.IO.Nts
             NtsGeometry ntsGeom;
             try
             {
-                ntsGeom = m_ctx.MakeShape(geometry, dateline180Check, m_ctx.IsAllowMultiOverlap);
+                ntsGeom = m_ctx.MakeShape(geometry, dateline180Check, m_ctx.AllowMultiOverlap);
                 if (IsAutoValidate)
                     ntsGeom.Validate();
             }
             catch (Exception e)
             {
                 //repair:
-                if (m_validationRule == Nts.ValidationRule.RepairConvexHull)
+                if (m_validationRule == ValidationRule.RepairConvexHull)
                 {
-                    ntsGeom = m_ctx.MakeShape(geometry.ConvexHull(), dateline180Check, m_ctx.IsAllowMultiOverlap);
+                    ntsGeom = m_ctx.MakeShape(geometry.ConvexHull(), dateline180Check, m_ctx.AllowMultiOverlap);
                 }
-                else if (m_validationRule == Nts.ValidationRule.RepairBuffer0)
+                else if (m_validationRule == ValidationRule.RepairBuffer0)
                 {
-                    ntsGeom = m_ctx.MakeShape(geometry.Buffer(0), dateline180Check, m_ctx.IsAllowMultiOverlap);
+                    ntsGeom = m_ctx.MakeShape(geometry.Buffer(0), dateline180Check, m_ctx.AllowMultiOverlap);
                 }
                 else
                 {

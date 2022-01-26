@@ -46,7 +46,7 @@ namespace Spatial4n.Core.Context.Nts
             // the NetTopologySuite geometry. See: 
             // https://github.com/NetTopologySuite/NetTopologySuite/issues/189#issuecomment-324844404
 #if NETSTANDARD
-            GeoAPI.NetTopologySuiteBootstrapper.Bootstrap();
+            NetTopologySuiteBootstrapper.Bootstrap();
 #endif
 
             NtsSpatialContextFactory factory = new NtsSpatialContextFactory();
@@ -69,9 +69,9 @@ namespace Spatial4n.Core.Context.Nts
         {
             this.m_geometryFactory = factory.GeometryFactory;
 
-            this.m_allowMultiOverlap = factory.allowMultiOverlap;
-            this.m_useNtsPoint = factory.useNtsPoint;
-            this.m_useNtsLineString = factory.useNtsLineString;
+            this.m_allowMultiOverlap = factory.AllowMultiOverlap;
+            this.m_useNtsPoint = factory.UseNtsPoint;
+            this.m_useNtsLineString = factory.UseNtsLineString;
         }
 
         /// <summary>
@@ -81,12 +81,10 @@ namespace Spatial4n.Core.Context.Nts
         /// doesn't care but it has a method related to this
         /// <see cref="Shapes.ShapeCollection.RelateContainsShortCircuits()"/>.
         /// </summary>
-        public virtual bool IsAllowMultiOverlap => m_allowMultiOverlap;
+        public virtual bool AllowMultiOverlap => m_allowMultiOverlap;
 
-        ////      protected override ShapeReadWriter MakeShapeReadWriter()
-        ////{
-        ////	return new NtsShapeReadWriter(this);
-        ////}
+        [Obsolete("Use AllowMultiOverlap property instead. This property will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
+        public virtual bool IsAllowMultiOverlap => m_allowMultiOverlap;
 
         public override double NormX(double x)
         {
@@ -105,9 +103,8 @@ namespace Spatial4n.Core.Context.Nts
 #pragma warning restore 672
         {
             //Note: this logic is from the defunct NtsShapeReadWriter
-            if (shape is NtsGeometry)
+            if (shape is NtsGeometry ntsGeom)
             {
-                NtsGeometry ntsGeom = (NtsGeometry)shape;
                 return ntsGeom.Geometry.AsText();
             }
             //Note: doesn't handle ShapeCollection or BufferedLineString
@@ -124,23 +121,21 @@ namespace Spatial4n.Core.Context.Nts
         /// <returns>Not null</returns>
         public virtual IGeometry GetGeometryFrom(IShape shape)
         {
-            if (shape is NtsGeometry)
+            if (shape is NtsGeometry ntsGeometry)
             {
-                return ((NtsGeometry)shape).Geometry;
+                return ntsGeometry.Geometry;
             }
-            if (shape is NtsPoint)
+            if (shape is NtsPoint ntsPoint)
             {
-                return ((NtsPoint)shape).Geometry;
+                return ntsPoint.Geometry;
             }
 
-            var point = shape as Shapes.IPoint;
-            if (point != null)
+            if (shape is IPoint point)
             {
                 return m_geometryFactory.CreatePoint(new Coordinate(point.X, point.Y));
             }
 
-            var r = shape as IRectangle;
-            if (r != null)
+            if (shape is IRectangle r)
             {
 
                 if (r.CrossesDateLine)
@@ -160,8 +155,7 @@ namespace Spatial4n.Core.Context.Nts
                 }
             }
 
-            var circle = shape as ICircle;
-            if (circle != null)
+            if (shape is ICircle circle)
             {
                 // TODO, this should maybe pick a bunch of points
                 // and make a circle like:
@@ -210,10 +204,9 @@ namespace Spatial4n.Core.Context.Nts
             Coordinate[] coords = new Coordinate[points.Count];
             for (int i = 0; i < coords.Length; i++)
             {
-                Shapes.IPoint p = points[i];
-                if (p is NtsPoint)
+                IPoint p = points[i];
+                if (p is NtsPoint ntsPoint)
                 {
-                    NtsPoint ntsPoint = (NtsPoint)p;
                     coords[i] = ntsPoint.Geometry.Coordinate;
                 }
                 else
@@ -249,7 +242,7 @@ namespace Spatial4n.Core.Context.Nts
         /// </summary>
         public virtual NtsGeometry MakeShape(IGeometry geom)
         {
-            return MakeShape(geom, true/*dateline180Check*/, m_allowMultiOverlap);
+            return MakeShape(geom, dateline180Check: true, m_allowMultiOverlap);
         }
 
         public virtual GeometryFactory GeometryFactory => m_geometryFactory;

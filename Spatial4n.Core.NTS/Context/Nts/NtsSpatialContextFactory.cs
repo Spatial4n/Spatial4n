@@ -37,11 +37,11 @@ namespace Spatial4n.Core.Context.Nts
     /// <list type="table">
     ///     <item>
     ///         <term>datelineRule</term>
-    ///         <description>Width180(default)|CcwRect|None -- see <see cref="DatelineRule"/></description>
+    ///         <description>Width180(default)|CcwRect|None -- see <see cref="IO.Nts.DatelineRule"/></description>
     ///     </item>
     ///     <item>
     ///         <term>validationRule</term>
-    ///         <description>Error(default)|None|RepairConvexHull|RepairBuffer0 -- see <see cref="ValidationRule"/></description>
+    ///         <description>Error(default)|None|RepairConvexHull|RepairBuffer0 -- see <see cref="IO.Nts.ValidationRule"/></description>
     ///     </item>
     ///     <item>
     ///         <term>autoIndex</term>
@@ -62,23 +62,98 @@ namespace Spatial4n.Core.Context.Nts
     /// </summary>
     public class NtsSpatialContextFactory : SpatialContextFactory
     {
-        protected static readonly PrecisionModel defaultPrecisionModel = new PrecisionModel();//floating
+        protected static PrecisionModel DefaultPrecisionModel { get; } = new PrecisionModel(); //floating
+        [Obsolete("Use DefaultPrecisionModel property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
+        protected static readonly PrecisionModel defaultPrecisionModel = DefaultPrecisionModel;
 
         //These 3 are NTS defaults for new GeometryFactory()
-        public PrecisionModel precisionModel = defaultPrecisionModel;
+        [Obsolete("Use PrecisionModel property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
+        public PrecisionModel precisionModel = DefaultPrecisionModel;
+        public PrecisionModel PrecisionModel
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => precisionModel;
+            set => precisionModel = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        [Obsolete("Use SRID property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public int srid = 0;
+        public int SRID
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => srid;
+            set => srid = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        [Obsolete("Use CoordinateSequenceFactory property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public ICoordinateSequenceFactory coordinateSequenceFactory = CoordinateArraySequenceFactory.Instance;
-
+        public ICoordinateSequenceFactory CoordinateSequenceFactory
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => coordinateSequenceFactory;
+            set => coordinateSequenceFactory = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
         //ignored if geo=false
+        [Obsolete("Use DatelineRule property instead. This property will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public DatelineRule datelineRule = DatelineRule.Width180;
+        public DatelineRule DatelineRule
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => datelineRule;
+            set => datelineRule = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
+        [Obsolete("Use ValidationRule property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public ValidationRule validationRule = ValidationRule.Error;
+        public ValidationRule ValidationRule
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => validationRule;
+            set => validationRule = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+        [Obsolete("Use AutoIndex property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public bool autoIndex = false;
+        public bool AutoIndex
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => autoIndex;
+            set => autoIndex = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+        [Obsolete("Use AllowMultiOverlap property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public bool allowMultiOverlap = false;//ignored if geo=false
+        public bool AllowMultiOverlap
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => allowMultiOverlap;
+            set => allowMultiOverlap = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
         //kinda advanced options:
+        [Obsolete("Use UseNtsPoint property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public bool useNtsPoint = true;
+        public bool UseNtsPoint
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => useNtsPoint;
+            set => useNtsPoint = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+        [Obsolete("Use UseNtsLineString property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public bool useNtsLineString = true;
+        public bool UseNtsLineString
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => useNtsLineString;
+            set => useNtsLineString = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
         public NtsSpatialContextFactory()
         {
@@ -97,24 +172,29 @@ namespace Spatial4n.Core.Context.Nts
             InitField("useNtsPoint");
             InitField("useNtsLineString");
 
-            args.TryGetValue("precisionScale", out string scaleStr);
             args.TryGetValue("precisionModel", out string modelStr);
 
-            if (scaleStr != null)
+            if (args.TryGetValue("precisionScale", out string scaleStr) && scaleStr != null)
             {
                 if (modelStr != null && !modelStr.Equals("fixed"))
                     throw new RuntimeException("Since precisionScale was specified; precisionModel must be 'fixed' but got: " + modelStr);
+#pragma warning disable CS0618 // Type or member is obsolete
                 precisionModel = new PrecisionModel(double.Parse(scaleStr, CultureInfo.InvariantCulture));
+#pragma warning restore CS0618 // Type or member is obsolete
             }
             else if (modelStr != null)
             {
                 if (modelStr.Equals("floating"))
                 {
+#pragma warning disable CS0618 // Type or member is obsolete
                     precisionModel = new PrecisionModel(PrecisionModels.Floating);
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
                 else if (modelStr.Equals("floating_single"))
                 {
+#pragma warning disable CS0618 // Type or member is obsolete
                     precisionModel = new PrecisionModel(PrecisionModels.FloatingSingle);
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
                 else if (modelStr.Equals("fixed"))
                 {
@@ -131,9 +211,11 @@ namespace Spatial4n.Core.Context.Nts
         {
             get
             {
-                if (precisionModel == null || coordinateSequenceFactory == null)
+#pragma warning disable CS0618 // Type or member is obsolete
+                if (precisionModel is null || coordinateSequenceFactory is null)
                     throw new InvalidOperationException("precision model or coord seq factory can't be null");
                 return new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 

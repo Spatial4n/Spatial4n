@@ -36,7 +36,7 @@ namespace Spatial4n.Core.IO.Nts
             : base(ctx, factory)
         {
             //note: ctx.geometryFactory hasn't been set yet
-            useFloat = (factory.precisionModel.PrecisionModelType == PrecisionModels.FloatingSingle);
+            useFloat = (factory.PrecisionModel.PrecisionModelType == PrecisionModels.FloatingSingle);
         }
 
         protected override double ReadDim(BinaryReader dataInput)
