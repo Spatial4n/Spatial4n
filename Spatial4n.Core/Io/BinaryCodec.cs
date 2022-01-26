@@ -43,16 +43,16 @@ namespace Spatial4n.Core.IO
             [Obsolete("Use Point instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
             TYPE_POINT = 1,
             Rectangle = 2,
-            [Obsolete("Use Point instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            [Obsolete("Use Rectangle instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
             TYPE_RECT = 2,
             Circle = 3,
-            [Obsolete("Use Point instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            [Obsolete("Use Circle instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
             TYPE_CIRCLE = 3,
             Collection = 4,
-            [Obsolete("Use Point instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            [Obsolete("Use Collection instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
             TYPE_COLL = 4,
             Geometry = 5,
-            [Obsolete("Use Point instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            [Obsolete("Use Geometry instead. This const will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
             TYPE_GEOM = 5
         }
 
@@ -63,7 +63,7 @@ namespace Spatial4n.Core.IO
 
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "This constructor is mandated by SpatialContextFactory")]
-        public BinaryCodec(SpatialContext ctx, SpatialContextFactory factory)
+        public BinaryCodec(SpatialContext ctx, SpatialContextFactory? factory)
         {
             this.ctx = ctx;
         }
