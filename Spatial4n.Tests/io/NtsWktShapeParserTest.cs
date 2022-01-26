@@ -106,7 +106,7 @@ namespace Spatial4n.Core.IO
         [Fact]
         public virtual void PolyToRectCcwRule()
         {
-            NtsSpatialContext ctx = (NtsSpatialContext)new NtsSpatialContextFactory() { DatelineRule = DatelineRule.CcwRect }.CreateSpatialContext();
+            NtsSpatialContext ctx = (NtsSpatialContext)new NtsSpatialContextFactory() { DatelineRule = DatelineRule.CounterClockwiseRectangle }.CreateSpatialContext();
             //counter-clockwise
             Assert.Equal(ctx.ReadShapeFromWkt("POLYGON((160 0, -170 0, -170 10, 160 10, 160 0))"),
         ctx.MakeRectangle(160, -170, 0, 10));

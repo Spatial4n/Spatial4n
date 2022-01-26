@@ -40,6 +40,12 @@ namespace Spatial4n.Core.IO.Nts
     {
         //Note: Historically, the code here originated from the defunct NtsShapeReadWriter.
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="NtsWKTReaderShapeParser"/>.
+        /// </summary>
+        /// <param name="ctx">The spatial context.</param>
+        /// <param name="factory">The context factory.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> or <paramref name="factory"/> is <c>null</c>.</exception>
         public NtsWKTReaderShapeParser(NtsSpatialContext ctx, NtsSpatialContextFactory factory)
             : base(ctx, factory)
         {
@@ -65,9 +71,8 @@ namespace Spatial4n.Core.IO.Nts
                 //Normalizes & verifies coordinates
                 CheckCoordinates(geom);
 
-                if (geom is NetTopologySuite.Geometries.Point)
+                if (geom is NetTopologySuite.Geometries.Point ptGeom)
                 {
-                    NetTopologySuite.Geometries.Point ptGeom = (NetTopologySuite.Geometries.Point)geom;
                     if (m_ctx.UseNtsPoint)
                         return new NtsPoint(ptGeom, m_ctx);
                     else

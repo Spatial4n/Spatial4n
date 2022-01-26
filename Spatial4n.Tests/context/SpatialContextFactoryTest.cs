@@ -91,7 +91,7 @@ namespace Spatial4n.Core.Context
             Assert.True(ctx.IsNormWrapLongitude);
             CustomAssert.EqualWithDelta(2.0, ctx.GeometryFactory.PrecisionModel.Scale, 0.0);
             Assert.True(CustomWktShapeParser.once);//cheap way to test it was created
-            Assert.Equal(DatelineRule.CcwRect,
+            Assert.Equal(DatelineRule.CounterClockwiseRectangle,
                 ((NtsWktShapeParser)ctx.WktShapeParser).DatelineRule);
             Assert.Equal(ValidationRule.RepairConvexHull,
                 ((NtsWktShapeParser)ctx.WktShapeParser).ValidationRule);

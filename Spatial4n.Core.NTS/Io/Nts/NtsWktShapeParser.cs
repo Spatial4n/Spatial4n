@@ -39,9 +39,20 @@ namespace Spatial4n.Core.IO.Nts
         protected readonly ValidationRule m_validationRule;
         protected readonly bool m_autoIndex;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="NtsWktShapeParser"/>.
+        /// </summary>
+        /// <param name="ctx">The spatial context.</param>
+        /// <param name="factory">The context factory.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> or <paramref name="factory"/> is <c>null</c>.</exception>
         public NtsWktShapeParser(NtsSpatialContext ctx, NtsSpatialContextFactory factory)
-                  : base(ctx, factory)
+            : base(ctx, factory)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx));// Spatial4n specific: Added guard clause
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory)); // Spatial4n specific: Throw ArgumentNullException rather than NullReferenceException
+
             this.m_ctx = ctx;
             this.m_datelineRule = factory.DatelineRule;
             this.m_validationRule = factory.ValidationRule;
@@ -57,12 +68,16 @@ namespace Spatial4n.Core.IO.Nts
         /// NtsGeometry shapes are automatically validated when <see cref="ValidationRule"/> isn't
         /// <c>none</c>.
         /// </summary>
-        public virtual bool IsAutoValidate => m_validationRule != Nts.ValidationRule.None;
+        public virtual bool AutoValidate => m_validationRule != ValidationRule.None;
+        [Obsolete("Use AutoValidate property instead. This property will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public virtual bool IsAutoValidate => AutoValidate;
 
         /// <summary>
         /// If NtsGeometry shapes should be automatically prepared (i.e. optimized) when read via WKT.
         /// <see cref="NtsGeometry.Index()"/>
         /// </summary>
+        public virtual bool AutoIndex => m_autoIndex;
+        [Obsolete("Use AutoIndex property instead. This property will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual bool IsAutoIndex => m_autoIndex;
 
 
@@ -86,7 +101,7 @@ namespace Spatial4n.Core.IO.Nts
 
         /// <summary>
         /// Bypasses <see cref="NtsSpatialContext.MakeLineString(IList{Shapes.IPoint})"/> so that we can more
-        /// efficiently get the <see cref="LineString"/> without creating a <see cref="List{T}">List{Shapes.IPoint}</see>.
+        /// efficiently get the <see cref="LineString"/> without creating a <c>List&lt;Shapes.IPoint&gt;</c>.
         /// </summary>
         protected override IShape ParseLineStringShape(WktShapeParser.State state)
         {
@@ -106,7 +121,7 @@ namespace Spatial4n.Core.IO.Nts
         /// Parses a POLYGON shape from the raw string. It might return a <see cref="IRectangle"/>
         /// if the polygon is one.
         /// <code>
-        ///   coordinateSequenceList
+        ///   CoordinateSequenceList
         /// </code>
         /// </summary>
         /// <param name="state"></param>
@@ -137,9 +152,9 @@ namespace Spatial4n.Core.IO.Nts
             Debug.Assert(geometry.IsRectangle);
             Envelope env = geometry.EnvelopeInternal;
             bool crossesDateline = false;
-            if (m_ctx.IsGeo && m_datelineRule != Nts.DatelineRule.None)
+            if (m_ctx.IsGeo && m_datelineRule != DatelineRule.None)
             {
-                if (m_datelineRule == Nts.DatelineRule.CcwRect)
+                if (m_datelineRule == DatelineRule.CounterClockwiseRectangle)
                 {
                     // If NTS says it is clockwise, then it's actually a dateline crossing rectangle.
 #pragma warning disable 612, 618
@@ -265,12 +280,12 @@ namespace Spatial4n.Core.IO.Nts
         /// </summary>
         protected virtual NtsGeometry MakeShapeFromGeometry(IGeometry geometry)
         {
-            bool dateline180Check = DatelineRule != Nts.DatelineRule.None;
+            bool dateline180Check = DatelineRule != DatelineRule.None;
             NtsGeometry ntsGeom;
             try
             {
                 ntsGeom = m_ctx.MakeShape(geometry, dateline180Check, m_ctx.AllowMultiOverlap);
-                if (IsAutoValidate)
+                if (AutoValidate)
                     ntsGeom.Validate();
             }
             catch (Exception e)
@@ -291,7 +306,7 @@ namespace Spatial4n.Core.IO.Nts
                     throw e;
                 }
             }
-            if (IsAutoIndex)
+            if (AutoIndex)
                 ntsGeom.Index();
             return ntsGeom;
         }
@@ -306,14 +321,14 @@ namespace Spatial4n.Core.IO.Nts
         /// <summary>
         /// No polygon will cross the dateline.
         /// </summary>
-        None,
+        None = 0,
 
         /// <summary>
         /// Adjacent points with an x (longitude) difference that spans more than half
         /// way around the globe will be interpreted as going the other (shorter) way, and thus cross the
         /// dateline.
         /// </summary>
-        Width180,//TODO is there a better name that doesn't have '180' in it?
+        Width180 = 1,//TODO is there a better name that doesn't have '180' in it?
 
         /// <summary>
         /// For rectangular polygons, the point order is interpreted as being counter-clockwise (CCW).
@@ -321,7 +336,9 @@ namespace Spatial4n.Core.IO.Nts
         /// <see cref="Width180"/> rule instead. The CCW rule is specified by OGC Simple Features
         /// Specification v. 1.2.0 section 6.1.11.1.
         /// </summary>
-        CcwRect
+        CounterClockwiseRectangle = 2,
+        [Obsolete("Use CounterClockwiseRectangle instead. This value will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        CcwRect = 2
     }
 
     /// <summary>

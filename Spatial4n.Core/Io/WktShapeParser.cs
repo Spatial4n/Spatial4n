@@ -64,13 +64,19 @@ namespace Spatial4n.Core.IO
         // might optionally do data validation & normalization
         protected readonly SpatialContext m_ctx;
 
+
         /// <summary>
         /// This constructor is required by <see cref="SpatialContextFactory.MakeWktShapeParser(SpatialContext)"/>.
         /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="factory"></param>
-        public WktShapeParser(SpatialContext ctx, SpatialContextFactory factory)
+        /// <param name="ctx">The spatial context.</param>
+        /// <param name="factory">The spatial context factory.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Constructor is mandated by SpatialContextFactory")]
+        public WktShapeParser(SpatialContext ctx, SpatialContextFactory? factory)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx));// Spatial4n specific: Added guard clause
+
             this.m_ctx = ctx;
         }
 
