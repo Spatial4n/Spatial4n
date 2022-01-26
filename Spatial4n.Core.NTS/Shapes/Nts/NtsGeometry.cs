@@ -49,6 +49,16 @@ namespace Spatial4n.Core.Shapes.Nts
         protected IPreparedGeometry? preparedGeometry;
         protected bool validated = false;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="NtsGeometry"/>.
+        /// </summary>
+        /// <param name="geom">The geometry.</param>
+        /// <param name="ctx">The spatial context.</param>
+        /// <param name="dateline180Check">Unwraps the geometry across the dateline so it exceeds the standard geo bounds (-180 to +180).</param>
+        /// <param name="allowMultiOverlap">If given multiple overlapping polygons, fix it by union.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="geom"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="geom"/> is a <see cref="GeometryCollection"/>. <see cref="NtsGeometry"/>
+        /// does not support <see cref="GeometryCollection"/> but does support its subclasses.</exception>
         public NtsGeometry(IGeometry geom, NtsSpatialContext ctx, bool dateline180Check, bool allowMultiOverlap)
         {
             if (geom is null)
@@ -99,7 +109,7 @@ namespace Spatial4n.Core.Shapes.Nts
         private bool AssertValidate()
         {
             string assertValidate = Environment.GetEnvironmentVariable(SYSPROP_ASSERT_VALIDATE); //System.getProperty(SYSPROP_ASSERT_VALIDATE);
-            if (assertValidate == null || bool.Parse(assertValidate))
+            if (assertValidate is null || bool.Parse(assertValidate))
                 Validate();
             return true;
         }
@@ -129,7 +139,7 @@ namespace Spatial4n.Core.Shapes.Nts
         /// </summary>
         public virtual void Index()
         {
-            if (preparedGeometry == null)
+            if (preparedGeometry is null)
                 preparedGeometry = PreparedGeometryFactory.Prepare(geom);
         }
 
@@ -140,8 +150,12 @@ namespace Spatial4n.Core.Shapes.Nts
         /// Given <paramref name="geoms"/> which has already been checked for being in world
         /// bounds, return the minimal longitude range of the bounding box.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="geoms"/> is <c>null</c>.</exception>
         protected virtual IRectangle ComputeGeoBBox(IGeometry geoms)
         {
+            if (geoms is null)
+                throw new ArgumentNullException(nameof(geoms)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (geoms.IsEmpty)
                 return new Rectangle(double.NaN, double.NaN, double.NaN, double.NaN, ctx);
             Envelope env = geoms.EnvelopeInternal;//for minY & maxY (simple)
@@ -172,8 +186,12 @@ namespace Spatial4n.Core.Shapes.Nts
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
         public virtual IShape GetBuffered(double distance, SpatialContext ctx)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //TODO doesn't work correctly across the dateline. The buffering needs to happen
             // when it's transiently unrolled, prior to being sliced.
             return this.ctx.MakeShape(geom.Buffer(distance), true, true);
@@ -205,20 +223,20 @@ namespace Spatial4n.Core.Shapes.Nts
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                     return new NtsPoint(ctx.GeometryFactory.CreatePoint((Coordinate)null), ctx);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                return new NtsPoint((NetTopologySuite.Geometries.Point)geom.Centroid, ctx);
+                return new NtsPoint(geom.Centroid, ctx);
             }
         }
 
         public virtual SpatialRelation Relate(IShape other)
         {
-            if (other is IPoint)
-                return Relate((IPoint)other);
-            else if (other is IRectangle)
-                return Relate((IRectangle)other);
-            else if (other is ICircle)
-                return Relate((ICircle)other);
-            else if (other is NtsGeometry)
-                return Relate((NtsGeometry)other);
+            if (other is IPoint point)
+                return Relate(point);
+            else if (other is IRectangle rectangle)
+                return Relate(rectangle);
+            else if (other is ICircle circle)
+                return Relate(circle);
+            else if (other is NtsGeometry geometry)
+                return Relate(geometry);
             else if (other is BufferedLineString)
                 throw new NotSupportedException("Can't use BufferedLineString with NtsGeometry");
             return other.Relate(this).Transpose();
@@ -229,8 +247,8 @@ namespace Spatial4n.Core.Shapes.Nts
             if (!BoundingBox.Relate(pt).Intersects())
                 return SpatialRelation.Disjoint;
             IGeometry ptGeom;
-            if (pt is NtsPoint)
-                ptGeom = ((NtsPoint)pt).Geometry;
+            if (pt is NtsPoint ntsPoint)
+                ptGeom = ntsPoint.Geometry;
             else
                 ptGeom = ctx.GeometryFactory.CreatePoint(new Coordinate(pt.X, pt.Y));
             return Relate(ptGeom);//is point-optimized
@@ -289,7 +307,7 @@ namespace Spatial4n.Core.Shapes.Nts
                     return preparedGeometry.Disjoint(oGeom) ? SpatialRelation.Disjoint : SpatialRelation.Contains;
                 return geom.Disjoint(oGeom) ? SpatialRelation.Disjoint : SpatialRelation.Contains;
             }
-            if (preparedGeometry == null)
+            if (preparedGeometry is null)
                 return IntersectionMatrixToSpatialRelation(geom.Relate(oGeom));
             else if (preparedGeometry.Covers(oGeom))
                 return SpatialRelation.Contains;
@@ -318,7 +336,7 @@ namespace Spatial4n.Core.Shapes.Nts
             return geom.ToString();
         }
 
-        public override bool Equals(Object o)
+        public override bool Equals(object o)
         {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
@@ -346,7 +364,7 @@ namespace Spatial4n.Core.Shapes.Nts
 
             public void Filter(IGeometry geom)
             {
-                int cross = 0;
+                int cross; // Spatial4n: Removed unnecessary assignment
                 if (geom is LineString)
                 {
                     //note: LinearRing extends LineString
@@ -354,8 +372,7 @@ namespace Spatial4n.Core.Shapes.Nts
                         return; //can't possibly cross the dateline
                     cross = UnwrapDateline((LineString)geom);
                 }
-                else
-                    if (geom is Polygon)
+                else if (geom is Polygon)
                 {
                     if (geom.EnvelopeInternal.Width < 180)
                         return; //can't possibly cross the dateline
@@ -376,8 +393,12 @@ namespace Spatial4n.Core.Shapes.Nts
         /// </summary>
         /// <param name="geom"></param>
         /// <returns>The number of times the geometry spans the dateline.  >= 0</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="geom"/> is <c>null</c>.</exception>
         private static int UnwrapDateline(IGeometry geom)
         {
+            if (geom is null)
+                throw new ArgumentNullException(nameof(geom)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (geom.EnvelopeInternal.Width < 180)
                 return 0;//can't possibly cross the dateline
             int[] crossings = { 0 };//an array so that an inner class can modify it.
@@ -387,8 +408,12 @@ namespace Spatial4n.Core.Shapes.Nts
         }
 
         /// <summary>See <see cref="UnwrapDateline(IGeometry)"/>.</summary>
+        /// <exception cref="ArgumentNullException"><paramref name="poly"/> is <c>null</c>.</exception>
         private static int UnwrapDateline(Polygon poly)
         {
+            if (poly is null)
+                throw new ArgumentNullException(nameof(poly)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             var exteriorRing = poly.ExteriorRing;
             int cross = UnwrapDateline(exteriorRing);
             if (cross > 0)
@@ -411,8 +436,12 @@ namespace Spatial4n.Core.Shapes.Nts
         }
 
         /// <summary>See <see cref="UnwrapDateline(IGeometry)"/>.</summary>
-        private static int UnwrapDateline(LineString lineString)
+        /// <exception cref="ArgumentNullException"><paramref name="lineString"/> is <c>null</c>.</exception>
+        private static int UnwrapDateline(ILineString lineString)
         {
+            if (lineString is null)
+                throw new ArgumentNullException(nameof(lineString)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             var cseq = lineString.CoordinateSequence;
             int size = cseq.Count;
             if (size <= 1)
@@ -500,8 +529,12 @@ namespace Spatial4n.Core.Shapes.Nts
         /// and the geom are shifted into the standard -180 to +180 and added to a new
         /// geometry that is returned.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="geom"/> is <c>null</c>.</exception>
         private static IGeometry CutUnwrappedGeomInto360(IGeometry geom)
         {
+            if (geom is null)
+                throw new ArgumentNullException(nameof(geom)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             Envelope geomEnv = geom.EnvelopeInternal;
             if (geomEnv.MinX >= -180 && geomEnv.MaxX <= 180)
                 return geom;
