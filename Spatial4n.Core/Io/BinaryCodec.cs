@@ -61,10 +61,18 @@ namespace Spatial4n.Core.IO
 
         protected readonly SpatialContext ctx;
 
-
+        /// <summary>
+        /// Initializes a new instance of <see cref="BinaryCodec"/>.
+        /// </summary>
+        /// <param name="ctx">The spatial context.</param>
+        /// <param name="factory">The spatial context factory.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "This constructor is mandated by SpatialContextFactory")]
         public BinaryCodec(SpatialContext ctx, SpatialContextFactory? factory)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - added guard clause
+
             this.ctx = ctx;
         }
 

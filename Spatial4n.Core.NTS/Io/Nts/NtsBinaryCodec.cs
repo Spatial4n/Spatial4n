@@ -21,6 +21,7 @@ using NetTopologySuite.IO;
 using Spatial4n.Core.Context.Nts;
 using Spatial4n.Core.Exceptions;
 using Spatial4n.Core.Shapes;
+using System;
 using System.IO;
 
 namespace Spatial4n.Core.IO.Nts
@@ -31,10 +32,19 @@ namespace Spatial4n.Core.IO.Nts
     public class NtsBinaryCodec : BinaryCodec
     {
         protected readonly bool useFloat;//instead of double
-        //private const int wkbXDR = 0; // Spatial4n: Unused
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="NtsBinaryCodec"/>.
+        /// </summary>
+        /// <param name="ctx">The spatial context.</param>
+        /// <param name="factory">The context factory.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> or <paramref name="factory"/> is <c>null</c>.</exception>
         public NtsBinaryCodec(NtsSpatialContext ctx, NtsSpatialContextFactory factory)
             : base(ctx, factory)
         {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //note: ctx.geometryFactory hasn't been set yet
             useFloat = (factory.PrecisionModel.PrecisionModelType == PrecisionModels.FloatingSingle);
         }
@@ -96,6 +106,7 @@ namespace Spatial4n.Core.IO.Nts
 
             public override int Read(byte[] buffer, int offset, int count)
             {
+                // Spatial4n note: We don't need the BOM handling in .NET
                 return dataInput.Read(buffer, offset, count);
             }
 
@@ -110,7 +121,6 @@ namespace Spatial4n.Core.IO.Nts
             public override long Position
             {
                 get => dataInput.BaseStream.Position;
-
                 set => dataInput.BaseStream.Position = value;
             }
 
@@ -170,6 +180,7 @@ namespace Spatial4n.Core.IO.Nts
 
             public override void Write(byte[] buffer, int offset, int count)
             {
+                // Spatial4n note: We don't need the BOM handling in .NET
                 dataOutput.BaseStream.Write(buffer, offset, count);
             }
 
@@ -184,7 +195,6 @@ namespace Spatial4n.Core.IO.Nts
             public override long Position
             {
                 get => dataOutput.BaseStream.Position;
-
                 set => dataOutput.BaseStream.Position = value;
             }
 
