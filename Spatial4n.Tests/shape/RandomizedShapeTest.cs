@@ -296,7 +296,7 @@ namespace Spatial4n.Core.Shape
         {
             if (max == 0)
                 return max;
-            Debug.Assert(max > 0);
+            Assert.True(max > 0); // Spatial4n: In Java, asserts throw the same exception as in JUnit, so we definitely don't want them factored out of the compile
             double r;
             do
             {

@@ -176,7 +176,7 @@ namespace Spatial4n.Core.Shape
 
         private IRectangle IntersectRects(IRectangle r1, IRectangle r2)
         {
-            Debug.Assert(r1.Relate(r2).Intersects());
+            Assert.True(r1.Relate(r2).Intersects()); // Spatial4n: In Java, asserts throw the same exception as in JUnit, so we definitely don't want them factored out of the compile
             double minX, maxX;
             if (r1.RelateXRange(r2.MinX, r2.MinX).Intersects())
             {

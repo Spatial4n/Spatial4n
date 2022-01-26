@@ -90,7 +90,7 @@ namespace Spatial4n.Core.Shape
             }
             else
             {
-                Debug.Assert(dist == 0);
+                Assert.True(dist == 0); // Spatial4n: In Java, asserts throw the same exception as in JUnit, so we definitely don't want them factored out of the compile
                 Assert.True(new BufferedLine(pA, pB, 0, ctx).Contains(pC));
             }
             Assert.True(new BufferedLine(pA, pB, dist * 1.001, ctx).Contains(pC));
