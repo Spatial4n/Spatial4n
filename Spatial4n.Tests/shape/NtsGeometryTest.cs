@@ -106,7 +106,7 @@ namespace Spatial4n.Core.Shape
         public virtual void TestRelationsImpl(bool prepare)
 #pragma warning restore xUnit1013
         {
-            Debug.Assert(!((NtsWktShapeParser)ctx.WktShapeParser).IsAutoIndex);
+            Assert.True(!((NtsWktShapeParser)ctx.WktShapeParser).AutoIndex);
             //base polygon
             NtsGeometry @base = (NtsGeometry)ctx.ReadShapeFromWkt("POLYGON((0 0, 10 0, 5 5, 0 0))");
             //shares only "10 0" with base
