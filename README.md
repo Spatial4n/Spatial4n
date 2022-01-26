@@ -2,8 +2,9 @@ Spatial4n - A GeoSpatial Library for .NET
 =========
 
 [![Nuget](https://img.shields.io/nuget/dt/Spatial4n.Core)](https://www.nuget.org/packages/Spatial4n.Core)
-[![Azure DevOps builds (branch)](https://img.shields.io/azure-devops/build/Spatial4n/Spatial4n/1/master)](https://dev.azure.com/Spatial4n/Spatial4n/_build?definitionId=1)
-[![GitHub](https://img.shields.io/github/license/Spatial4n/Spatial4n)](https://github.com/Spatial4n/J2N/blob/master/LICENSE.txt)
+[![Azure DevOps builds (branch)](https://img.shields.io/azure-devops/build/Spatial4n/Spatial4n/1/main)](https://dev.azure.com/Spatial4n/Spatial4n/_build?definitionId=1)
+[![GitHub](https://img.shields.io/github/license/Spatial4n/Spatial4n)](https://github.com/Spatial4n/Spatial4n/blob/main/LICENSE.txt)
+[![GitHub Sponsors](https://img.shields.io/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors)](https://github.com/sponsors/NightOwl888)
 
 Spatial4n is a general purpose spatial / geospatial library for .NET, a direct port of the [spatial4j Java library](https://github.com/locationtech/spatial4j). Its core capabilities are:
 
@@ -48,8 +49,10 @@ Currently, the best sources of documentation are the [Spatial4j javadocs](https:
 
 ## Building and Testing
 
-To build the project from source, see the [Building and Testing documentation](https://github.com/Spatial4n/Spatial4n/blob/master/docs/building-and-testing.md).
+To build the project from source, see the [Building and Testing documentation](https://github.com/Spatial4n/Spatial4n/blob/main/docs/building-and-testing.md).
 
 ## Saying Thanks
 
 If you find this library to be useful, please star us [on GitHub](https://github.com/Spatial4n/Spatial4n) and consider a financial sponsorship so we can continue bringing you great free tools like this one.
+
+[![GitHub Sponsors](https://img.shields.io/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors)](https://github.com/sponsors/NightOwl888)
