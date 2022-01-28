@@ -36,10 +36,11 @@ namespace Spatial4n.Core.Shapes.Nts
         /// <summary>
         /// A simple constructor without normalization / validation.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="pointGeom"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public NtsPoint(GeoAPI.Geometries.IPoint pointGeom, SpatialContext ctx)
         {
-            this.ctx = ctx;
-            this.pointGeom = pointGeom;
+            this.ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));
+            this.pointGeom = pointGeom ?? throw new ArgumentNullException(nameof(pointGeom));
             this.empty = pointGeom.IsEmpty;
         }
 
@@ -47,7 +48,7 @@ namespace Spatial4n.Core.Shapes.Nts
 
         public virtual bool IsEmpty => empty;
 
-        public virtual Spatial4n.Core.Shapes.IPoint Center => this;
+        public virtual IPoint Center => this;
 
         public virtual bool HasArea => false;
 
@@ -58,6 +59,7 @@ namespace Spatial4n.Core.Shapes.Nts
 
         public virtual IRectangle BoundingBox => ctx.MakeRectangle(this, this);
 
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
         public virtual IShape GetBuffered(double distance, SpatialContext ctx)
         {
             if (ctx is null)
@@ -66,12 +68,16 @@ namespace Spatial4n.Core.Shapes.Nts
             return ctx.MakeCircle(this, distance);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IShape other)
         {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             // ** NOTE ** the overall order of logic is kept consistent here with simple.PointImpl.
             if (IsEmpty || other.IsEmpty)
                 return SpatialRelation.Disjoint;
-            if (other is Spatial4n.Core.Shapes.IPoint)
+            if (other is IPoint)
                 return this.Equals(other) ? SpatialRelation.Intersects : SpatialRelation.Disjoint;
             return other.Relate(this).Transpose();
         }
