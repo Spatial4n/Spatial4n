@@ -123,7 +123,7 @@ namespace Spatial4n.Core.Shapes.Impl
             }
             else
             {
-                return ctx.DistCalc.Area(this);
+                return ctx.DistanceCalculator.Area(this);
             }
         }
 

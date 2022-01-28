@@ -46,7 +46,7 @@ namespace Spatial4n.Core.Shapes.Impl
             this.point = p;
             this.radiusDEG = point.IsEmpty ? double.NaN : radiusDEG;
             this.enclosingBox = point.IsEmpty ? ctx.MakeRectangle(double.NaN, double.NaN, double.NaN, double.NaN) :
-                ctx.DistCalc.CalcBoxByDistFromPt(point, this.radiusDEG, ctx, null);
+                ctx.DistanceCalculator.CalcBoxByDistFromPt(point, this.radiusDEG, ctx, null);
         }
 
         public virtual void Reset(double x, double y, double radiusDEG)
@@ -54,7 +54,7 @@ namespace Spatial4n.Core.Shapes.Impl
             Debug.Assert(!IsEmpty);
             point.Reset(x, y);
             this.radiusDEG = radiusDEG;
-            this.enclosingBox = ctx.DistCalc.CalcBoxByDistFromPt(point, this.radiusDEG, ctx, enclosingBox);
+            this.enclosingBox = ctx.DistanceCalculator.CalcBoxByDistFromPt(point, this.radiusDEG, ctx, enclosingBox);
         }
 
         public virtual bool IsEmpty => point.IsEmpty;
@@ -71,7 +71,7 @@ namespace Spatial4n.Core.Shapes.Impl
             }
             else
             {
-                return ctx.DistCalc.Area(this);
+                return ctx.DistanceCalculator.Area(this);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual bool Contains(double x, double y)
         {
-            return ctx.DistCalc.Distance(point, x, y) <= radiusDEG;
+            return ctx.DistanceCalculator.Distance(point, x, y) <= radiusDEG;
         }
 
         public virtual bool HasArea => radiusDEG > 0;
@@ -234,7 +234,7 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual SpatialRelation Relate(ICircle circle)
         {
-            double crossDist = ctx.DistCalc.Distance(point, circle.Center);
+            double crossDist = ctx.DistanceCalculator.Distance(point, circle.Center);
             double aDist = radiusDEG, bDist = circle.Radius;
             if (crossDist > aDist + bDist)
                 return SpatialRelation.Disjoint;

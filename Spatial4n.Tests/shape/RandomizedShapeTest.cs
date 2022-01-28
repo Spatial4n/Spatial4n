@@ -327,7 +327,7 @@ namespace Spatial4n.Core.Shape
         {
             double d = c.Radius * random.NextDouble();
             double angleDEG = 360 * random.NextDouble();
-            IPoint p = ctx.DistCalc.PointOnBearing(c.Center, d, angleDEG, ctx, null);
+            IPoint p = ctx.DistanceCalculator.PointOnBearing(c.Center, d, angleDEG, ctx, null);
             Assert.Equal(SpatialRelation.Contains, c.Relate(p));
             return p;
         }

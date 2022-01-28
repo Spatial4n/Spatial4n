@@ -77,7 +77,7 @@ namespace Spatial4n.Core.Shapes.Impl
             else
             {
                 inverseCircle = null;
-                double _horizAxisY = ctx.DistCalc.CalcBoxByDistFromPt_yHorizAxisDEG(Center, radiusDEG, ctx);
+                double _horizAxisY = ctx.DistanceCalculator.CalcBoxByDistFromPt_yHorizAxisDEG(Center, radiusDEG, ctx);
                 //some rare numeric conditioning cases can cause this to be barely beyond the box
                 if (_horizAxisY > enclosingBox.MaxY)
                 {

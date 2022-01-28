@@ -41,7 +41,7 @@ namespace Spatial4n.Core.Distance
 
         private IDistanceCalculator Dc()
         {
-            return ctx.DistCalc;
+            return ctx.DistanceCalculator;
         }
 
         [Fact]
@@ -142,12 +142,12 @@ namespace Spatial4n.Core.Distance
             //A binary search algorithm to find the point along the vertical lon between lowLat & highLat that is closest
             // to ctr, and returns the distance.
             double midLat = (highLat - lowLat) / 2 + lowLat;
-            double midLatDist = ctx.DistCalc.Distance(ctr, lon, midLat);
+            double midLatDist = ctx.DistanceCalculator.Distance(ctr, lon, midLat);
             for (int L = 0; L < 100 && (highLat - lowLat > 0.001 || L < 20); L++)
             {
                 bool bottom = (midLat - lowLat > highLat - midLat);
                 double newMid = bottom ? (midLat - lowLat) / 2 + lowLat : (highLat - midLat) / 2 + midLat;
-                double newMidDist = ctx.DistCalc.Distance(ctr, lon, newMid);
+                double newMidDist = ctx.DistanceCalculator.Distance(ctr, lon, newMid);
                 if (newMidDist < midLatDist)
                 {
                     if (bottom)

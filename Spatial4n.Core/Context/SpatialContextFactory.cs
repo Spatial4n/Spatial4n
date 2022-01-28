@@ -52,9 +52,9 @@ namespace Spatial4n.Core.Context
             set => geo = value;
 #pragma warning restore CS0618 // Type or member is obsolete
         }
-        [Obsolete("Use DistCalc property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
+        [Obsolete("Use DistanceCalculator property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public IDistanceCalculator? distCalc;//defaults in SpatialContext c'tor based on geo
-        public IDistanceCalculator? DistCalc
+        public IDistanceCalculator? DistanceCalculator
         {
 #pragma warning disable CS0618 // Type or member is obsolete
             get => distCalc;
@@ -315,23 +315,23 @@ namespace Spatial4n.Core.Context
                 return;
             if (calcStr.Equals("haversine", StringComparison.OrdinalIgnoreCase))
             {
-                DistCalc = new GeodesicSphereDistCalc.Haversine();
+                DistanceCalculator = new GeodesicSphereDistCalc.Haversine();
             }
             else if (calcStr.Equals("lawOfCosines", StringComparison.OrdinalIgnoreCase))
             {
-                DistCalc = new GeodesicSphereDistCalc.LawOfCosines();
+                DistanceCalculator = new GeodesicSphereDistCalc.LawOfCosines();
             }
             else if (calcStr.Equals("vincentySphere", StringComparison.OrdinalIgnoreCase))
             {
-                DistCalc = new GeodesicSphereDistCalc.Vincenty();
+                DistanceCalculator = new GeodesicSphereDistCalc.Vincenty();
             }
             else if (calcStr.Equals("cartesian", StringComparison.OrdinalIgnoreCase))
             {
-                DistCalc = new CartesianDistCalc();
+                DistanceCalculator = new CartesianDistCalc();
             }
             else if (calcStr.Equals("cartesian^2", StringComparison.OrdinalIgnoreCase))
             {
-                DistCalc = new CartesianDistCalc(true);
+                DistanceCalculator = new CartesianDistCalc(true);
             }
             else
             {

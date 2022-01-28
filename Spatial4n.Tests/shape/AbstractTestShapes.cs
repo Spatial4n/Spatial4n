@@ -80,7 +80,7 @@ namespace Spatial4n.Core.Shape
             //System.out.println(msg);
             AssertRelation(msg, SpatialRelation.Contains, r, center);
 
-            IDistanceCalculator dc = ctx.DistCalc;
+            IDistanceCalculator dc = ctx.DistanceCalculator;
             double dUR = dc.Distance(center, r.MaxX, r.MaxY);
             double dLR = dc.Distance(center, r.MaxX, r.MinY);
             double dUL = dc.Distance(center, r.MinX, r.MaxY);

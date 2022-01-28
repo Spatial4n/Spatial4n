@@ -71,7 +71,7 @@ namespace Spatial4n.Core.Context
         {
             SpatialContextFactory factory = new SpatialContextFactory();
             factory.IsGeo = geo;
-            factory.DistCalc = calculator;
+            factory.DistanceCalculator = calculator;
             factory.WorldBounds = worldBounds;
             return factory;
         }
@@ -92,7 +92,7 @@ namespace Spatial4n.Core.Context
 
             this.geo = factory.IsGeo;
 
-            if (factory.DistCalc is null)
+            if (factory.DistanceCalculator is null)
             {
                 this.calculator = IsGeo
                         ? (IDistanceCalculator)new GeodesicSphereDistCalc.Haversine()
@@ -100,7 +100,7 @@ namespace Spatial4n.Core.Context
             }
             else
             {
-                this.calculator = factory.DistCalc;
+                this.calculator = factory.DistanceCalculator;
             }
 
             //TODO remove worldBounds from Spatial4j: see Issue #55
@@ -129,22 +129,25 @@ namespace Spatial4n.Core.Context
             this.binaryCodec = factory.MakeBinaryCodec(this);
         }
 
+        [Obsolete("Use DistanceCalculator property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public virtual IDistanceCalculator DistCalc => calculator;
 
+        public virtual IDistanceCalculator DistanceCalculator => calculator;
+
         /// <summary>
-        /// Convenience that uses <see cref="DistCalc"/>
+        /// Convenience that uses <see cref="DistanceCalculator"/>
         /// </summary>
         public virtual double CalcDistance(IPoint p, double x2, double y2)
         {
-            return DistCalc.Distance(p, x2, y2);
+            return DistanceCalculator.Distance(p, x2, y2);
         }
 
         /// <summary>
-        /// Convenience that uses <see cref="DistCalc"/>
+        /// Convenience that uses <see cref="DistanceCalculator"/>
         /// </summary>
         public virtual double CalcDistance(IPoint p, IPoint p2)
         {
-            return DistCalc.Distance(p, p2);
+            return DistanceCalculator.Distance(p, p2);
         }
 
         /// <summary>
