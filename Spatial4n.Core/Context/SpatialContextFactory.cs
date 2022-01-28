@@ -28,7 +28,7 @@ namespace Spatial4n.Core.Context
     /// <summary>
     /// Factory for a <see cref="SpatialContext"/> based on configuration data.  Call
     /// <see cref="MakeSpatialContext(IDictionary{string, string}, Assembly?)"/> to construct one via string name-value
-    /// pairs. To construct one via code then create a factory instance, set the fields, then call
+    /// pairs. To construct one via code then create a factory instance, set the properties, then call
     /// <see cref="CreateSpatialContext()"/>.
     /// </summary>
     public class SpatialContextFactory
@@ -136,7 +136,7 @@ namespace Spatial4n.Core.Context
                 assembly = typeof(SpatialContextFactory).Assembly;
 
             SpatialContextFactory instance;
-            if (!args.TryGetValue("spatialContextFactory", out string cname) || cname is null)
+            if ((!args.TryGetValue("SpatialContextFactory", out string cname) && !args.TryGetValue("spatialContextFactory", out cname)) || cname is null)
             {
                 cname = Environment.GetEnvironmentVariable("SpatialContextFactory");
             }
@@ -159,17 +159,22 @@ namespace Spatial4n.Core.Context
             this.args = args ?? throw new ArgumentNullException(nameof(args)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
             this.assembly = assembly ?? typeof(SpatialContextFactory).Assembly; // spatial4n specific - default to the current assembly, just as in MakeSpatialContext()
 
-            InitField("geo");
+            if (!InitProperty("IsGeo"))
+                InitField("geo");
 
             InitCalculator();
 
             //init wktParser before worldBounds because WB needs to be parsed
-            InitField("wktShapeParserClass");
+            if (!InitProperty("WktShapeParserType"))
+                InitField("wktShapeParserClass");
+            
             InitWorldBounds();
 
-            InitField("normWrapLongitude");
+            if (!InitProperty("NormWrapLongitude"))
+                InitField("normWrapLongitude");
 
-            InitField("binaryCodecClass");
+            if (!InitProperty("BinaryCodecType"))
+                InitField("binaryCodecClass");
         }
 
         protected virtual void Init(IDictionary<string, string> args) // spatial4n specific - this API unfortunately made it into the release before Classloader equivalent was identified as Assembly. This is just here to avoid a breaking change.
@@ -190,6 +195,11 @@ namespace Spatial4n.Core.Context
             FieldInfo field = GetType().GetField(name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
             if (args.TryGetValue(name, out string str))
             {
+                if (field is null)
+                    throw new InvalidOperationException($"Field not found on {GetType().FullName}: {name}");
+                if (field.IsInitOnly)
+                    throw new InvalidOperationException($"Field {name} is read-only, so may not be set.");
+
                 try
                 {
                     object o;
@@ -232,13 +242,76 @@ namespace Spatial4n.Core.Context
             }
         }
 
+        /// <summary>
+        /// Gets <paramref name="name"/> from args and populates a property by the same name with the value.
+        /// </summary>
+        /// <returns><c>true</c> if the property was set; otherwise, <c>false</c>.</returns>
+        /// <exception cref="InvalidOperationException"><see cref="args"/> is not set prior to calling this method.</exception>
+        protected virtual bool InitProperty(string name) // Spatial4n specific - allow setting the properties and fallback to fields if they are not set.
+        {
+            if (args is null)
+                throw new InvalidOperationException($"'{nameof(args)}' must be set prior to calling InitProperty()"); // spatial4n specific - use InvalidOperationException instead of NullReferenceException
+
+            //  note: java.beans API is more verbose to use correctly (?) but would arguably be better
+            PropertyInfo property = GetType().GetProperty(name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            if (args.TryGetValue(name, out string str))
+            {
+                if (property is null)
+                    throw new InvalidOperationException($"Property not found on {GetType().FullName}: {name}");
+                if (!property.CanWrite)
+                    throw new InvalidOperationException($"Property {name} is read-only, so may not be set.");
+
+                try
+                {
+                    object o;
+                    if (property.PropertyType == typeof(bool))
+                    {
+                        o = bool.Parse(str);
+                    }
+                    else if (property.PropertyType.IsClass)
+                    {
+                        if (assembly is null)
+                            throw new InvalidOperationException($"'{nameof(assembly)}' must be set prior to calling InitField()");
+                        try
+                        {
+                            o = assembly.GetType(str) ?? Type.GetType(str); // spatial4n specific - fall back to all loaded types not found in the assembly (since it may be passed in as null)
+                        }
+                        catch (TypeLoadException e)
+                        {
+                            throw new Exception(e.ToString(), e);
+                        }
+                    }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        o = Enum.Parse(property.PropertyType, str, true);
+                    }
+                    else
+                    {
+                        throw new Exception("unsupported field type: " + property.PropertyType);//not plausible at runtime unless developing
+                    }
+                    property.SetValue(this, o, null);
+                    return true;
+                }
+                catch (FieldAccessException e)
+                {
+                    throw new Exception(e.ToString(), e);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(
+                        "Invalid value '" + str + "' on field " + name + " of type " + property.PropertyType, e);
+                }
+            }
+            return false;
+        }
+
         /// <exception cref="InvalidOperationException"><see cref="args"/> is not set prior to calling this method.</exception>
         protected virtual void InitCalculator()
         {
             if (args is null)
                 throw new InvalidOperationException($"'{nameof(args)}' must be set prior to calling InitCalculator()"); // spatial4n specific - use InvalidOperationException instead of NullReferenceException
 
-            if (!args.TryGetValue("distCalculator", out string calcStr) || calcStr == null)
+            if ((!args.TryGetValue("DistanceCalculator", out string calcStr) && !args.TryGetValue("distCalculator", out calcStr)) || calcStr is null)
                 return;
             if (calcStr.Equals("haversine", StringComparison.OrdinalIgnoreCase))
             {
@@ -272,7 +345,7 @@ namespace Spatial4n.Core.Context
             if (args is null)
                 throw new InvalidOperationException($"'{nameof(args)}' must be set prior to calling InitWorldBounds()"); // spatial4n specific - use InvalidOperationException instead of NullReferenceException
 
-            if (!args.TryGetValue("worldBounds", out string worldBoundsStr) || worldBoundsStr == null)
+            if ((!args.TryGetValue("WorldBounds", out string worldBoundsStr) && !args.TryGetValue("worldBounds", out worldBoundsStr)) || worldBoundsStr is null)
                 return;
 
             //kinda ugly we do this just to read a rectangle.  TODO refactor

@@ -242,7 +242,7 @@ namespace Spatial4n.Core.Shape
             //AssertRelation(null,SpatialRelation.Contains, shape, ctx.makePoint(61.48, 64.21));
 
             NtsSpatialContextFactory factory = new NtsSpatialContextFactory();
-            factory.normWrapLongitude = true;
+            factory.NormWrapLongitude = true;
 
             NtsSpatialContext ctx = (NtsSpatialContext)factory.CreateSpatialContext();
 
@@ -257,7 +257,7 @@ namespace Spatial4n.Core.Shape
             string wktStr = ReadFirstLineFromRsrc("fiji.wkt.txt");
 
             NtsSpatialContextFactory factory = new NtsSpatialContextFactory();
-            factory.normWrapLongitude = true;
+            factory.NormWrapLongitude = true;
             NtsSpatialContext ctx = (NtsSpatialContext)factory.CreateSpatialContext();
 
             IShape shape = ctx.ReadShapeFromWkt(wktStr);

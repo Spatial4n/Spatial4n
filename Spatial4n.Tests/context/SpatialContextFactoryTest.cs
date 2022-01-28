@@ -57,6 +57,26 @@ namespace Spatial4n.Core.Context
         [Fact]
         public void TestCustom()
         {
+            SpatialContext ctx = Call("IsGeo", "false");
+            Assert.True(!ctx.IsGeo);
+            Assert.Equal(new CartesianDistCalc(), ctx.DistCalc);
+
+            ctx = Call("IsGeo", "false",
+                      "DistanceCalculator", "cartesian^2",
+                      "WorldBounds", "ENVELOPE(-100, 75, 200, 0)");//xMin, xMax, yMax, yMin
+            Assert.Equal(new CartesianDistCalc(true), ctx.DistCalc);
+            Assert.Equal(new Rectangle(-100, 75, 0, 200, ctx), ctx.WorldBounds);
+
+            ctx = Call("IsGeo", "true",
+                      "DistanceCalculator", "lawOfCosines");
+            Assert.True(ctx.IsGeo);
+            var test = new GeodesicSphereDistCalc.LawOfCosines();
+            Assert.Equal(test, ctx.DistCalc);
+        }
+
+        [Fact]
+        public void TestCustom_Legacy()
+        {
             SpatialContext ctx = Call("geo", "false");
             Assert.True(!ctx.IsGeo);
             Assert.Equal(new CartesianDistCalc(), ctx.DistCalc);
@@ -78,6 +98,40 @@ namespace Spatial4n.Core.Context
 
         [Fact]
         public void TestNtsContextFactory()
+        {
+            NtsSpatialContext ctx = (NtsSpatialContext)Call(
+                "SpatialContextFactory", typeof(NtsSpatialContextFactory).AssemblyQualifiedName,
+                "IsGeo", "true",
+                "NormWrapLongitude", "true",
+                "PrecisionScale", "2.0",
+                "WktShapeParserType", typeof(CustomWktShapeParser).FullName, // spatial4n: This is in the current assembly, so we pass non-qualified name
+                "DatelineRule", "CounterClockwiseRectangle",
+                "ValidationRule", "RepairConvexHull",
+                "AutoIndex", "true");
+            Assert.True(ctx.IsNormWrapLongitude);
+            CustomAssert.EqualWithDelta(2.0, ctx.GeometryFactory.PrecisionModel.Scale, 0.0);
+            Assert.True(CustomWktShapeParser.once);//cheap way to test it was created
+            Assert.Equal(DatelineRule.CounterClockwiseRectangle,
+                ((NtsWktShapeParser)ctx.WktShapeParser).DatelineRule);
+            Assert.Equal(ValidationRule.RepairConvexHull,
+                ((NtsWktShapeParser)ctx.WktShapeParser).ValidationRule);
+
+            //ensure geo=false with worldbounds works -- fixes #72
+            ctx = (NtsSpatialContext)Call(
+                "SpatialContextFactory", typeof(NtsSpatialContextFactory).AssemblyQualifiedName,
+                "IsGeo", "false",//set to false
+                "WorldBounds", "ENVELOPE(-500,500,300,-300)",
+                "NormWrapLongitude", "true",
+                "PrecisionScale", "2.0",
+                "WktShapeParserType", typeof(CustomWktShapeParser).FullName, // spatial4n: This is in the current assembly, so we pass non-qualified name
+                "DatelineRule", "CounterClockwiseRectangle",
+                "ValidationRule", "RepairConvexHull",
+                "AutoIndex", "true");
+            CustomAssert.EqualWithDelta(300, ctx.WorldBounds.MaxY, 0.0);
+        }
+
+        [Fact]
+        public void TestNtsContextFactory_Legacy()
         {
             NtsSpatialContext ctx = (NtsSpatialContext)Call(
                 "spatialContextFactory", typeof(NtsSpatialContextFactory).AssemblyQualifiedName,
@@ -114,7 +168,7 @@ namespace Spatial4n.Core.Context
         [Fact]
         public void TestSystemPropertyLookup()
         {
-            var customInstance = Call("spatialContextFactory", typeof(DSCF).FullName); // spatial4n: This is in the current assembly, so we pass non-qualified name
+            var customInstance = Call("SpatialContextFactory", typeof(DSCF).FullName); // spatial4n: This is in the current assembly, so we pass non-qualified name
             Assert.True(!customInstance.IsGeo);//DSCF returns this
         }
 
@@ -122,7 +176,7 @@ namespace Spatial4n.Core.Context
         {
             public override SpatialContext CreateSpatialContext()
             {
-                geo = false;
+                IsGeo = false;
 #pragma warning disable 612, 618
                 return new SpatialContext(false);
 #pragma warning restore 612, 618

@@ -27,7 +27,7 @@ namespace Spatial4n.Core.Shape
     public class BufferedLineStringTest
     {
         private readonly SpatialContext ctx = new SpatialContextFactory()
-        { geo = false, worldBounds = new Rectangle(-100, 100, -50, 50, null) }.CreateSpatialContext();
+        { IsGeo = false, WorldBounds = new Rectangle(-100, 100, -50, 50, null) }.CreateSpatialContext();
 
         private class RectIntersectionAnonymousHelper : RectIntersectionTestHelper
         {

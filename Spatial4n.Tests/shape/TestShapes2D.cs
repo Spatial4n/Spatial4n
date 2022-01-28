@@ -38,9 +38,9 @@ namespace Spatial4n.Core.Shape
             get
             {
                 IRectangle WB = new Rectangle(-2000, 2000, -300, 300, null);//whatever
-                yield return new object[] { new SpatialContextFactory() { geo = false, worldBounds = WB }.CreateSpatialContext() };
+                yield return new object[] { new SpatialContextFactory() { IsGeo = false, WorldBounds = WB }.CreateSpatialContext() };
 #if FEATURE_NTS
-                yield return new object[] { new NtsSpatialContextFactory() { geo = false, worldBounds = WB }.CreateSpatialContext() };
+                yield return new object[] { new NtsSpatialContextFactory() { IsGeo = false, WorldBounds = WB }.CreateSpatialContext() };
 #endif
             }
         }

@@ -48,7 +48,7 @@ namespace Spatial4n.Core.IO
         private static SpatialContext MakeCtx()
         {
             SpatialContextFactory factory = new SpatialContextFactory();
-            factory.wktShapeParserClass = typeof(MyWKTShapeParser);
+            factory.WktShapeParserType = typeof(MyWKTShapeParser);
             return factory.CreateSpatialContext();
         }
 

@@ -36,23 +36,23 @@ namespace Spatial4n.Core.Context.Nts
     /// </para>
     /// <list type="table">
     ///     <item>
-    ///         <term>datelineRule</term>
-    ///         <description>Width180(default)|CcwRect|None -- see <see cref="IO.Nts.DatelineRule"/></description>
+    ///         <term>DatelineRule</term>
+    ///         <description>Width180(default)|CounterClockwiseRectangle|None -- see <see cref="IO.Nts.DatelineRule"/></description>
     ///     </item>
     ///     <item>
-    ///         <term>validationRule</term>
+    ///         <term>ValidationRule</term>
     ///         <description>Error(default)|None|RepairConvexHull|RepairBuffer0 -- see <see cref="IO.Nts.ValidationRule"/></description>
     ///     </item>
     ///     <item>
-    ///         <term>autoIndex</term>
-    ///         <description>true|false(default) -- see <see cref="NtsWktShapeParser.IsAutoIndex"/></description>
+    ///         <term>AutoIndex</term>
+    ///         <description>true|false(default) -- see <see cref="NtsWktShapeParser.AutoIndex"/></description>
     ///     </item>
     ///     <item>
-    ///         <term>allowMultiOverlap</term>
-    ///         <description>true|false(default) -- see <see cref="NtsSpatialContext.IsAllowMultiOverlap"/></description>
+    ///         <term>AllowMultiOverlap</term>
+    ///         <description>true|false(default) -- see <see cref="NtsSpatialContext.AllowMultiOverlap"/></description>
     ///     </item>
     ///     <item>
-    ///         <term>precisionModel</term>
+    ///         <term>PrecisionModel</term>
     ///         <description>
     ///         floating(default) | floating_single | fixed -- see <see cref="PrecisionModel"/>.
     ///         If <c>fixed</c> then you must also provide <c>precisionScale</c> -- see <see cref="PrecisionModel.Scale"/>
@@ -165,16 +165,23 @@ namespace Spatial4n.Core.Context.Nts
         {
             base.Init(args, assembly);
 
-            InitField("datelineRule");
-            InitField("validationRule");
-            InitField("autoIndex");
-            InitField("allowMultiOverlap");
-            InitField("useNtsPoint");
-            InitField("useNtsLineString");
+            if (!InitProperty("DatelineRule"))
+                InitField("datelineRule");
+            if (!InitProperty("ValidationRule"))
+                InitField("validationRule");
+            if (!InitProperty("AutoIndex"))
+                InitField("autoIndex");
+            if (!InitProperty("AllowMultiOverlap"))
+                InitField("allowMultiOverlap");
+            if (!InitProperty("UseNtsPoint"))
+                InitField("useNtsPoint");
+            if (!InitProperty("UseNtsLineString"))
+                InitField("useNtsLineString");
 
-            args.TryGetValue("precisionModel", out string modelStr);
+            if (!args.TryGetValue("PrecisionModel", out string modelStr))
+                args.TryGetValue("precisionModel", out modelStr);
 
-            if (args.TryGetValue("precisionScale", out string scaleStr) && scaleStr != null)
+            if ((args.TryGetValue("PrecisionScale", out string scaleStr) || args.TryGetValue("precisionScale", out scaleStr)) && scaleStr != null)
             {
                 if (modelStr != null && !modelStr.Equals("fixed"))
                     throw new RuntimeException("Since precisionScale was specified; precisionModel must be 'fixed' but got: " + modelStr);
