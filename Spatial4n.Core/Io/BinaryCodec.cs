@@ -76,8 +76,12 @@ namespace Spatial4n.Core.IO
             this.ctx = ctx;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         public virtual IShape ReadShape(BinaryReader dataInput)
         {
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             byte type = dataInput.ReadByte();
             IShape? s = ReadShapeByTypeIfSupported(dataInput, (ShapeType)type);
             if (s is null)
@@ -85,15 +89,25 @@ namespace Spatial4n.Core.IO
             return s;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="s"/> is <c>null</c>.</exception>
         public virtual void WriteShape(BinaryWriter dataOutput, IShape s)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (s is null)
+                throw new ArgumentNullException(nameof(s)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             bool written = WriteShapeByTypeIfSupported(dataOutput, s);
             if (!written)
                 throw new ArgumentException("Unsupported shape " + s.GetType());
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         protected virtual IShape? ReadShapeByTypeIfSupported(BinaryReader dataInput, ShapeType type)
         {
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             switch (type)
             {
                 case ShapeType.Point: return ReadPoint(dataInput);
@@ -107,16 +121,28 @@ namespace Spatial4n.Core.IO
         /// <summary>
         /// Note: writes the type byte even if not supported
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="s"/> is <c>null</c>.</exception>
         protected virtual bool WriteShapeByTypeIfSupported(BinaryWriter dataOutput, IShape s)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (s is null)
+                throw new ArgumentNullException(nameof(s)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             ShapeType type = TypeForShape(s);
             dataOutput.Write((byte)type);
             return WriteShapeByTypeIfSupported(dataOutput, s, type);
             //dataOutput.position(dataOutput.position() - 1);//reset putting type
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="s"/> is <c>null</c>.</exception>
         protected virtual bool WriteShapeByTypeIfSupported(BinaryWriter dataOutput, IShape s, ShapeType type)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (s is null)
+                throw new ArgumentNullException(nameof(s)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             switch (type)
             {
                 case ShapeType.Point: WritePoint(dataOutput, (IPoint)s); break;
@@ -153,53 +179,91 @@ namespace Spatial4n.Core.IO
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         protected virtual double ReadDim(BinaryReader dataInput)
         {
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return dataInput.ReadDouble();
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> is <c>null</c>.</exception>
         protected virtual void WriteDim(BinaryWriter dataOutput, double v)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             dataOutput.Write(v);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         public virtual IPoint ReadPoint(BinaryReader dataInput)
         {
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return ctx.MakePoint(ReadDim(dataInput), ReadDim(dataInput));
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="pt"/> is <c>null</c>.</exception>
         public virtual void WritePoint(BinaryWriter dataOutput, IPoint pt)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             WriteDim(dataOutput, pt.X);
             WriteDim(dataOutput, pt.Y);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         public virtual IRectangle ReadRect(BinaryReader dataInput)
         {
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return ctx.MakeRectangle(ReadDim(dataInput), ReadDim(dataInput), ReadDim(dataInput), ReadDim(dataInput));
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="r"/> is <c>null</c>.</exception>
         public virtual void WriteRect(BinaryWriter dataOutput, IRectangle r)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             WriteDim(dataOutput, r.MinX);
             WriteDim(dataOutput, r.MaxX);
             WriteDim(dataOutput, r.MinY);
             WriteDim(dataOutput, r.MaxY);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         public virtual ICircle ReadCircle(BinaryReader dataInput)
         {
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return ctx.MakeCircle(ReadPoint(dataInput), ReadDim(dataInput));
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="c"/> is <c>null</c>.</exception>
         public virtual void WriteCircle(BinaryWriter dataOutput, ICircle c)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (c is null)
+                throw new ArgumentNullException(nameof(c)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             WritePoint(dataOutput, c.Center);
             WriteDim(dataOutput, c.Radius);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         public virtual ShapeCollection ReadCollection(BinaryReader dataInput)
         {
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             byte type = dataInput.ReadByte();
             int size = dataInput.ReadInt32();
             IList<IShape> shapes = new List<IShape>(size);
@@ -220,8 +284,14 @@ namespace Spatial4n.Core.IO
             return ctx.MakeCollection(shapes);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="col"/> is <c>null</c>.</exception>
         public virtual void WriteCollection(BinaryWriter dataOutput, ShapeCollection col)
         {
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (col is null)
+                throw new ArgumentNullException(nameof(col)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             byte type = (byte)0;//TODO add type to ShapeCollection
             dataOutput.Write(type);
             dataOutput.Write(col.Count);
