@@ -43,12 +43,8 @@ namespace Spatial4n.Core.IO
     /// </list>
     /// </summary>
     [Obsolete]
-    public class LegacyShapeReadWriterFormat
+    public static class LegacyShapeReadWriterFormat
     {
-        private LegacyShapeReadWriterFormat()
-        {
-        }
-
         /// <summary>
         /// Writes a shape to a string, in a format that can be read by
         /// <see cref="SpatialContext"/>.
