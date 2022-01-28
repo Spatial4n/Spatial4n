@@ -71,7 +71,7 @@ namespace Spatial4n.Core.Distance
         {
             if (distDEG == 0)
             {
-                if (reuse == null)
+                if (reuse is null)
                     return from;
                 reuse.Reset(from.X, from.Y);
                 return reuse;
