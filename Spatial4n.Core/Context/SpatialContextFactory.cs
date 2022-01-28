@@ -40,17 +40,65 @@ namespace Spatial4n.Core.Context
         /// <summary>
         /// Set by <see cref="MakeSpatialContext(IDictionary{string, string}, Assembly?)"/>
         /// </summary>
-        protected Assembly? assembly; 
+        protected Assembly? assembly;
 
         // These fields are public to make it easy to set them without bothering with setters.
+        [Obsolete("Use IsGeo property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public bool geo = true;
+        public bool IsGeo
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => geo;
+            set => geo = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+        [Obsolete("Use DistCalc property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public IDistanceCalculator? distCalc;//defaults in SpatialContext c'tor based on geo
+        public IDistanceCalculator? DistCalc
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => distCalc;
+            set => distCalc = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+        [Obsolete("Use WorldBounds property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public IRectangle? worldBounds;//defaults in SpatialContext c'tor based on geo
+        public IRectangle? WorldBounds
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => worldBounds;
+            set => worldBounds = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
+        [Obsolete("Use NormWrapLongitude property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public bool normWrapLongitude = false;
+        public bool NormWrapLongitude
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => normWrapLongitude;
+            set => normWrapLongitude = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
+        [Obsolete("Use WktShapeParserType property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public Type wktShapeParserClass = typeof(WktShapeParser);
+        public Type WktShapeParserType
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => wktShapeParserClass;
+            set => wktShapeParserClass = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+        [Obsolete("Use BinaryCodecType property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public Type binaryCodecClass = typeof(BinaryCodec);
+        public Type BinaryCodecType
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            get => binaryCodecClass;
+            set => binaryCodecClass = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
         /// <summary>
         /// Creates a new <see cref="SpatialContext"/> based on configuration in
@@ -194,23 +242,23 @@ namespace Spatial4n.Core.Context
                 return;
             if (calcStr.Equals("haversine", StringComparison.OrdinalIgnoreCase))
             {
-                distCalc = new GeodesicSphereDistCalc.Haversine();
+                DistCalc = new GeodesicSphereDistCalc.Haversine();
             }
             else if (calcStr.Equals("lawOfCosines", StringComparison.OrdinalIgnoreCase))
             {
-                distCalc = new GeodesicSphereDistCalc.LawOfCosines();
+                DistCalc = new GeodesicSphereDistCalc.LawOfCosines();
             }
             else if (calcStr.Equals("vincentySphere", StringComparison.OrdinalIgnoreCase))
             {
-                distCalc = new GeodesicSphereDistCalc.Vincenty();
+                DistCalc = new GeodesicSphereDistCalc.Vincenty();
             }
             else if (calcStr.Equals("cartesian", StringComparison.OrdinalIgnoreCase))
             {
-                distCalc = new CartesianDistCalc();
+                DistCalc = new CartesianDistCalc();
             }
             else if (calcStr.Equals("cartesian^2", StringComparison.OrdinalIgnoreCase))
             {
-                distCalc = new CartesianDistCalc(true);
+                DistCalc = new CartesianDistCalc(true);
             }
             else
             {
@@ -254,12 +302,12 @@ namespace Spatial4n.Core.Context
 
         public virtual WktShapeParser MakeWktShapeParser(SpatialContext ctx)
         {
-            return MakeClassInstance<WktShapeParser>(wktShapeParserClass, ctx, this);
+            return MakeClassInstance<WktShapeParser>(WktShapeParserType, ctx, this);
         }
 
         public virtual BinaryCodec MakeBinaryCodec(SpatialContext ctx)
         {
-            return MakeClassInstance<BinaryCodec>(binaryCodecClass, ctx, this);
+            return MakeClassInstance<BinaryCodec>(BinaryCodecType, ctx, this);
         }
 
         private T MakeClassInstance<T>(Type clazz, params object[] ctorArgs)

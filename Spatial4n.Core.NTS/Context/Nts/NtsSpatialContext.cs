@@ -33,7 +33,7 @@ namespace Spatial4n.Core.Context.Nts
     /// Enhances the default <see cref="SpatialContext"/> with support for Polygons (and
     /// other geometry) plus
     /// reading <a href="http://en.wikipedia.org/wiki/Well-known_text">WKT</a>. The
-    /// popular <a href="https://sourceforge.net/projects/jts-topo-suite/">JTS</a>
+    /// popular <a href="https://github.com/NetTopologySuite/NetTopologySuite">NetTopologySuite (NTS)</a>
     /// library does the heavy lifting.
     /// </summary>
     public class NtsSpatialContext : SpatialContext
@@ -50,7 +50,7 @@ namespace Spatial4n.Core.Context.Nts
 #endif
 
             NtsSpatialContextFactory factory = new NtsSpatialContextFactory();
-            factory.geo = true;
+            factory.IsGeo = true;
             GEO = new NtsSpatialContext(factory);
         }
 

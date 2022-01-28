@@ -157,8 +157,8 @@ namespace Spatial4n.Core.Context.Nts
 
         public NtsSpatialContextFactory()
         {
-            base.wktShapeParserClass = typeof(NtsWktShapeParser);
-            base.binaryCodecClass = typeof(NtsBinaryCodec);
+            base.WktShapeParserType = typeof(NtsWktShapeParser);
+            base.BinaryCodecType = typeof(NtsBinaryCodec);
         }
 
         protected override void Init(IDictionary<string, string> args, Assembly? assembly)

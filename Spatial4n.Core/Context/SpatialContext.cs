@@ -70,9 +70,9 @@ namespace Spatial4n.Core.Context
                                                                  IRectangle? worldBounds)
         {
             SpatialContextFactory factory = new SpatialContextFactory();
-            factory.geo = geo;
-            factory.distCalc = calculator;
-            factory.worldBounds = worldBounds;
+            factory.IsGeo = geo;
+            factory.DistCalc = calculator;
+            factory.WorldBounds = worldBounds;
             return factory;
         }
 
@@ -87,9 +87,12 @@ namespace Spatial4n.Core.Context
         /// <param name="factory"></param>
         public SpatialContext(SpatialContextFactory factory)
         {
-            this.geo = factory.geo;
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
-            if (factory.distCalc == null)
+            this.geo = factory.IsGeo;
+
+            if (factory.DistCalc is null)
             {
                 this.calculator = IsGeo
                         ? (IDistanceCalculator)new GeodesicSphereDistCalc.Haversine()
@@ -97,11 +100,11 @@ namespace Spatial4n.Core.Context
             }
             else
             {
-                this.calculator = factory.distCalc;
+                this.calculator = factory.DistCalc;
             }
 
             //TODO remove worldBounds from Spatial4j: see Issue #55
-            IRectangle? bounds = factory.worldBounds;
+            IRectangle? bounds = factory.WorldBounds;
             if (bounds is null)
             {
                 this.worldBounds = IsGeo
@@ -121,7 +124,7 @@ namespace Spatial4n.Core.Context
                 this.worldBounds = new Rectangle(bounds, this);
             }
 
-            this.normWrapLongitude = factory.normWrapLongitude && this.IsGeo;
+            this.normWrapLongitude = factory.NormWrapLongitude && this.IsGeo;
             this.wktShapeParser = factory.MakeWktShapeParser(this);
             this.binaryCodec = factory.MakeBinaryCodec(this);
         }
@@ -149,7 +152,7 @@ namespace Spatial4n.Core.Context
         /// Do *NOT* invoke <see cref="IRectangle.Reset(double, double, double, double)"/> on this return type.
         /// </summary>
         /// <returns></returns>
-		public virtual IRectangle WorldBounds => worldBounds;
+        public virtual IRectangle WorldBounds => worldBounds;
 
         /// <summary>
         /// If true then <see cref="NormX(double)"/> will wrap longitudes outside of the standard
