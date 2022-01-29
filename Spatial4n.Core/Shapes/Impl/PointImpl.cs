@@ -66,11 +66,17 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual IShape GetBuffered(double distance, SpatialContext ctx)
         {
+            if (ctx is null)
+                throw new InvalidOperationException("Must provide a SpatialContext in the constructor."); // spatial4n specific - use InvalidOperationException instead of NullReferenceException
             return ctx.MakeCircle(this, distance);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IShape other)
         {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (IsEmpty || other.IsEmpty)
                 return SpatialRelation.Disjoint;
             if (other is IPoint)
@@ -98,15 +104,16 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <summary>
         /// All <see cref="IPoint"/> implementations should use this definition of <see cref="object.Equals(object)"/>.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
         public static bool Equals(IPoint thiz, object o)
         {
-            if (thiz == null)
+            if (thiz is null)
                 throw new ArgumentNullException(nameof(thiz));
 
             if (thiz == o) return true;
 
             var point = o as IPoint;
-            if (point == null) return false;
+            if (point is null) return false;
 
             return thiz.X.Equals(point.X) && thiz.Y.Equals(point.Y);
         }
@@ -119,9 +126,10 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <summary>
         /// All <see cref="IPoint"/> implementations should use this definition of <see cref="object.GetHashCode()"/>.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
         public static int GetHashCode(IPoint thiz)
         {
-            if (thiz == null)
+            if (thiz is null)
                 throw new ArgumentNullException(nameof(thiz));
 
             long temp = thiz.X != +0.0d ? BitConverter.DoubleToInt64Bits(thiz.X) : 0L;
