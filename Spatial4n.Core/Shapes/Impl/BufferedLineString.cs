@@ -16,7 +16,9 @@
  */
 
 using Spatial4n.Core.Context;
+using Spatial4n.Core.Util;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -54,14 +56,20 @@ namespace Spatial4n.Core.Shapes.Impl
         /// If true then the buffer for each segment is computed.
         /// </param>
         /// <param name="ctx"></param>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public BufferedLineString(IList<IPoint> points, double buf, bool expandBufForLongitudeSkew,
                                   SpatialContext ctx)
         {
+            if (points is null)
+                throw new ArgumentNullException(nameof(points)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             this.buf = buf;
 
             if (points.Count == 0)
             {
-                this.segments = ctx.MakeCollection(new List<IShape>());
+                this.segments = ctx.MakeCollection(CollectionUtils.EmptyList<IShape>());
             }
             else
             {
@@ -93,8 +101,12 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual bool IsEmpty => segments.IsEmpty;
 
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
         public virtual IShape GetBuffered(double distance, SpatialContext ctx)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return ctx.MakeBufferedLineString(Points, buf + distance);
         }
 
@@ -107,8 +119,12 @@ namespace Spatial4n.Core.Shapes.Impl
             return segments.GetArea(ctx);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IShape other)
         {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return segments.Relate(other);
         }
 
@@ -147,21 +163,124 @@ namespace Spatial4n.Core.Shapes.Impl
             get
             {
                 if (segments.Count == 0)
-                    return new List<IPoint>();
+                    return CollectionUtils.EmptyList<IPoint>();
                 IList<IShape> shapes = segments.Shapes;
-                IList<IPoint> points = new List<IPoint>(); ;
-
-                foreach (var shape in shapes)
-                {
-                    if (!(shape is BufferedLine line))
-                        continue;
-
-                    points.Add(line.A);
-                    points.Add(line.B);
-                }
-
-                return points;
+                return new PointsAnonymousClass(shapes);
             }
+        }
+
+        private class PointsAnonymousClass : IList<IPoint>
+        {
+            private readonly IList<IShape> lines;
+
+            public PointsAnonymousClass(IList<IShape> lines)
+            {
+                this.lines = lines ?? throw new ArgumentNullException(nameof(lines));
+            }
+
+            public IPoint this[int index]
+            {
+                get
+                {
+                    if (index == 0)
+                        return ((BufferedLine)lines[0]).A;
+                    return ((BufferedLine)lines[index - 1]).B;
+                }
+                set => throw new NotSupportedException();
+            }
+
+            public int Count => lines.Count + 1;
+
+            public bool IsReadOnly => lines.IsReadOnly;
+
+            public void Add(IPoint item)
+            {
+                throw new NotSupportedException();
+            }
+
+            public void Clear()
+            {
+                lines.Clear();
+            }
+
+            public bool Contains(IPoint item)
+            {
+                using var it = GetEnumerator();
+                if (item is null)
+                {
+                    while (it.MoveNext())
+                        if (it.Current is null) return true;
+                }
+                else
+                {
+                    while (it.MoveNext())
+                        if (it.Current.Equals(item)) return true;
+                }
+                return false;
+            }
+
+            public void CopyTo(IPoint[] array, int index)
+            {
+                if (array is null)
+                    throw new ArgumentNullException(nameof(array));
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Non-negative number required.");
+                if (Count > array.Length - index)
+                    throw new ArgumentException("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
+
+                array[index++] = ((BufferedLine)lines[0]).A;
+                for (int i = 1; i < lines.Count + 1; i++)
+                    array[index++] = ((BufferedLine)lines[i - 1]).B;
+            }
+
+            public IEnumerator<IPoint> GetEnumerator()
+            {
+                yield return ((BufferedLine)lines[0]).A;
+                for (int i = 1; i < lines.Count + 1; i++)
+                    yield return ((BufferedLine)lines[i - 1]).B;
+            }
+
+            public int IndexOf(IPoint item)
+            {
+                if (item is null)
+                {
+                    if (((BufferedLine)lines[0]).A is null)
+                        return 0;
+                    for (int i = 1; i < lines.Count + 1; i++)
+                    {
+                        if (((BufferedLine)lines[i - 1]).B is null)
+                            return i;
+                    }
+                }
+                else
+                {
+                    if (((BufferedLine)lines[0]).A.Equals(item))
+                        return 0;
+                    for (int i = 1; i < lines.Count + 1; i++)
+                    {
+                        if (((BufferedLine)lines[i - 1]).B.Equals(item))
+                            return i;
+                    }
+                }
+                return -1;
+            }
+
+            public void Insert(int index, IPoint item)
+            {
+                throw new NotSupportedException();
+            }
+
+            public bool Remove(IPoint item)
+            {
+                throw new NotSupportedException();
+            }
+
+            public void RemoveAt(int index)
+            {
+                throw new NotSupportedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
 
