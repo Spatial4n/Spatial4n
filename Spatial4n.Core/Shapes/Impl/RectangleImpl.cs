@@ -29,7 +29,7 @@ namespace Spatial4n.Core.Shapes.Impl
     /// </summary>
     public class Rectangle : IRectangle
     {
-        private readonly SpatialContext ctx;
+        private readonly SpatialContext? ctx;
         private double minX;
         private double maxX;
         private double minY;
@@ -38,7 +38,7 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <summary>
         /// A simple constructor without normalization / validation.
         /// </summary>
-        public Rectangle(double minX, double maxX, double minY, double maxY, SpatialContext ctx)
+        public Rectangle(double minX, double maxX, double minY, double maxY, SpatialContext? ctx)
         {
             //TODO change to West South East North to be more consistent with OGC?
             this.ctx = ctx;
@@ -48,17 +48,25 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <summary>
         /// A convenience constructor which pulls out the coordinates.
         /// </summary>
-        public Rectangle(IPoint lowerLeft, IPoint upperRight, SpatialContext ctx)
-            : this(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y, ctx)
+        /// <exception cref="ArgumentNullException"><paramref name="lowerLeft"/> or <paramref name="upperRight"/> is <c>null</c>.</exception>
+        public Rectangle(IPoint lowerLeft, IPoint upperRight, SpatialContext? ctx)
+            : this(lowerLeft?.X ?? 0d, upperRight?.X ?? 0d, lowerLeft?.Y ?? 0d, upperRight?.Y ?? 0d, ctx)
         {
+            if (lowerLeft is null)
+                throw new ArgumentNullException(nameof(lowerLeft));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (upperRight is null)
+                throw new ArgumentNullException(nameof(upperRight));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
         }
 
         /// <summary>
         /// Copy constructor.
         /// </summary>
-        public Rectangle(IRectangle r, SpatialContext ctx)
-            : this(r.MinX, r.MaxX, r.MinY, r.MaxY, ctx)
+        /// <exception cref="ArgumentNullException"><paramref name="r"/> is <c>null</c>.</exception>
+        public Rectangle(IRectangle r, SpatialContext? ctx)
+            : this(r?.MinX ?? 0d, r?.MaxX ?? 0d, r?.MinY ?? 0d, r?.MaxY ?? 0d, ctx)
         {
+            if (r is null)
+                throw new ArgumentNullException(nameof(r));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
         }
 
         public virtual void Reset(double minX, double maxX, double minY, double maxY)
@@ -73,8 +81,12 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual bool IsEmpty => double.IsNaN(minX);
 
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
         public virtual IShape GetBuffered(double distance, SpatialContext ctx)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (ctx.IsGeo)
             {
                 //first check pole touching, triggering a world-wrap rect
@@ -156,25 +168,34 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual IRectangle BoundingBox => this;
 
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IShape other)
         {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (IsEmpty || other.IsEmpty)
                 return SpatialRelation.Disjoint;
-            var point = other as IPoint;
-            if (point != null)
+            if (other is IPoint point)
             {
                 return Relate(point);
             }
-            var rectangle = other as IRectangle;
-            if (rectangle != null)
+            if (other is IRectangle rectangle)
             {
                 return Relate(rectangle);
             }
             return other.Relate(this).Transpose();
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="point"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException"><see cref="SpatialContext"/> was not supplied in the constructor.</exception>
         public virtual SpatialRelation Relate(IPoint point)
         {
+            if (point is null)
+                throw new ArgumentNullException(nameof(point));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (ctx is null)
+                throw new InvalidOperationException("Must provide a SpatialContext in the constructor."); // spatial4n specific - use InvalidOperationException instead of NullReferenceException
+
             if (point.Y > MaxY || point.Y < MinY)
                 return SpatialRelation.Disjoint;
             //  all the below logic is rather unfortunate but some dateline cases demand it
@@ -208,8 +229,12 @@ namespace Spatial4n.Core.Shapes.Impl
             return SpatialRelation.Contains;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="rect"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IRectangle rect)
         {
+            if (rect is null)
+                throw new ArgumentNullException(nameof(rect));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             SpatialRelation yIntersect = RelateYRange(rect.MinY, rect.MaxY);
             if (yIntersect == SpatialRelation.Disjoint)
                 return SpatialRelation.Disjoint;
@@ -256,8 +281,12 @@ namespace Spatial4n.Core.Shapes.Impl
             return Relate_Range(minY, maxY, ext_minY, ext_maxY);
         }
 
+        /// <exception cref="InvalidOperationException"><see cref="SpatialContext"/> was not supplied in the constructor.</exception>
         public virtual SpatialRelation RelateXRange(double ext_minX, double ext_maxX)
         {
+            if (ctx is null)
+                throw new InvalidOperationException("Must provide a SpatialContext in the constructor."); // spatial4n specific - use InvalidOperationException instead of NullReferenceException
+
             //For ext & this we have local minX and maxX variable pairs. We rotate them so that minX <= maxX
             double minX = this.minX;
             double maxX = this.maxX;
@@ -301,10 +330,14 @@ namespace Spatial4n.Core.Shapes.Impl
             return "Rect(minX=" + minX + ",maxX=" + maxX + ",minY=" + minY + ",maxY=" + maxY + ")";
         }
 
+        /// <exception cref="InvalidOperationException"><see cref="SpatialContext"/> was not supplied in the constructor.</exception>
         public virtual IPoint Center
         {
             get
             {
+                if (ctx is null)
+                    throw new InvalidOperationException("Must provide a SpatialContext in the constructor."); // spatial4n specific - use InvalidOperationException instead of NullReferenceException
+
                 if (double.IsNaN(minX))
                     return ctx.MakePoint(double.NaN, double.NaN);
                 double y = Height / 2 + minY;
@@ -323,15 +356,15 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <summary>
         /// All <see cref="IRectangle"/> implementations should use this definition of <see cref="object.Equals(object)"/>.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
         public static bool Equals(IRectangle thiz, object o)
         {
-            if (thiz == null)
-                throw new ArgumentNullException("thiz");
+            if (thiz is null)
+                throw new ArgumentNullException(nameof(thiz));
 
             if (thiz == o) return true;
 
-            var rectangle = o as IRectangle;
-            if (rectangle == null) return false;
+            if (!(o is IRectangle rectangle)) return false;
 
             return thiz.MaxX.Equals(rectangle.MaxX) && thiz.MinX.Equals(rectangle.MinX) &&
                    thiz.MaxY.Equals(rectangle.MaxY) && thiz.MinY.Equals(rectangle.MinY);
@@ -345,10 +378,11 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <summary>
         /// All <see cref="IRectangle"/> implementations should use this definition of <see cref="object.GetHashCode()"/>.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
         public static int GetHashCode(IRectangle thiz)
         {
-            if (thiz == null)
-                throw new ArgumentNullException("thiz");
+            if (thiz is null)
+                throw new ArgumentNullException(nameof(thiz));
 
             long temp = thiz.MinX != +0.0d ? BitConverter.DoubleToInt64Bits(thiz.MinX) : 0L;
             int result = (int)(temp ^ ((uint)temp >> 32));
