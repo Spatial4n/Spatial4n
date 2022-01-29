@@ -64,18 +64,18 @@ namespace Spatial4n.Core.IO
         {
 
             WktShapeParser.State state = ctx.WktShapeParser.NewState("OUTER(INNER(3, 5))");
-            state.offset = 0;
+            state.Offset = 0;
 
             Assert.Equal("OUTER(INNER(3, 5))", state.NextSubShapeString());
-            Assert.Equal("OUTER(INNER(3, 5))".Length, state.offset);
+            Assert.Equal("OUTER(INNER(3, 5))".Length, state.Offset);
 
-            state.offset = "OUTER(".Length;
+            state.Offset = "OUTER(".Length;
             Assert.Equal("INNER(3, 5)", state.NextSubShapeString());
-            Assert.Equal("OUTER(INNER(3, 5)".Length, state.offset);
+            Assert.Equal("OUTER(INNER(3, 5)".Length, state.Offset);
 
-            state.offset = "OUTER(INNER(".Length;
+            state.Offset = "OUTER(INNER(".Length;
             Assert.Equal("3", state.NextSubShapeString());
-            Assert.Equal("OUTER(INNER(3".Length, state.offset);
+            Assert.Equal("OUTER(INNER(3".Length, state.Offset);
         }
 
         public class MyWKTShapeParser : WktShapeParser

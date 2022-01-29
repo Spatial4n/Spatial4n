@@ -36,6 +36,12 @@ namespace Spatial4n.Core.Exceptions
             ErrorOffset = errorOffset;
         }
 
+        public ParseException(string message, int errorOffset, Exception innerException)
+            : base(message, innerException)
+        {
+            ErrorOffset = errorOffset;
+        }
+
 #if FEATURE_SERIALIZABLE
         public ParseException()
         { }

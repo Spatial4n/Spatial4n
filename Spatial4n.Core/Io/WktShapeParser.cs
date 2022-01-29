@@ -18,6 +18,7 @@
 using Spatial4n.Core.Context;
 using Spatial4n.Core.Exceptions;
 using Spatial4n.Core.Shapes;
+using Spatial4n.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -121,10 +122,10 @@ namespace Spatial4n.Core.IO
             if (state.Eof)
                 return null;
             //shape types must start with a letter
-            if (!char.IsLetter(state.rawString[state.offset]))
+            if (!char.IsLetter(state.RawString[state.Offset]))
                 return null;
             string shapeType = state.NextWord();
-            IShape? result = null;
+            IShape? result;
             try
             {
                 result = ParseShapeByType(state, shapeType);
@@ -135,12 +136,11 @@ namespace Spatial4n.Core.IO
             }
             catch (Exception e)
             {//most likely InvalidShapeException
-                ParseException pe = new ParseException(e.ToString(), state.offset);
-                //pe.initCause(e);
+                ParseException pe = new ParseException(e.ToString(), state.Offset, e);
                 throw pe;
             }
             if (result != null && !state.Eof)
-                throw new ParseException("end of shape expected", state.offset);
+                throw new ParseException("end of shape expected", state.Offset);
             return result;
         }
 
@@ -289,7 +289,7 @@ namespace Spatial4n.Core.IO
                 throw new ArgumentNullException(nameof(state)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             if (state.NextIfEmptyAndSkipZM())
-                return m_ctx.MakeCollection(new List<IShape>());
+                return m_ctx.MakeCollection(CollectionUtils.EmptyList<IShape>());
             IList<IShape> shapes = new List<IShape>();
             state.NextExpect('(');
             do
@@ -347,7 +347,7 @@ namespace Spatial4n.Core.IO
                 throw new ArgumentNullException(nameof(state)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             if (state.NextIfEmptyAndSkipZM())
-                return m_ctx.MakeLineString(new List<IPoint>());
+                return m_ctx.MakeLineString(CollectionUtils.EmptyList<IPoint>());
             IList<IPoint> points = PointList(state);
             return m_ctx.MakeLineString(points);
         }
@@ -366,7 +366,7 @@ namespace Spatial4n.Core.IO
                 throw new ArgumentNullException(nameof(state)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             if (state.NextIfEmptyAndSkipZM())
-                return m_ctx.MakeCollection(new List<IShape>());
+                return m_ctx.MakeCollection(CollectionUtils.EmptyList<IShape>());
             IList<IShape> shapes = new List<IShape>();
             state.NextExpect('(');
             do
@@ -390,7 +390,7 @@ namespace Spatial4n.Core.IO
                 throw new ArgumentNullException(nameof(state)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             if (state.NextIfEmptyAndSkipZM())
-                return m_ctx.MakeCollection(new List<IShape>());
+                return m_ctx.MakeCollection(CollectionUtils.EmptyList<IShape>());
             IList<IShape> shapes = new List<IShape>();
             state.NextExpect('(');
             do
@@ -415,7 +415,7 @@ namespace Spatial4n.Core.IO
             string type = state.NextWord();
             IShape? shape = ParseShapeByType(state, type);
             if (shape is null)
-                throw new ParseException("Shape of type " + type + " is unknown", state.offset);
+                throw new ParseException("Shape of type " + type + " is unknown", state.Offset);
             return shape;
         }
 
@@ -468,13 +468,40 @@ namespace Spatial4n.Core.IO
         {
             private readonly WktShapeParser outerInstance;
 
-            /// <summary>Set in <see cref="ParseIfSupported(string)"/>.</summary>
+            [Obsolete("Use RawString property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
             public string rawString;
-            /// <summary>Offset of the next char in <see cref="rawString"/> to be read. </summary>
-            public int offset;
-            /// <summary>Dimensionality specifier (e.g. 'Z', or 'M') following a shape type name.</summary>
-            public string? dimension;
+            /// <summary>Set in <see cref="ParseIfSupported(string)"/>.</summary>
+            public string RawString
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                get => rawString;
+                set => rawString = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
 
+            [Obsolete("Use Offset property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)] 
+            public int offset;
+            /// <summary>Offset of the next char in <see cref="rawString"/> to be read. </summary>
+            public int Offset
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                get => offset;
+                set => offset = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+
+            [Obsolete("Use Dimension property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)] 
+            public string? dimension;
+            /// <summary>Dimensionality specifier (e.g. 'Z', or 'M') following a shape type name.</summary>
+            public string? Dimension
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                get => dimension;
+                set => dimension = value;
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+
+#pragma warning disable CS0618 // Type or member is obsolete
             /// <summary>
             /// Initializes a new State instance with the specified WktShapeParser and <paramref name="rawString"/>.
             /// </summary>
@@ -741,5 +768,7 @@ namespace Spatial4n.Core.IO
 
             private static Regex identifierPart = new Regex(@"\p{Sc}|\p{Pc}|\p{Nl}|\p{Mc}", RegexOptions.Compiled);
         }//class State
+
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 }
