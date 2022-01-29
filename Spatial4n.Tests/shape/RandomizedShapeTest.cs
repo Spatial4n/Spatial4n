@@ -275,8 +275,10 @@ namespace Spatial4n.Core.Shape
             if (nearP == null)
                 nearP = RandomPointIn(bounds);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             Range xRange = RandomRange(Rarely() ? 0 : nearP.X, Range.XRange(bounds, ctx));
             Range yRange = RandomRange(Rarely() ? 0 : nearP.Y, Range.YRange(bounds, ctx));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             return MakeNormRect(
                 Divisible(xRange.Min),
@@ -285,11 +287,15 @@ namespace Spatial4n.Core.Shape
                 Divisible(yRange.Max));
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         private Range RandomRange(double near, Range bounds)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             double mid = near + RandomGaussian() * bounds.Width / 6;
             double width = Math.Abs(RandomGaussian()) * bounds.Width / 6;//1/3rd
+#pragma warning disable CS0618 // Type or member is obsolete
             return new Range(mid - width / 2, mid + width / 2);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         private double RandomGaussianZeroTo(double max)

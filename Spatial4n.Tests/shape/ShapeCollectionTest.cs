@@ -45,11 +45,15 @@ namespace Spatial4n.Core.Shape
             IRectangle r2 = ctx.MakeRectangle(r2MinX, r2MaxX, -10, 10);
 
             ShapeCollection/*<Rectangle>*/ s = new ShapeCollection/*<Rectangle>*/(new IShape[] { r1, r2 }, ctx);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Equal(Range.LongitudeRange.WORLD_180E180W, new Range.LongitudeRange(s.BoundingBox));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             //flip r1, r2 order
             s = new ShapeCollection/*<Rectangle>*/(new IShape[] { r2, r1 }, ctx);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Equal(Range.LongitudeRange.WORLD_180E180W, new Range.LongitudeRange(s.BoundingBox));
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [Fact]

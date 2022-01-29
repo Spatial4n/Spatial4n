@@ -171,11 +171,15 @@ namespace Spatial4n.Core.Shapes.Nts
             if (env.Width > 180 && geoms.NumGeometries > 1)
             {
                 // This is ShapeCollection's bbox algorithm
+#pragma warning disable CS0618 // Type or member is obsolete
                 Range? xRange = null;
+#pragma warning restore CS0618 // Type or member is obsolete
                 for (int i = 0; i < geoms.NumGeometries; i++)
                 {
                     Envelope envI = geoms.GetGeometryN(i).EnvelopeInternal;
+#pragma warning disable CS0618 // Type or member is obsolete
                     Range xRange2 = new Range.LongitudeRange(envI.MinX, envI.MaxX);
+#pragma warning restore CS0618 // Type or member is obsolete
                     if (xRange is null)
                     {
                         xRange = xRange2;
@@ -184,7 +188,9 @@ namespace Spatial4n.Core.Shapes.Nts
                     {
                         xRange = xRange.ExpandTo(xRange2);
                     }
+#pragma warning disable CS0618 // Type or member is obsolete
                     if (xRange == Range.LongitudeRange.WORLD_180E180W)
+#pragma warning restore CS0618 // Type or member is obsolete
                         break; // can't grow any bigger
                 }
                 return new Rectangle(xRange!.Min, xRange.Max, env.MinY, env.MaxY, ctx);

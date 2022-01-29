@@ -26,6 +26,7 @@ namespace Spatial4n.Core.Shapes.Impl
     /// Perhaps this class could become 1st class citizen extending Shape but not now.
     /// Only public so is accessible from tests in another package.
     /// </summary>
+    [Obsolete("This class is for internal use only. It will be removed from the public API in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] // Spatial4n TODO: This class should be internal according to the docs comments. Mark internal in 0.5.0, for now we will hide it from VS.
     public class Range
     {
         protected readonly double m_min, m_max;

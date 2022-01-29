@@ -68,14 +68,18 @@ namespace Spatial4n.Core.Shapes
         {
             if (shapes.Count == 0)
                 return ctx.MakeRectangle(double.NaN, double.NaN, double.NaN, double.NaN);
+#pragma warning disable CS0618 // Type or member is obsolete
             Range? xRange = null;
+#pragma warning restore CS0618 // Type or member is obsolete
             double minY = double.PositiveInfinity;
             double maxY = double.NegativeInfinity;
-            foreach (Shapes.IShape geom in shapes)
+            foreach (IShape geom in shapes)
             {
                 IRectangle r = geom.BoundingBox;
 
+#pragma warning disable CS0618 // Type or member is obsolete
                 Range xRange2 = Range.XRange(r, ctx);
+#pragma warning restore CS0618 // Type or member is obsolete
                 if (xRange is null)
                 {
                     xRange = xRange2;
