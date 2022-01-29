@@ -19,6 +19,7 @@ using Spatial4n.Core.Context;
 using Spatial4n.Core.Distance;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Spatial4n.Core.Shapes.Impl
 {
@@ -30,6 +31,13 @@ namespace Spatial4n.Core.Shapes.Impl
         private GeoCircle? inverseCircle; //when distance reaches > 1/2 way around the world, cache the inverse.
         private double horizAxisY; //see getYAxis
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="GeoCircle"/>.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="radiusDEG"></param>
+        /// <param name="ctx"></param>
+        /// <exception cref="ArgumentNullException"><paramref name="p"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public GeoCircle(IPoint p, double radiusDEG, SpatialContext ctx)
             : base(p, radiusDEG, ctx)
         {
@@ -104,8 +112,12 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <param name="bboxSect"><see cref="SpatialRelation.Intersects"/> or <see cref="SpatialRelation.Contains"/> from enclosingBox's intersection</param>
         /// <returns><see cref="SpatialRelation.Disjoint"/>, <see cref="SpatialRelation.Contains"/>, or 
         /// <see cref="SpatialRelation.Intersects"/> (not <see cref="SpatialRelation.Within"/>)</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="r"/> is <c>null</c>.</exception>
         protected override SpatialRelation RelateRectanglePhase2(IRectangle r, SpatialRelation bboxSect)
         {
+            if (r is null)
+                throw new ArgumentNullException(nameof(r)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (inverseCircle != null)
             {
                 return inverseCircle.Relate(r).Inverse();
@@ -273,7 +285,7 @@ namespace Spatial4n.Core.Shapes.Impl
         public override string ToString()
         {
             double distKm = DistanceUtils.Degrees2Dist(radiusDEG, DistanceUtils.EarthMeanRadiusKilometers);
-            string dStr = string.Format("{0:0.0}\u00B0 {1:0.00}km", radiusDEG, distKm);
+            string dStr = string.Format(CultureInfo.InvariantCulture, "{0:0.0}\u00B0 {1:0.00}km", radiusDEG, distKm);
             return "Circle(" + point + ", d=" + dStr + ')';
         }
 
@@ -281,7 +293,7 @@ namespace Spatial4n.Core.Shapes.Impl
         {
             if (double.IsNaN(value)) return double.NaN;
             if (double.IsInfinity(value)) return double.PositiveInfinity;
-            if (value == +0.0d || value == -0.0d) return double.MinValue;
+            if (value == +0.0d || value == -0.0d) return double.MinValue; // Spatial4n: This really doesn't check for negative 0, but the result is the same regardless of the sign
             if (value == double.MaxValue) return Math.Pow(2, 971);
 
 
