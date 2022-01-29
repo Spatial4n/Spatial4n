@@ -184,10 +184,10 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual SpatialRelation Relate(IShape other)
         {
-            if (other is IPoint)
-                return Contains((IPoint)other) ? SpatialRelation.Contains : SpatialRelation.Disjoint;
-            if (other is IRectangle)
-                return Relate((IRectangle)other);
+            if (other is IPoint point)
+                return Contains(point) ? SpatialRelation.Contains : SpatialRelation.Disjoint;
+            if (other is IRectangle rectangle)
+                return Relate(rectangle);
             throw new NotSupportedException();
         }
 
@@ -214,6 +214,9 @@ namespace Spatial4n.Core.Shapes.Impl
 
         public virtual bool Contains(IPoint p)
         {
+            if (p is null)
+                throw new ArgumentNullException(nameof(p)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //TODO check bbox 1st?
             return linePrimary.Contains(p) && linePerp.Contains(p);
         }
