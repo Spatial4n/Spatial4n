@@ -39,11 +39,18 @@ namespace Spatial4n.Core.Shapes.Impl
 
         //we don't have a line shape so we use a rectangle for these axis
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="Circle"/>.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="radiusDEG"></param>
+        /// <param name="ctx"></param>
+        /// <exception cref="ArgumentNullException"><paramref name="p"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public Circle(IPoint p, double radiusDEG, SpatialContext ctx)
         {
             //We assume any validation of params already occurred (including bounding dist)
-            this.ctx = ctx;
-            this.point = p;
+            this.ctx = ctx ?? throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            this.point = p ?? throw new ArgumentNullException(nameof(p)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
             this.radiusDEG = point.IsEmpty ? double.NaN : radiusDEG;
             this.enclosingBox = point.IsEmpty ? ctx.MakeRectangle(double.NaN, double.NaN, double.NaN, double.NaN) :
                 ctx.DistanceCalculator.CalcBoxByDistFromPt(point, this.radiusDEG, ctx, null);
@@ -75,8 +82,12 @@ namespace Spatial4n.Core.Shapes.Impl
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
         public virtual IShape GetBuffered(double distance, SpatialContext ctx)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return ctx.MakeCircle(point, distance + radiusDEG);
         }
 
@@ -93,25 +104,26 @@ namespace Spatial4n.Core.Shapes.Impl
         public virtual IRectangle BoundingBox => enclosingBox;
 
 
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IShape other)
         {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //This shortcut was problematic in testing due to distinctions of CONTAINS/WITHIN for no-area shapes (lines, points).
             //    if (distance == 0) {
             //      return point.relate(other,ctx).intersects() ? SpatialRelation.Within : SpatialRelation.Disjoint;
             //    }
 
-            var other1 = other as IPoint;
-            if (other1 != null)
+            if (other is IPoint point)
             {
-                return Relate(other1);
+                return Relate(point);
             }
-            var rectangle = other as IRectangle;
-            if (rectangle != null)
+            if (other is IRectangle rectangle)
             {
                 return Relate(rectangle);
             }
-            var circle = other as ICircle;
-            if (circle != null)
+            if (other is ICircle circle)
             {
                 return Relate(circle);
             }
@@ -119,13 +131,21 @@ namespace Spatial4n.Core.Shapes.Impl
 
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="point"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IPoint point)
         {
+            if (point is null)
+                throw new ArgumentNullException(nameof(point)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return Contains(point.X, point.Y) ? SpatialRelation.Contains : SpatialRelation.Disjoint;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="r"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IRectangle r)
         {
+            if (r is null)
+                throw new ArgumentNullException(nameof(r)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //Note: Surprisingly complicated!
 
             //--We start by leveraging the fact we have a calculated bbox that is "cheaper" than use of DistanceCalculator.
@@ -140,8 +160,12 @@ namespace Spatial4n.Core.Shapes.Impl
             return RelateRectanglePhase2(r, bboxSect);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="r"/> is <c>null</c>.</exception>
         protected virtual SpatialRelation RelateRectanglePhase2(IRectangle r, SpatialRelation bboxSect)
         {
+            if (r is null)
+                throw new ArgumentNullException(nameof(r)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             /*
              !! DOES NOT WORK WITH GEO CROSSING DATELINE OR WORLD-WRAP.
              TODO upgrade to handle crossing dateline, but not world-wrap; use some x-shifting code from RectangleImpl.
@@ -259,15 +283,16 @@ namespace Spatial4n.Core.Shapes.Impl
         /// <summary>
         /// All <see cref="ICircle"/> implementations should use this definition of <see cref="object.Equals(object)"/>.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
         public static bool Equals(ICircle thiz, object o)
         {
-            if (thiz == null)
-                throw new ArgumentNullException("thiz");
+            if (thiz is null)
+                throw new ArgumentNullException(nameof(thiz));
 
             if (thiz == o) return true;
 
             var circle = o as ICircle;
-            if (circle == null) return false;
+            if (circle is null) return false;
 
             if (!thiz.Center.Equals(circle.Center)) return false;
             if (!circle.Radius.Equals(thiz.Radius)) return false;
@@ -285,10 +310,11 @@ namespace Spatial4n.Core.Shapes.Impl
         /// </summary>
         /// <param name="thiz"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
         public static int GetHashCode(ICircle thiz)
         {
-            if (thiz == null)
-                throw new ArgumentNullException("thiz");
+            if (thiz is null)
+                throw new ArgumentNullException(nameof(thiz));
 
             int result = thiz.Center.GetHashCode();
             long temp = Math.Abs(thiz.Radius - +0.0d) > double.Epsilon
