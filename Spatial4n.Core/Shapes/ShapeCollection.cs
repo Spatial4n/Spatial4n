@@ -55,17 +55,27 @@ namespace Spatial4n.Core.Shapes
         /// </summary>
         /// <param name="shapes">Copied by reference! (make a defensive copy if caller modifies)</param>
         /// <param name="ctx"></param>
+        /// <exception cref="ArgumentNullException"><paramref name="shapes"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public ShapeCollection(IList<IShape> shapes, SpatialContext ctx)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             // TODO: Work out if there is a way to mimic this behavior (create a custom IRandomAccess?)
             //if (!(shapes is RandomAccess))
             //    throw new ArgumentException("Shapes arg must implement RandomAccess: " + shapes.GetType());
-            this.m_shapes = shapes;
+            this.m_shapes = shapes ?? throw new ArgumentNullException(nameof(shapes)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
             this.m_bbox = ComputeBoundingBox(shapes, ctx);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="shapes"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         protected virtual IRectangle ComputeBoundingBox(ICollection<IShape> shapes, SpatialContext ctx)
         {
+            if (shapes is null)
+                throw new ArgumentNullException(nameof(shapes)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (shapes.Count == 0)
                 return ctx.MakeRectangle(double.NaN, double.NaN, double.NaN, double.NaN);
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -96,6 +106,7 @@ namespace Spatial4n.Core.Shapes
 
         public virtual IList<IShape> Shapes => m_shapes;
 
+        /// <exception cref="IndexOutOfRangeException"><paramref name="index"/> is less than 0 or greater than or equal to <see cref="Count"/>.</exception>
         public virtual IShape this[int index] => m_shapes[index];
 
         public virtual int Count => m_shapes.Count;
@@ -120,9 +131,12 @@ namespace Spatial4n.Core.Shapes
             }
         }
 
-
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> is <c>null</c>.</exception>
         public virtual IShape GetBuffered(double distance, SpatialContext ctx)
         {
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             IList<IShape> bufColl = new List<IShape>(Count);
             foreach (IShape shape in m_shapes)
             {
@@ -131,9 +145,12 @@ namespace Spatial4n.Core.Shapes
             return ctx.MakeCollection(bufColl);
         }
 
-
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IShape other)
         {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             SpatialRelation bboxSect = m_bbox.Relate(other);
             if (bboxSect == SpatialRelation.Disjoint || bboxSect == SpatialRelation.Within)
                 return bboxSect;
@@ -145,7 +162,7 @@ namespace Spatial4n.Core.Shapes
             {
                 SpatialRelation nextSect = shape.Relate(other);
 
-                if (sect == null)
+                if (sect is null)
                 {//first pass
                     sect = nextSect;
                 }
@@ -190,8 +207,12 @@ namespace Spatial4n.Core.Shapes
         /// assuming non-disjoint if shapes.Count > 10 or something.  And if all shapes
         /// are a <see cref="IPoint"/> then the result of this method doesn't ultimately matter.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="shapes"/> is <c>null</c>.</exception>
         protected static bool ComputeMutualDisjoint(IList<IShape> shapes)
         {
+            if (shapes is null)
+                throw new ArgumentNullException(nameof(shapes)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //WARNING: this is an O(n^2) algorithm.
             //loop through each shape and see if it intersects any shape before it
             for (int i = 1; i < shapes.Count; i++)
@@ -246,7 +267,7 @@ namespace Spatial4n.Core.Shapes
             // Spatial4n NOTE: This was modified from the original implementation
             // to act like the collections of Java, which compare values rather than references.
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             ShapeCollection that = (ShapeCollection)o;
 
