@@ -181,7 +181,7 @@ namespace Spatial4n.Shapes
                                     {
                                         typeof(Point),
                                         typeof(Circle),
-										//GeoCircle.class  no: its fields are caches, not part of its identity
+                                        //GeoCircle.class  no: its fields are caches, not part of its identity
                                         typeof(Rectangle),
                                         typeof(ShapeCollection),
                                         typeof(BufferedLineString),

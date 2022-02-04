@@ -23,17 +23,17 @@ using Xunit.Sdk;
 
 namespace Spatial4n
 {
-	/// <summary>
-	/// Replacement for the <see cref="FactAttribute"/> that repeats. This can only be used with XUnit < 2.x.
-	/// </summary>
-	public class RepeatFactAttribute : FactAttribute
-	{
-		readonly int _count;
+    /// <summary>
+    /// Replacement for the <see cref="FactAttribute"/> that repeats. This can only be used with XUnit < 2.x.
+    /// </summary>
+    public class RepeatFactAttribute : FactAttribute
+    {
+        readonly int _count;
 
-		public RepeatFactAttribute(int count)
-		{
-			_count = count;
-		}
+        public RepeatFactAttribute(int count)
+        {
+            _count = count;
+        }
 
         protected override IEnumerable<ITestCommand> EnumerateTestCommands(
             IMethodInfo method)
