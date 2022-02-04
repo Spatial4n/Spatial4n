@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.IO;
-using Spatial4n.Core.Shapes;
+using Spatial4n.Context;
+using Spatial4n.Exceptions;
+using Spatial4n.Shapes;
 using Xunit;
 
-namespace Spatial4n.Core.IO
+namespace Spatial4n.IO
 {
     public class WktShapeParserTest
     {

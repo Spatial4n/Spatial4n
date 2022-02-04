@@ -22,7 +22,7 @@ using System.Reflection;
 using Xunit.Sdk;
 using Xunit.Extensions;
 
-namespace Spatial4n.Core
+namespace Spatial4n
 {
 	/// <summary>
 	/// Provides a data source for a data theory, with the data coming from a public static property on the test class.

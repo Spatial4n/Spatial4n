@@ -23,7 +23,7 @@ using System.Reflection;
 using Xunit;
 using Xunit.Sdk;
 
-namespace Spatial4n.Core
+namespace Spatial4n
 {
 
     /// <summary>

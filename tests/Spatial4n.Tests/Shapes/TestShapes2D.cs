@@ -15,18 +15,16 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Impl;
+using Spatial4n.Context.Nts;
+using Spatial4n.Context;
+using Spatial4n.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
 using Xunit.Extensions;
 
-namespace Spatial4n.Core.Shape
+namespace Spatial4n.Shapes
 {
     public class TestShapes2D : AbstractTestShapes
     {

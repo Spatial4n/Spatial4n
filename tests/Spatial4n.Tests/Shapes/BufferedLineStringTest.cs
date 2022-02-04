@@ -15,14 +15,12 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Impl;
+using Spatial4n.Context;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Spatial4n.Core.Shape
+namespace Spatial4n.Shapes
 {
     public class BufferedLineStringTest
     {
@@ -36,12 +34,12 @@ namespace Spatial4n.Core.Shape
             {
             }
 
-            protected override IShape GenerateRandomShape(Core.Shapes.IPoint nearP)
+            protected override IShape GenerateRandomShape(IPoint nearP)
             {
                 IRectangle nearR = RandomRectangle(nearP);
                 int numPoints = 2 + random.Next(3 + 1);//2-5 points
 
-                IList<Core.Shapes.IPoint> points = new List<Core.Shapes.IPoint>(numPoints);
+                IList<IPoint> points = new List<IPoint>(numPoints);
                 while (points.Count < numPoints)
                 {
                     points.Add(RandomPointIn(nearR));
@@ -52,9 +50,9 @@ namespace Spatial4n.Core.Shape
                 return new BufferedLineString(points, buf, ctx);
             }
 
-            protected override Core.Shapes.IPoint RandomPointInEmptyShape(IShape shape)
+            protected override IPoint RandomPointInEmptyShape(IShape shape)
             {
-                IList<Core.Shapes.IPoint> points = ((BufferedLineString)shape).Points;
+                IList<IPoint> points = ((BufferedLineString)shape).Points;
                 return points.Count == 0 ? null : points[random.Next(points.Count/* - 1*/)];
             }
         }

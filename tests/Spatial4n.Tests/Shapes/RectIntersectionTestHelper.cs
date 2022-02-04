@@ -15,14 +15,12 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Impl;
+using Spatial4n.Context;
 using System;
 using System.Diagnostics;
 using Xunit;
 
-namespace Spatial4n.Core.Shape
+namespace Spatial4n.Shapes
 {
     public abstract class RectIntersectionTestHelper : RandomizedShapeTest
     {
@@ -31,12 +29,12 @@ namespace Spatial4n.Core.Shape
         {
         }
 
-        protected abstract IShape GenerateRandomShape(Core.Shapes.IPoint nearP);
+        protected abstract IShape GenerateRandomShape(IPoint nearP);
 
-        protected abstract Core.Shapes.IPoint RandomPointInEmptyShape(IShape shape);
+        protected abstract IPoint RandomPointInEmptyShape(IShape shape);
 
 
-        protected override Core.Shapes.IPoint RandomPointIn(IShape shape)
+        protected override IPoint RandomPointIn(IShape shape)
         {
             if (!shape.HasArea)
                 return RandomPointInEmptyShape((IShape)shape);
@@ -56,7 +54,7 @@ namespace Spatial4n.Core.Shape
 
                 //TestLog.Clear();
 
-                Core.Shapes.IPoint nearP = RandomPointIn(ctx.WorldBounds);
+                IPoint nearP = RandomPointIn(ctx.WorldBounds);
 
                 IShape s = GenerateRandomShape(nearP);
 
@@ -74,7 +72,7 @@ namespace Spatial4n.Core.Shape
                             i_C++;
                             for (int j = 0; j < AtLeast(10); j++)
                             {
-                                Core.Shapes.IPoint p = RandomPointIn(r);
+                                IPoint p = RandomPointIn(r);
                                 AssertRelation(null, SpatialRelation.Contains, s, p);
                             }
                             break;
@@ -83,7 +81,7 @@ namespace Spatial4n.Core.Shape
                             i_W++;
                             for (int j = 0; j < AtLeast(10); j++)
                             {
-                                Core.Shapes.IPoint p = RandomPointIn(s);
+                                IPoint p = RandomPointIn(s);
                                 AssertRelation(null, SpatialRelation.Contains, r, p);
                             }
                             break;
@@ -101,7 +99,7 @@ namespace Spatial4n.Core.Shape
                             }
                             for (int j = 0; j < AtLeast(10); j++)
                             {
-                                Core.Shapes.IPoint p = RandomPointIn(r);
+                                IPoint p = RandomPointIn(r);
                                 AssertRelation(null, SpatialRelation.Disjoint, s, p);
                             }
                             break;
@@ -113,10 +111,10 @@ namespace Spatial4n.Core.Shape
                             int MAX_TRIES = 1000;
                             for (int j = 0; j < MAX_TRIES; j++)
                             {
-                                Core.Shapes.IPoint p;
+                                IPoint p;
                                 if (j < 4)
                                 {
-                                    p = new Core.Shapes.Impl.Point(0, 0, ctx);
+                                    p = new Point(0, 0, ctx);
                                     InfBufLine.CornerByQuadrant(r, j + 1, p);
                                 }
                                 else

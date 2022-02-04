@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.IO.Nts;
-using Spatial4n.Core.Shapes;
+using Spatial4n.Context;
+using Spatial4n.Context.Nts;
+using Spatial4n.Exceptions;
+using Spatial4n.IO.Nts;
+using Spatial4n.Shapes;
 using Xunit;
 
-namespace Spatial4n.Core.IO
+namespace Spatial4n.IO
 {
 #pragma warning disable 612, 618
     public class NtsWKTReaderShapeParserTest
@@ -32,7 +32,7 @@ namespace Spatial4n.Core.IO
         public NtsWKTReaderShapeParserTest()
         {
             NtsSpatialContextFactory factory = new NtsSpatialContextFactory();
-            factory.datelineRule = DatelineRule.CcwRect;
+            factory.datelineRule = DatelineRule.CounterClockwiseRectangle;
             factory.wktShapeParserClass = typeof(NtsWktReaderShapeParser);
             ctx = factory.CreateSpatialContext();
         }

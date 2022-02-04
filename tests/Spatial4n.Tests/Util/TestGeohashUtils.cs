@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Util;
+using Spatial4n.Context;
+using Spatial4n.Shapes;
 using Xunit;
 
-namespace Spatial4n.Core.Util
+namespace Spatial4n.Util
 {
     public class TestGeohashUtils
     {

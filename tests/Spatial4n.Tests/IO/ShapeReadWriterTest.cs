@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
+using Spatial4n.Context.Nts;
+using Spatial4n.Context;
+using Spatial4n.Shapes;
 using System.Collections.Generic;
 using System.Globalization;
 using Xunit;
 using Xunit.Extensions;
 
-namespace Spatial4n.Core.IO
+namespace Spatial4n.IO
 {
 #pragma warning disable 612, 618
     public class ShapeReadWriterTest

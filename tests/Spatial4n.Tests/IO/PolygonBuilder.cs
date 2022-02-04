@@ -16,13 +16,13 @@
  */
 
 using GeoAPI.Geometries;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Nts;
+using Spatial4n.Context.Nts;
+using Spatial4n.Shapes;
+using Spatial4n.Shapes.Nts;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spatial4n.Core.IO
+namespace Spatial4n.IO
 {
     /// <summary>
     /// Builder for creating a {@link com.spatial4j.core.shape.Shape} instance of a Polygon

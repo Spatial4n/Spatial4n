@@ -17,7 +17,7 @@
 
 using System;
 
-namespace Spatial4n.Core
+namespace Spatial4n
 {
 	public static class RandomSeed
 	{

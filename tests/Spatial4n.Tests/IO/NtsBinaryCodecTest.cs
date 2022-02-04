@@ -18,15 +18,15 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Shapes;
+using Spatial4n.Context;
+using Spatial4n.Context.Nts;
+using Spatial4n.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Spatial4n.Core.IO
+namespace Spatial4n.IO
 {
     public class NtsBinaryCodecTest : BinaryCodecTest
     {

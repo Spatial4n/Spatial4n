@@ -15,13 +15,11 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Impl;
+using Spatial4n.Context;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Spatial4n.Core.Shape
+namespace Spatial4n.Shapes
 {
     /** @author David Smiley - dsmiley@mitre.org */
     public class ShapeCollectionTest : RandomizedShapeTest

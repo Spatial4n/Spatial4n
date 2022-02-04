@@ -16,14 +16,14 @@
  */
 
 
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.IO.Nts;
-using Spatial4n.Core.Distance;
-using Spatial4n.Core.Shapes.Impl;
+using Spatial4n.Context.Nts;
+using Spatial4n.IO.Nts;
+using Spatial4n.Distance;
+using Spatial4n.Shapes;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Spatial4n.Core.Context
+namespace Spatial4n.Context
 {
     public class SpatialContextFactoryTest
     {

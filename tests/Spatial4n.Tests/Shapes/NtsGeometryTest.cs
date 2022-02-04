@@ -16,12 +16,10 @@
  */
 
 using GeoAPI.Geometries;
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.IO.Nts;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Impl;
-using Spatial4n.Core.Shapes.Nts;
+using Spatial4n.Context;
+using Spatial4n.Context.Nts;
+using Spatial4n.IO.Nts;
+using Spatial4n.Shapes.Nts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +27,7 @@ using System.IO;
 using Xunit;
 using Xunit.Extensions;
 
-namespace Spatial4n.Core.Shape
+namespace Spatial4n.Shapes
 {
     /// <summary>
     /// Tests {@link com.spatial4j.core.shape.jts.JtsGeometry} and some other code related
@@ -113,7 +111,7 @@ namespace Spatial4n.Core.Shape
             //within base: differs from base by one point is within
             NtsGeometry polyW = (NtsGeometry)ctx.ReadShapeFromWkt("POLYGON((0 0, 9 0, 5 5, 0 0))");
             //a boundary point of base
-            Core.Shapes.IPoint pointB = ctx.MakePoint(0, 0);
+            IPoint pointB = ctx.MakePoint(0, 0);
             //a shared boundary line of base
             NtsGeometry lineB = (NtsGeometry)ctx.ReadShapeFromWkt("LINESTRING(0 0, 10 0)");
             //a line sharing only one point with base
@@ -196,7 +194,7 @@ namespace Spatial4n.Core.Shape
             IntersectionMatrix expectedM = POLY_SHAPE.Geometry.Relate(((NtsSpatialContext)ctx).GetGeometryFrom(shape));
             SpatialRelation expectedSR = NtsGeometry.IntersectionMatrixToSpatialRelation(expectedM);
             //NTS considers a point on a boundary INTERSECTS, not CONTAINS
-            if (expectedSR == SpatialRelation.Intersects && shape is Core.Shapes.IPoint)
+            if (expectedSR == SpatialRelation.Intersects && shape is IPoint)
                 expectedSR = SpatialRelation.Contains;
             AssertRelation(null, expectedSR, POLY_SHAPE, shape);
 
@@ -209,9 +207,9 @@ namespace Spatial4n.Core.Shape
                     IRectangle r = (IRectangle)shape;
                     shape2 = MakeNormRect(r.MinX + DL_SHIFT, r.MaxX + DL_SHIFT, r.MinY, r.MaxY);
                 }
-                else if (shape is Core.Shapes.IPoint)
+                else if (shape is IPoint)
                 {
-                    Core.Shapes.IPoint p = (Core.Shapes.IPoint)shape;
+                    IPoint p = (IPoint)shape;
                     shape2 = ctx.MakePoint(base.NormX(p.X + DL_SHIFT), p.Y);
                 }
                 else

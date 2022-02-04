@@ -17,18 +17,18 @@
 
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.IO.Nts;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Nts;
+using Spatial4n.Context.Nts;
+using Spatial4n.Exceptions;
+using Spatial4n.IO.Nts;
+using Spatial4n.Shapes;
+using Spatial4n.Shapes.Nts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Xunit;
 
-namespace Spatial4n.Core.IO
+namespace Spatial4n.IO
 {
     public class NtsWktShapeParserTest : WktShapeParserTest
     {

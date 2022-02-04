@@ -15,15 +15,12 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Distance;
-using Spatial4n.Core.Shapes;
+using Spatial4n.Context;
+using Spatial4n.Distance;
 using System;
-using System.Diagnostics;
 using Xunit;
-using Range = Spatial4n.Core.Shapes.Impl.Range;
 
-namespace Spatial4n.Core.Shape
+namespace Spatial4n.Shapes
 {
     /// <summary>
     /// A base test class with utility methods to help test shapes.

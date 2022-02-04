@@ -15,15 +15,13 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Distance;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Impl;
+using Spatial4n.Context;
+using Spatial4n.Distance;
 using System;
 using Xunit;
 using Xunit.Extensions;
 
-namespace Spatial4n.Core.Shape
+namespace Spatial4n.Shapes
 {
     public abstract class AbstractTestShapes : RandomizedShapeTest
     {

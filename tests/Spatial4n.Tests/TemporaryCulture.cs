@@ -19,7 +19,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 
-namespace Spatial4n.Core
+namespace Spatial4n
 {
     public sealed class TemporaryCulture : IDisposable
     {
