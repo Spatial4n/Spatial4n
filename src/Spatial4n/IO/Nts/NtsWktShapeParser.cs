@@ -18,18 +18,30 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Nts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context.Nts;
+using Spatial4n.Core.Shapes;
+using Spatial4n.Core.Shapes.Nts;
+
 namespace Spatial4n.Core.IO.Nts
+#else
+using Spatial4n.Context.Nts;
+using Spatial4n.Shapes;
+using Spatial4n.Shapes.Nts;
+
+namespace Spatial4n.IO.Nts
+#endif
 {
     /// <summary>
     /// Extends <see cref="WktShapeParser"/> adding support for polygons, using NTS.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.Nts.NtsWktShapeParser instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class NtsWktShapeParser : WktShapeParser
     {
         new protected readonly NtsSpatialContext m_ctx;
@@ -315,6 +327,9 @@ namespace Spatial4n.Core.IO.Nts
     /// Indicates the algorithm used to process NTS <see cref="IPolygon"/>s and NTS <see cref="ILineString"/>s for detecting dateline
     /// crossings. It only applies when geo=true.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.Nts.DatelineRule instead. This enum will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public enum DatelineRule
     {
         /// <summary>
@@ -344,6 +359,9 @@ namespace Spatial4n.Core.IO.Nts
     /// Indicates how NTS geometries (notably polygons but applies to other geometries too) are
     /// validated (if at all) and repaired (if at all).
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.Nts.ValidationRule instead. This enum will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public enum ValidationRule
     {
         /// <summary>

@@ -17,17 +17,29 @@
 
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.Shapes;
 using System;
 using System.IO;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context.Nts;
+using Spatial4n.Core.Exceptions;
+using Spatial4n.Core.Shapes;
+
 namespace Spatial4n.Core.IO.Nts
+#else
+using Spatial4n.Context.Nts;
+using Spatial4n.Exceptions;
+using Spatial4n.Shapes;
+
+namespace Spatial4n.IO.Nts
+#endif
 {
     /// <summary>
     /// Writes shapes in WKB, if it isn't otherwise supported by the superclass.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.Nts.NtsBinaryCodec instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class NtsBinaryCodec : BinaryCodec
     {
         protected readonly bool useFloat;//instead of double

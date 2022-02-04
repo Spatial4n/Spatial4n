@@ -15,11 +15,18 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
 using System;
 using System.Diagnostics;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+
 namespace Spatial4n.Core.Shapes.Impl
+#else
+using Spatial4n.Context;
+
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// A circle, also known as a point-radius, based on a
@@ -27,6 +34,9 @@ namespace Spatial4n.Core.Shapes.Impl
     /// implementation should work for both cartesian 2D and geodetic sphere 
     /// surfaces.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.Circle instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class Circle : ICircle
     {
         protected readonly SpatialContext ctx;

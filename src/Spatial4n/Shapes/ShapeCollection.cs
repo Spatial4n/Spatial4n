@@ -15,14 +15,22 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes.Impl;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Shapes.Impl;
+
 namespace Spatial4n.Core.Shapes
+#else
+using Spatial4n.Context;
+using Spatial4n.Shapes;
+
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// A collection of Shape objects, analogous to an OGC GeometryCollection. The
@@ -45,6 +53,9 @@ namespace Spatial4n.Core.Shapes
     /// bbox'es, for example.
     /// </para>
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.ShapeCollection instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class ShapeCollection : ICollection<IShape>, IShape
     {
         protected readonly IList<IShape> m_shapes;
@@ -311,7 +322,7 @@ namespace Spatial4n.Core.Shapes
             return hashCode;
         }
 
-        #region ICollection<T>
+#region ICollection<T>
 
         public void Add(IShape item)
         {
@@ -350,12 +361,12 @@ namespace Spatial4n.Core.Shapes
 
         public bool IsReadOnly => m_shapes.IsReadOnly;
 
-        #endregion
+#endregion
 
-        #region Added for .NET support of the IShape interface
+#region Added for .NET support of the IShape interface
 
         public virtual bool IsEmpty => m_shapes.Count == 0;
 
-        #endregion
+#endregion
     }
 }

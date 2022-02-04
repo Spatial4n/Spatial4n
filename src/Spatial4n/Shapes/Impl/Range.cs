@@ -15,11 +15,18 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
 using System;
 using System.Diagnostics;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+
 namespace Spatial4n.Core.Shapes.Impl
+#else
+using Spatial4n.Context;
+
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// INTERNAL: A numeric range between a pair of numbers.

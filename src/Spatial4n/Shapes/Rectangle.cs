@@ -15,7 +15,13 @@
  * limitations under the License.
  */
 
+#if LEGACY_NAMESPACE
+using System;
+
 namespace Spatial4n.Core.Shapes
+#else
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// A rectangle aligned with the axis (i.e. it is not at an angle).
@@ -26,6 +32,9 @@ namespace Spatial4n.Core.Shapes
     /// (Longitude) goes from -180 to 180 as seen from <see cref="MinX"/> and <see cref="MaxX"/>.
     /// </para>
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.IRectangle instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public interface IRectangle : IShape
     {
         /// <summary>

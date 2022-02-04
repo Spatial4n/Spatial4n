@@ -17,7 +17,11 @@
 
 using System;
 
+#if LEGACY_NAMESPACE
 namespace Spatial4n.Core.Shapes
+#else
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// The set of spatial relationships. Naming is consistent with OGC spec conventions as seen in SQL/MM and others.
@@ -31,6 +35,9 @@ namespace Spatial4n.Core.Shapes
     /// there is no boundary distinction -- boundaries are part of the shape as if it was an "interior",
     /// with respect to OGC's terminology.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.SpatialRelation instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public enum SpatialRelation
     {
         //see http://docs.geotools.org/latest/userguide/library/jts/dim9.html#preparedgeometry
@@ -82,6 +89,9 @@ namespace Spatial4n.Core.Shapes
     /// <summary>
     /// Extensions to <see cref="SpatialRelation"/>.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public static class SpatialRelationExtensions
     {
         /// <summary>
@@ -154,20 +164,20 @@ namespace Spatial4n.Core.Shapes
         }
     }
 
-    [Obsolete("Use SpatialRelationExtensions instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class SpatialRelationComparators
     {
 
-        [Obsolete("Use SpatialRelationExtensions.Transpose() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Transpose() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static SpatialRelation Transpose(SpatialRelation sr) => sr.Transpose();
 
-        [Obsolete("Use SpatialRelationExtensions.Combine() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Combine() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static SpatialRelation Combine(SpatialRelation @this, SpatialRelation other) => @this.Combine(other);
 
-        [Obsolete("Use SpatialRelationExtensions.Intersects() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Intersects() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool Intersects(SpatialRelation @this) => @this.Intersects();
 
-        [Obsolete("Use SpatialRelationExtensions.Inverse() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Inverse() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static SpatialRelation Inverse(SpatialRelation @this) => @this.Inverse();
     }
 }

@@ -15,17 +15,27 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Exceptions;
+using Spatial4n.Core.Shapes;
+using Spatial4n.Core.Util;
+
 namespace Spatial4n.Core.IO
+#else
+using Spatial4n.Context;
+using Spatial4n.Exceptions;
+using Spatial4n.Shapes;
+using Spatial4n.Util;
+
+namespace Spatial4n.IO
+#endif
 {
     /// <summary>
     /// An extensible parser for <a href="http://en.wikipedia.org/wiki/Well-known_text">
@@ -57,6 +67,9 @@ namespace Spatial4n.Core.IO
     /// Note, instances of this base class are threadsafe.
     /// </para>
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.WktShapeParser instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class WktShapeParser
     {
         //TODO support SRID:  "SRID=4326;pointPOINT(1,2)

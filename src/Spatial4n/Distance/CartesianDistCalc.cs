@@ -14,16 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
 using System;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Shapes;
+
 namespace Spatial4n.Core.Distance
+#else
+using Spatial4n.Context;
+using Spatial4n.Shapes;
+
+namespace Spatial4n.Distance
+#endif
 {
     /// <summary>
     /// Calculates based on Euclidean / Cartesian 2d plane.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Distance.CartesianDistCalc instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class CartesianDistCalc : AbstractDistanceCalculator
     {
         private readonly bool squared;

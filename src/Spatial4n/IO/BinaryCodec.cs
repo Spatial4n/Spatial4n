@@ -15,15 +15,24 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Exceptions;
+using Spatial4n.Core.Shapes;
+
 namespace Spatial4n.Core.IO
+#else
+using Spatial4n.Context;
+using Spatial4n.Exceptions;
+using Spatial4n.Shapes;
+
+namespace Spatial4n.IO
+#endif
 {
     /// <summary>
     /// A binary shape format. It is <c>not</c> designed to be a published standard, unlike Well Known
@@ -33,6 +42,9 @@ namespace Spatial4n.Core.IO
     /// Immutable and thread-safe.
     /// </para>
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.BinaryCodec instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class BinaryCodec
     {
         //type 0; reserved for unkonwn/generic; see readCollection

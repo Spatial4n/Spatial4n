@@ -15,11 +15,20 @@
  * limitations under the License.
  */
 
+#if LEGACY_NAMESPACE
+using System;
+
 namespace Spatial4n.Core.Shapes
+#else
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// A circle, also known as a point-radius since that is what it is comprised of.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.ICircle instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public interface ICircle : IShape
     {
         /// <summary>

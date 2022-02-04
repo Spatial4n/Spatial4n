@@ -15,13 +15,22 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.Shapes;
 using System;
 using System.Globalization;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Exceptions;
+using Spatial4n.Core.Shapes;
+
 namespace Spatial4n.Core.IO
+#else
+using Spatial4n.Context;
+using Spatial4n.Exceptions;
+using Spatial4n.Shapes;
+
+namespace Spatial4n.IO
+#endif
 {
     /// <summary>
     /// Reads &amp; writes a shape from a given string in the old format.
@@ -42,7 +51,11 @@ namespace Spatial4n.Core.IO
     ///     </item>
     /// </list>
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.LegacyShapeReadWriterFormat instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#else
     [Obsolete]
+#endif
     public static class LegacyShapeReadWriterFormat
     {
         /// <summary>

@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
+#if LEGACY_NAMESPACE
 namespace Spatial4n.Core.Util
+#else
+namespace Spatial4n.Util
+#endif
 {
     internal static class CollectionUtils
     {

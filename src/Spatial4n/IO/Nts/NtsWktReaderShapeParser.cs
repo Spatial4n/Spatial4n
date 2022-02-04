@@ -17,14 +17,25 @@
 
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
+using System;
+
+#if LEGACY_NAMESPACE
 using Spatial4n.Core.Context.Nts;
 using Spatial4n.Core.Distance;
 using Spatial4n.Core.Exceptions;
 using Spatial4n.Core.Shapes;
 using Spatial4n.Core.Shapes.Nts;
-using System;
 
 namespace Spatial4n.Core.IO.Nts
+#else
+using Spatial4n.Context.Nts;
+using Spatial4n.Distance;
+using Spatial4n.Exceptions;
+using Spatial4n.Shapes;
+using Spatial4n.Shapes.Nts;
+
+namespace Spatial4n.IO.Nts
+#endif
 {
     /// <summary>
     /// This is an extension of <see cref="NtsWktShapeParser"/> that processes the entire
@@ -35,6 +46,9 @@ namespace Spatial4n.Core.IO.Nts
     ///     <item>'Z' coordinates are saved into the geometry</item>
     /// </list>
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.IO.Nts.NtsWktReaderShapeParser instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class NtsWktReaderShapeParser : NtsWktShapeParser
     {
         //Note: Historically, the code here originated from the defunct NtsShapeReadWriter.
@@ -145,7 +159,7 @@ namespace Spatial4n.Core.IO.Nts
         }
     }
 
-    [Obsolete("Use NtsWktReaderShapeParser class instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
+    [Obsolete("Use Spatial4n.IO.Nts.NtsWktReaderShapeParser class instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
     public class NtsWKTReaderShapeParser : NtsWktReaderShapeParser
     {
         public NtsWKTReaderShapeParser(NtsSpatialContext ctx, NtsSpatialContextFactory factory)

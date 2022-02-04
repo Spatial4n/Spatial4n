@@ -18,12 +18,19 @@
 using System;
 using System.Diagnostics;
 
+#if LEGACY_NAMESPACE
 namespace Spatial4n.Core.Shapes.Impl
+#else
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// INERNAL: A buffered line of infinite length.
     /// Public for test access.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.InfBufLine instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class InfBufLine
     {
         //TODO consider removing support for vertical line -- let caller

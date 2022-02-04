@@ -20,13 +20,20 @@ using System;
 using System.Runtime.Serialization;
 #endif
 
+#if LEGACY_NAMESPACE
 namespace Spatial4n.Core.Exceptions
+#else
+namespace Spatial4n.Exceptions
+#endif
 {
     /// <summary>
     /// Spatial4n specific type used to throw/catch a parsing error including the offset.
     /// </summary>
 #if FEATURE_SERIALIZABLE
     [Serializable]
+#endif
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Exceptions.ParseException instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 #endif
     public class ParseException : Exception
     {

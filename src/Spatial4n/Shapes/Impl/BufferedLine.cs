@@ -15,12 +15,20 @@
  * limitations under the License.
  */
 
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Distance;
 using System;
 using System.Diagnostics;
 
+#if LEGACY_NAMESPACE
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Distance;
+
 namespace Spatial4n.Core.Shapes.Impl
+#else
+using Spatial4n.Context;
+using Spatial4n.Distance;
+
+namespace Spatial4n.Shapes
+#endif
 {
     /// <summary>
     /// INTERNAL: A line between two points with a buffer distance extending in every direction. By
@@ -28,6 +36,9 @@ namespace Spatial4n.Core.Shapes.Impl
     /// a point. <see cref="BufferedLine"/> isn't yet aware of geodesics (e.g. the dateline); it operates in Euclidean
     /// space.
     /// </summary>
+#if LEGACY_NAMESPACE
+    [Obsolete("Use Spatial4n.Shapes.BufferedLine instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#endif
     public class BufferedLine : IShape
     {
         private readonly IPoint pA, pB;
