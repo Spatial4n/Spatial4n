@@ -1,8 +1,8 @@
 properties {
     [string]$baseDirectory         = resolve-path "../."
     [string]$artifactsDirectory    = "$baseDirectory/_artifacts"
-    [string]$sourceDirectory       = "$baseDirectory"
-    [string]$testDirectory         = "$baseDirectory"
+    [string]$sourceDirectory       = "$baseDirectory/src"
+    [string]$testDirectory         = "$baseDirectory/tests"
     [string]$toolsDirectory        = "$baseDirectory/.tools"
     [string]$nugetPackageDirectory = "$artifactsDirectory/NuGetPackages"
     [string]$testResultsDirectory  = "$artifactsDirectory/TestResults"
