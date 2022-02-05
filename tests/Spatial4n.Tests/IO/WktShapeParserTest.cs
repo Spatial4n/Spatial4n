@@ -32,7 +32,7 @@ namespace Spatial4n.IO
         }
 
         public WktShapeParserTest()
-            : this(SpatialContext.GEO)
+            : this(SpatialContext.Geo)
         {
 
         }

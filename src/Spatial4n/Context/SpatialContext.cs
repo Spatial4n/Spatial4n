@@ -53,10 +53,16 @@ namespace Spatial4n.Context
 #endif
     public class SpatialContext
     {
+        [Obsolete("Use Geo static property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
+        public static readonly SpatialContext GEO = new SpatialContext(new SpatialContextFactory());
+
         /// <summary>
         /// A popular default SpatialContext implementation for geospatial.
         /// </summary>
-        public static readonly SpatialContext GEO = new SpatialContext(new SpatialContextFactory());
+        public static SpatialContext Geo
+#pragma warning disable CS0618 // Type or member is obsolete
+            => GEO;
+#pragma warning restore CS0618 // Type or member is obsolete
 
         //These are non-null
         private readonly bool geo;
@@ -129,7 +135,7 @@ namespace Spatial4n.Context
             else
             {
                 if (IsGeo && !bounds.Equals(new Rectangle(-180, 180, -90, 90, this)))
-                    throw new ArgumentException("for geo (lat/lon), bounds must be " + GEO.WorldBounds);
+                    throw new ArgumentException("for geo (lat/lon), bounds must be " + Geo.WorldBounds);
                 if (bounds.MinX > bounds.MaxX)
                     throw new ArgumentException("worldBounds minX should be <= maxX: " + bounds);
                 if (bounds.MinY > bounds.MaxY)
@@ -435,8 +441,8 @@ namespace Spatial4n.Context
 
         public override string ToString()
         {
-            if (this.Equals(GEO))
-                return GEO.GetType().Name + ".GEO";
+            if (this.Equals(Geo))
+                return $"{Geo.GetType().Name}.{nameof(Geo)}";
 
             return GetType().Name + "{" +
                    "geo=" + geo +

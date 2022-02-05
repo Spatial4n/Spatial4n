@@ -23,7 +23,7 @@ namespace Spatial4n.Util
 {
     public class TestGeohashUtils
     {
-        readonly SpatialContext ctx = SpatialContext.GEO;
+        readonly SpatialContext ctx = SpatialContext.Geo;
 
         /**
          * Pass condition: lat=42.6, lng=-5.6 should be encoded as "ezs42e44yx96",

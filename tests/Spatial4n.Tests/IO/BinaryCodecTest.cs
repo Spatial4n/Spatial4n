@@ -39,7 +39,7 @@ namespace Spatial4n.IO
         }
 
         public BinaryCodecTest()
-            : this(SpatialContext.GEO)
+            : this(SpatialContext.Geo)
         {
         }
 

@@ -33,7 +33,7 @@ namespace Spatial4n.Distance
         // Setup for every test
         public TestDistances()
         {
-            ctx = SpatialContext.GEO;
+            ctx = SpatialContext.Geo;
             EPS = 10e-4;
         }
 

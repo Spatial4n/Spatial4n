@@ -38,7 +38,7 @@ namespace Spatial4n.Shapes
 
         private void ValidateWorld(double r1MinX, double r1MaxX, double r2MinX, double r2MaxX)
         {
-            ctx = SpatialContext.GEO;
+            ctx = SpatialContext.Geo;
             IRectangle r1 = ctx.MakeRectangle(r1MinX, r1MaxX, -10, 10);
             IRectangle r2 = ctx.MakeRectangle(r2MinX, r2MaxX, -10, 10);
 
@@ -66,7 +66,7 @@ namespace Spatial4n.Shapes
         [Fact]
         public virtual void TestGeoRectIntersect()
         {
-            ctx = SpatialContext.GEO;
+            ctx = SpatialContext.Geo;
             new ShapeCollectionRectIntersectionTestHelper(ctx).TestRelateWithRectangle();
         }
 

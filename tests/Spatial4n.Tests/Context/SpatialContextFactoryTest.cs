@@ -44,7 +44,7 @@ namespace Spatial4n.Context
         [Fact]
         public void TestDefault()
         {
-            SpatialContext ctx = SpatialContext.GEO;
+            SpatialContext ctx = SpatialContext.Geo;
             SpatialContext ctx2 = Call();//default
             Assert.Equal(ctx.GetType(), ctx2.GetType());
             Assert.Equal(ctx.IsGeo, ctx2.IsGeo);

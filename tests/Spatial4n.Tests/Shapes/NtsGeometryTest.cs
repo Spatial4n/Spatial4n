@@ -39,7 +39,7 @@ namespace Spatial4n.Shapes
         {
             get
             {
-                yield return new object[] { SpatialContext.GEO };
+                yield return new object[] { SpatialContext.Geo };
                 yield return new object[] { NtsSpatialContext.GEO };
             }
         }
