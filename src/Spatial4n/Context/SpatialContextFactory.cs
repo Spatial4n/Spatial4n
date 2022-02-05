@@ -376,10 +376,10 @@ namespace Spatial4n.Context
         /// <summary>
         /// Subclasses should simply construct the instance from the initialized configuration.
         /// <para/>
-        /// Usage Note: Use this method whrever newSpatialContext() is used in Java.
+        /// Usage Note: Use this method wherever newSpatialContext() is used in Java.
         /// </summary>
-        /// spatial4n: unfortunately, the release happened before it was noticed that NewSpatialContext() was marked
-        /// protected, when it was supposed to be public. So, this API was added as a way to avoid a breaking change.
+        // spatial4n: unfortunately, the release happened before it was noticed that NewSpatialContext() was marked
+        // protected, when it was supposed to be public. So, this API was added as a way to avoid a breaking change.
         public virtual SpatialContext CreateSpatialContext()
         {
             return new SpatialContext(this);
