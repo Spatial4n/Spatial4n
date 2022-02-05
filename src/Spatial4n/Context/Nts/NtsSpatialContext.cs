@@ -51,28 +51,25 @@ namespace Spatial4n.Context.Nts
     public class NtsSpatialContext : SpatialContext
     {
         [Obsolete("Use Geo static property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
-        public new static readonly NtsSpatialContext GEO;
+        public new static readonly NtsSpatialContext GEO = LoadGeo();
 
         public new static NtsSpatialContext Geo
 #pragma warning disable CS0618 // Type or member is obsolete
             => GEO;
 #pragma warning restore CS0618 // Type or member is obsolete
 
-        static NtsSpatialContext()
+        private static NtsSpatialContext LoadGeo()
         {
+#if NETSTANDARD
             // spatial4n specific - need to bootstrap GeoAPI with
             // the NetTopologySuite geometry. See: 
             // https://github.com/NetTopologySuite/NetTopologySuite/issues/189#issuecomment-324844404
-#if NETSTANDARD
+
             NetTopologySuiteBootstrapper.Bootstrap();
 #endif
-
-            NtsSpatialContextFactory factory = new NtsSpatialContextFactory();
-            factory.IsGeo = true;
-#pragma warning disable CS0618 // Type or member is obsolete
-            GEO = new NtsSpatialContext(factory);
-#pragma warning restore CS0618 // Type or member is obsolete
+            return new NtsSpatialContext(new NtsSpatialContextFactory { IsGeo = true });
         }
+
 
         protected readonly GeometryFactory m_geometryFactory;
 
