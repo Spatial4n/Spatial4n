@@ -40,7 +40,7 @@ namespace Spatial4n.Shapes
             get
             {
                 yield return new object[] { SpatialContext.Geo };
-                yield return new object[] { NtsSpatialContext.GEO };
+                yield return new object[] { NtsSpatialContext.Geo };
             }
         }
 
@@ -51,7 +51,7 @@ namespace Spatial4n.Shapes
         private NtsGeometry POLY_SHAPE_DL;//POLY_SHAPE shifted by DL_SHIFT to cross the dateline
 
         public NtsGeometryTest()
-            : base(NtsSpatialContext.GEO)
+            : base(NtsSpatialContext.Geo)
         {
             POLY_SHAPE = (NtsGeometry)ctx.ReadShapeFromWkt(POLY_STR);
 

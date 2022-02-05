@@ -50,7 +50,13 @@ namespace Spatial4n.Context.Nts
 #endif
     public class NtsSpatialContext : SpatialContext
     {
+        [Obsolete("Use Geo static property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
         public new static readonly NtsSpatialContext GEO;
+
+        public new static NtsSpatialContext Geo
+#pragma warning disable CS0618 // Type or member is obsolete
+            => GEO;
+#pragma warning restore CS0618 // Type or member is obsolete
 
         static NtsSpatialContext()
         {
@@ -63,7 +69,9 @@ namespace Spatial4n.Context.Nts
 
             NtsSpatialContextFactory factory = new NtsSpatialContextFactory();
             factory.IsGeo = true;
+#pragma warning disable CS0618 // Type or member is obsolete
             GEO = new NtsSpatialContext(factory);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         protected readonly GeometryFactory m_geometryFactory;
@@ -261,9 +269,9 @@ namespace Spatial4n.Context.Nts
 
         public override string ToString()
         {
-            if (this.Equals(GEO))
+            if (this.Equals(Geo))
             {
-                return GEO.GetType().Name + ".GEO";
+                return $"{Geo.GetType().Name}.{nameof(Geo)}";
             }
             else
             {

@@ -37,7 +37,7 @@ namespace Spatial4n.IO
         new internal readonly NtsSpatialContext ctx;//note: masks superclass
 
         public NtsWktShapeParserTest()
-                  : base(NtsSpatialContext.GEO)
+            : base(NtsSpatialContext.Geo)
         {
             this.ctx = (NtsSpatialContext)base.ctx;
         }
