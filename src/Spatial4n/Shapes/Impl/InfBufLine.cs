@@ -30,6 +30,8 @@ namespace Spatial4n.Shapes
     /// </summary>
 #if LEGACY_NAMESPACE
     [Obsolete("Use Spatial4n.Shapes.InfBufLine instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#else
+    [Obsolete("This class will be removed from the public API in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 #endif
     public class InfBufLine
     {

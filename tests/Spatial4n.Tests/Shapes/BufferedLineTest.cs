@@ -127,7 +127,9 @@ namespace Spatial4n.Shapes
             int quad = 1;
             foreach (IPoint corner in corners)
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 double d = line.LinePrimary.DistanceUnbuffered(corner);
+#pragma warning restore CS0618 // Type or member is obsolete
                 if (Math.Abs(d - farthestDistance) < 0.000001)
                 {//about equal
                     farthestDistanceQuads.Add(quad);
@@ -141,7 +143,9 @@ namespace Spatial4n.Shapes
                 quad++;
             }
             //compare results
+#pragma warning disable CS0618 // Type or member is obsolete
             int calcClosestQuad = line.LinePrimary.Quadrant(rect.Center);
+#pragma warning restore CS0618 // Type or member is obsolete
             Assert.Contains(calcClosestQuad, farthestDistanceQuads);
         }
 

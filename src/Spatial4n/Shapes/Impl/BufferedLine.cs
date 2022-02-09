@@ -45,9 +45,11 @@ namespace Spatial4n.Shapes
         private readonly double buf;
         private readonly IRectangle bbox;
         /// <summary>the primary line; passes through pA &amp; pB</summary>
+#pragma warning disable CS0618 // Type or member is obsolete
         private readonly InfBufLine linePrimary;
         /// <summary>perpendicular to the primary line, centered between pA &amp; pB</summary>
         private readonly InfBufLine linePerp;
+#pragma warning restore CS0618 // Type or member is obsolete
 
         /// <summary>
         /// Creates a buffered line from pA to pB. The buffer extends on both sides of
@@ -87,6 +89,7 @@ namespace Spatial4n.Shapes
 
             double perpExtent = bufExtend ? buf : 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             if (deltaX == 0 && deltaY == 0)
             {
                 linePrimary = new InfBufLine(0, center, buf);
@@ -99,6 +102,7 @@ namespace Spatial4n.Shapes
                 linePerp = new InfBufLine(-deltaX / deltaY, center,
                     length / 2 + perpExtent);
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             double minY, maxY;
             double minX, maxX;
@@ -255,11 +259,13 @@ namespace Spatial4n.Shapes
         /// <summary>
         /// INTERNAL
         /// </summary>
+        [Obsolete("This property will be removed from the public API in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual InfBufLine LinePrimary => linePrimary;
 
         /// <summary>
         /// INTERNAL
         /// </summary>
+        [Obsolete("This property will be removed from the public API in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual InfBufLine LinePerp => linePerp;
 
 

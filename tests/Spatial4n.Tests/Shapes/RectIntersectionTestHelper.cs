@@ -115,7 +115,9 @@ namespace Spatial4n.Shapes
                                 if (j < 4)
                                 {
                                     p = new Point(0, 0, ctx);
+#pragma warning disable CS0618 // Type or member is obsolete
                                     InfBufLine.CornerByQuadrant(r, j + 1, p);
+#pragma warning restore CS0618 // Type or member is obsolete
                                 }
                                 else
                                 {
