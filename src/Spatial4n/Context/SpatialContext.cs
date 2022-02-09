@@ -40,7 +40,7 @@ namespace Spatial4n.Context
     /// This is a facade to most of Spatial4n, holding things like <see cref="IDistanceCalculator"/>, 
     /// <see cref="WktShapeParser"/>, and acting as a factory for the <see cref="IShape"/>s.
     /// <para>
-    /// If you want a typical geodetic context, just reference <see cref="GEO"/>.  Otherwise,
+    /// If you want a typical geodetic context, just reference <see cref="Geo"/>.  Otherwise,
     /// You should either create and configure a <see cref="SpatialContextFactory"/> and then call
     /// <see cref="SpatialContextFactory.CreateSpatialContext()"/>, OR, call
     /// <see cref="SpatialContextFactory.MakeSpatialContext(IDictionary{string, string}, System.Reflection.Assembly?)"/>
