@@ -19,24 +19,14 @@ using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-using System;
-using System.Collections.Generic;
-
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Nts;
-using IPoint = Spatial4n.Core.Shapes.IPoint;
-
-namespace Spatial4n.Core.Context.Nts
-#else
 using Spatial4n.Exceptions;
 using Spatial4n.Shapes;
 using Spatial4n.Shapes.Nts;
+using System;
+using System.Collections.Generic;
 using IPoint = Spatial4n.Shapes.IPoint;
 
 namespace Spatial4n.Context.Nts
-#endif
 {
     /// <summary>
     /// Enhances the default <see cref="SpatialContext"/> with support for Polygons (and
@@ -45,9 +35,6 @@ namespace Spatial4n.Context.Nts
     /// popular <a href="https://github.com/NetTopologySuite/NetTopologySuite">NetTopologySuite (NTS)</a>
     /// library does the heavy lifting.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Context.Nts.NtsSpatialContext instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class NtsSpatialContext : SpatialContext
     {
         [Obsolete("Use Geo static property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]

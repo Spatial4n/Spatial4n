@@ -15,25 +15,15 @@
  * limitations under the License.
  */
 
+using Spatial4n.Context;
 using System;
 using System.Diagnostics;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-
-namespace Spatial4n.Core.Shapes.Impl
-#else
-using Spatial4n.Context;
-
 namespace Spatial4n.Shapes
-#endif
 {
     /// <summary>
     /// A basic 2D implementation of a Point.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.Point instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class Point : IPoint
     {
         private readonly SpatialContext? ctx;

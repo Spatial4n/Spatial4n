@@ -15,16 +15,9 @@
  * limitations under the License.
  */
 
-#if LEGACY_NAMESPACE
-using System;
-using Spatial4n.Core.Context;
-
-namespace Spatial4n.Core.Shapes
-#else
 using Spatial4n.Context;
 
 namespace Spatial4n.Shapes
-#endif
 {
     /// <summary>
     /// The base interface defining a geometric shape. Shape instances should be
@@ -37,9 +30,6 @@ namespace Spatial4n.Shapes
     /// mutable. Mutating shape state is considered expert and should be done with care.
     /// </para>
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.IShape instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public interface IShape
     {
         /// <summary>

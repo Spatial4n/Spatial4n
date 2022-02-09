@@ -15,31 +15,20 @@
  * limitations under the License.
  */
 
+using Spatial4n.Context;
+using Spatial4n.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Util;
-
-namespace Spatial4n.Core.Shapes.Impl
-#else
-using Spatial4n.Context;
-using Spatial4n.Util;
-
 namespace Spatial4n.Shapes
-#endif
 {
     /// <summary>
     /// A <see cref="BufferedLineString"/> is a collection of <see cref="BufferedLine"/> shapes,
     /// resulting in what some call a "Track" or "Polyline" (ESRI terminology).
     /// The buffer can be 0.  Note that <see cref="BufferedLine"/> isn't yet aware of geodesics (e.g. the dateline).
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.BufferedLineString instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class BufferedLineString : IShape
     {
         //TODO add some geospatial awareness like:

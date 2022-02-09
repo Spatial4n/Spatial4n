@@ -15,28 +15,17 @@
  * limitations under the License.
  */
 
+using Spatial4n.Context;
+using Spatial4n.Distance;
 using System;
 using System.Diagnostics;
 using System.Globalization;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Distance;
-
-namespace Spatial4n.Core.Shapes.Impl
-#else
-using Spatial4n.Context;
-using Spatial4n.Distance;
-
 namespace Spatial4n.Shapes
-#endif
 {
     /// <summary>
     /// A circle as it exists on the surface of a sphere.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.GeoCircle instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class GeoCircle : Circle
     {
         private GeoCircle? inverseCircle; //when distance reaches > 1/2 way around the world, cache the inverse.

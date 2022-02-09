@@ -15,26 +15,14 @@
  * limitations under the License.
  */
 
-
-using System;
-using System.Collections.Generic;
-
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Distance;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.IO;
-using Spatial4n.Core.Shapes;
-using Spatial4n.Core.Shapes.Impl;
-
-namespace Spatial4n.Core.Context
-#else
 using Spatial4n.Distance;
 using Spatial4n.Exceptions;
 using Spatial4n.IO;
 using Spatial4n.Shapes;
+using System;
+using System.Collections.Generic;
 
 namespace Spatial4n.Context
-#endif
 {
     /// <summary>
     /// This is a facade to most of Spatial4n, holding things like <see cref="IDistanceCalculator"/>, 
@@ -48,9 +36,6 @@ namespace Spatial4n.Context
     /// </para>
     /// Thread-safe &amp; immutable.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Context.SpatialContext instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class SpatialContext
     {
         [Obsolete("Use Geo static property instead. This field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]

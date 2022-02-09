@@ -21,35 +21,20 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
+using Spatial4n.Context;
+using Spatial4n.Context.Nts;
+using Spatial4n.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Context.Nts;
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.Shapes.Impl;
-using Point = Spatial4n.Core.Shapes.Impl.Point;
-
-namespace Spatial4n.Core.Shapes.Nts
-#else
-using Spatial4n.Context;
-using Spatial4n.Context.Nts;
-using Spatial4n.Exceptions;
-using Spatial4n.Shapes;
-
 namespace Spatial4n.Shapes.Nts
-#endif
 {
     /// <summary>
     /// Wraps a NTS <see cref="IGeometry"/> (i.e. may be a polygon or basically anything).
     /// NTS's does a great deal of the hard work, but there is work here in handling
     /// dateline wrap.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.Nts.NtsGeometry instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class NtsGeometry : IShape
     {
         [Obsolete("Set AssertValidate to true or false rather than configuring an environment variable. This static field will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]

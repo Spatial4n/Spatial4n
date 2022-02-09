@@ -16,27 +16,15 @@
  */
 
 using GeoAPI.Geometries;
+using Spatial4n.Context;
 using System;
 using System.Diagnostics;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes.Impl;
-
-namespace Spatial4n.Core.Shapes.Nts
-#else
-using Spatial4n.Context;
-using Spatial4n.Shapes;
-
 namespace Spatial4n.Shapes.Nts
-#endif
 {
     /// <summary>
     /// Wraps a <see cref="GeoAPI.Geometries.IPoint"/>.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.Nts.NtsPoint instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class NtsPoint : IPoint
     {
         private readonly SpatialContext ctx;

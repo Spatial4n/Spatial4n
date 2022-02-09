@@ -3,11 +3,7 @@
 using System.Runtime.Serialization;
 #endif
 
-#if LEGACY_NAMESPACE
-namespace Spatial4n.Core.Exceptions
-#else
 namespace Spatial4n.Exceptions
-#endif
 {
     /// <summary>
     /// Spatial4n specific class - used to mimic Java's RuntimeException because we sometimes need to catch
@@ -16,9 +12,6 @@ namespace Spatial4n.Exceptions
     /// </summary>
 #if FEATURE_SERIALIZABLE
     [Serializable]
-#endif
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Exceptions.RuntimeException instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 #endif
     public class RuntimeException : Exception
     {

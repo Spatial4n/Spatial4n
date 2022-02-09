@@ -15,22 +15,13 @@
  * limitations under the License.
  */
 
+using Spatial4n.Context;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes.Impl;
-
-namespace Spatial4n.Core.Shapes
-#else
-using Spatial4n.Context;
-using Spatial4n.Shapes;
-
 namespace Spatial4n.Shapes
-#endif
 {
     /// <summary>
     /// A collection of Shape objects, analogous to an OGC GeometryCollection. The
@@ -53,9 +44,6 @@ namespace Spatial4n.Shapes
     /// bbox'es, for example.
     /// </para>
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.ShapeCollection instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class ShapeCollection : ICollection<IShape>, IShape
     {
         protected readonly IList<IShape> m_shapes;

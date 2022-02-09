@@ -15,21 +15,13 @@
  * limitations under the License.
  */
 
+using Spatial4n.Context;
+using Spatial4n.Shapes;
 using System;
 using System.Diagnostics;
 using System.Text;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
-
-namespace Spatial4n.Core.Util
-#else
-using Spatial4n.Context;
-using Spatial4n.Shapes;
-
 namespace Spatial4n.Util
-#endif
 {
     /// <summary>
     ///  Utilities for encoding and decoding <a href="http://en.wikipedia.org/wiki/Geohash">geohashes</a>.
@@ -42,9 +34,6 @@ namespace Spatial4n.Util
     ///  This code originally came from <a href="https://issues.apache.org/jira/browse/LUCENE-1512">
     ///  Apache Lucene, LUCENE-1512</a>.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Util.GeohashUtils instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public static class GeohashUtils
     {
         private static readonly char[] Base32 = {

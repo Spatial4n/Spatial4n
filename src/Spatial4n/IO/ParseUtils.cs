@@ -15,18 +15,12 @@
  * limitations under the License.
  */
 
+using Spatial4n.Exceptions;
 using System;
 using System.Globalization;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Exceptions;
-
-namespace Spatial4n.Core.IO
-#else
-using Spatial4n.Exceptions;
-
 namespace Spatial4n.IO
-#endif
+
 {
     /// <summary>
     /// Utility methods related to parsing a series of numbers.
@@ -36,11 +30,7 @@ namespace Spatial4n.IO
     /// Lucene, LUCENE-773</a>, which in turn came from "LocalLucene".
     /// </para>
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.IO.ParseUtils instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#else
     [Obsolete("Not useful; see https://github.com/spatial4j/spatial4j/issues/19"), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public static class ParseUtils
     {
         /// <summary>

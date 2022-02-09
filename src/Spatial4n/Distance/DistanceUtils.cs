@@ -15,19 +15,11 @@
  * limitations under the License.
  */
 
-using System;
-
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
-
-namespace Spatial4n.Core.Distance
-#else
 using Spatial4n.Context;
 using Spatial4n.Shapes;
+using System;
 
 namespace Spatial4n.Distance
-#endif
 {
     /// <summary>
     /// Various distance calculations and constants. To the extent possible, a 
@@ -38,9 +30,6 @@ namespace Spatial4n.Distance
     /// Lucene, LUCENE-1387</a>, which in turn came from "LocalLucene".
     /// </para>
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Distance.DistanceUtils instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public static class DistanceUtils
     {
         //pre-compute some angles that are commonly used

@@ -20,11 +20,7 @@ using System;
 using System.Runtime.Serialization;
 #endif
 
-#if LEGACY_NAMESPACE
-namespace Spatial4n.Core.Exceptions
-#else
 namespace Spatial4n.Exceptions
-#endif
 {
     /// <summary>
     /// A shape was constructed but failed because, based on the given parts, it's invalid. For example
@@ -33,9 +29,6 @@ namespace Spatial4n.Exceptions
     /// </summary>
 #if FEATURE_SERIALIZABLE
     [Serializable]
-#endif
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Exceptions.InvalidShapeException instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 #endif
     public class InvalidShapeException : RuntimeException
     {

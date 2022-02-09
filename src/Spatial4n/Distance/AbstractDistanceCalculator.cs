@@ -15,22 +15,11 @@
  * limitations under the License.
  */
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Shapes;
-using System;
-
-namespace Spatial4n.Core.Distance
-#else
 using Spatial4n.Context;
 using Spatial4n.Shapes;
 
 namespace Spatial4n.Distance
-#endif
 {
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Distance.AbstractDistanceCalculator instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public abstract class AbstractDistanceCalculator : IDistanceCalculator
     {
         public virtual double Distance(IPoint from, IPoint to)

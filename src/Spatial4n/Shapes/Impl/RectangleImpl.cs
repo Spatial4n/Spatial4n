@@ -15,29 +15,18 @@
  * limitations under the License.
  */
 
+using Spatial4n.Context;
+using Spatial4n.Distance;
 using System;
 using System.Diagnostics;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Context;
-using Spatial4n.Core.Distance;
-
-namespace Spatial4n.Core.Shapes.Impl
-#else
-using Spatial4n.Context;
-using Spatial4n.Distance;
-
 namespace Spatial4n.Shapes
-#endif
 {
     /// <summary>
     /// A simple Rectangle implementation that also supports a longitudinal
     /// wrap-around. When minX > maxX, this will assume it is world coordinates that
     /// cross the date line using degrees. Immutable &amp; threadsafe.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.Rectangle instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class Rectangle : IRectangle
     {
         private readonly SpatialContext? ctx;

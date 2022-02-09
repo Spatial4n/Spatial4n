@@ -15,24 +15,15 @@
  * limitations under the License.
  */
 
+using Spatial4n.Distance;
+using Spatial4n.IO;
+using Spatial4n.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Distance;
-using Spatial4n.Core.IO;
-using Spatial4n.Core.Shapes;
-
-namespace Spatial4n.Core.Context
-#else
-using Spatial4n.Distance;
-using Spatial4n.IO;
-using Spatial4n.Shapes;
-
 namespace Spatial4n.Context
-#endif
 {
     /// <summary>
     /// Factory for a <see cref="SpatialContext"/> based on configuration data.  Call
@@ -40,9 +31,6 @@ namespace Spatial4n.Context
     /// pairs. To construct one via code then create a factory instance, set the properties, then call
     /// <see cref="CreateSpatialContext()"/>.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Context.SpatialContextFactory instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class SpatialContextFactory
     {
         /// <summary>

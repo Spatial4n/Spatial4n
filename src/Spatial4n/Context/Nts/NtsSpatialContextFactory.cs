@@ -18,22 +18,14 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using Spatial4n.Exceptions;
+using Spatial4n.IO.Nts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-#if LEGACY_NAMESPACE
-using Spatial4n.Core.Exceptions;
-using Spatial4n.Core.IO.Nts;
-
-namespace Spatial4n.Core.Context.Nts
-#else
-using Spatial4n.Exceptions;
-using Spatial4n.IO.Nts;
-
 namespace Spatial4n.Context.Nts
-#endif
 {
     /// <summary>
     /// See <see cref="SpatialContextFactory.MakeSpatialContext(IDictionary{string, string}, Assembly?)"/>.
@@ -67,9 +59,6 @@ namespace Spatial4n.Context.Nts
     ///     </item>
     /// </list>
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Context.Nts.NtsSpatialContextFactory instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public class NtsSpatialContextFactory : SpatialContextFactory
     {
         protected static PrecisionModel DefaultPrecisionModel { get; } = new PrecisionModel(); //floating

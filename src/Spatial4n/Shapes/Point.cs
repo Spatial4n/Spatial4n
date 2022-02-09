@@ -15,20 +15,11 @@
  * limitations under the License.
  */
 
-#if LEGACY_NAMESPACE
-using System;
-
-namespace Spatial4n.Core.Shapes
-#else
 namespace Spatial4n.Shapes
-#endif
 {
     /// <summary>
     /// A Point with X &amp; Y coordinates.
     /// </summary>
-#if LEGACY_NAMESPACE
-    [Obsolete("Use Spatial4n.Shapes.IPoint instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-#endif
     public interface IPoint : IShape
     {
         /// <summary>
