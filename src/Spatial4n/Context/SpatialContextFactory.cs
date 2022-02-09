@@ -327,11 +327,11 @@ namespace Spatial4n.Context
             }
             else if (calcStr.Equals("cartesian", StringComparison.OrdinalIgnoreCase))
             {
-                DistanceCalculator = new CartesianDistCalc();
+                DistanceCalculator = new CartesianDistanceCalculator();
             }
             else if (calcStr.Equals("cartesian^2", StringComparison.OrdinalIgnoreCase))
             {
-                DistanceCalculator = new CartesianDistCalc(true);
+                DistanceCalculator = new CartesianDistanceCalculator(true);
             }
             else
             {

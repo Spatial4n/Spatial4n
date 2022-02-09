@@ -57,12 +57,12 @@ namespace Spatial4n.Context
         {
             SpatialContext ctx = Call("IsGeo", "false");
             Assert.True(!ctx.IsGeo);
-            Assert.Equal(new CartesianDistCalc(), ctx.DistanceCalculator);
+            Assert.Equal(new CartesianDistanceCalculator(), ctx.DistanceCalculator);
 
             ctx = Call("IsGeo", "false",
                       "DistanceCalculator", "cartesian^2",
                       "WorldBounds", "ENVELOPE(-100, 75, 200, 0)");//xMin, xMax, yMax, yMin
-            Assert.Equal(new CartesianDistCalc(true), ctx.DistanceCalculator);
+            Assert.Equal(new CartesianDistanceCalculator(true), ctx.DistanceCalculator);
             Assert.Equal(new Rectangle(-100, 75, 0, 200, ctx), ctx.WorldBounds);
 
             ctx = Call("IsGeo", "true",
@@ -77,12 +77,12 @@ namespace Spatial4n.Context
         {
             SpatialContext ctx = Call("geo", "false");
             Assert.True(!ctx.IsGeo);
-            Assert.Equal(new CartesianDistCalc(), ctx.DistanceCalculator);
+            Assert.Equal(new CartesianDistanceCalculator(), ctx.DistanceCalculator);
 
             ctx = Call("geo", "false",
                       "distCalculator", "cartesian^2",
                       "worldBounds", "ENVELOPE(-100, 75, 200, 0)");//xMin, xMax, yMax, yMin
-            Assert.Equal(new CartesianDistCalc(true), ctx.DistanceCalculator);
+            Assert.Equal(new CartesianDistanceCalculator(true), ctx.DistanceCalculator);
             Assert.Equal(new Rectangle(-100, 75, 0, 200, ctx), ctx.WorldBounds);
 
             ctx = Call("geo", "true",

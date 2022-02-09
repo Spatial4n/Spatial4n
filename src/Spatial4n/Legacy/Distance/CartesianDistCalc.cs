@@ -24,7 +24,7 @@ namespace Spatial4n.Core.Distance
     /// <summary>
     /// Calculates based on Euclidean / Cartesian 2d plane.
     /// </summary>
-    [Obsolete("Use Spatial4n.Distance.CartesianDistCalc instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete("Use Spatial4n.Distance.CartesianDistanceCalculator instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class CartesianDistCalc : AbstractDistanceCalculator
     {
         private readonly bool squared;

@@ -23,11 +23,12 @@ namespace Spatial4n.Distance
     /// <summary>
     /// Calculates based on Euclidean / Cartesian 2d plane.
     /// </summary>
-    public class CartesianDistCalc : AbstractDistanceCalculator
+    public class CartesianDistanceCalculator
+        : AbstractDistanceCalculator
     {
         private readonly bool squared;
 
-        public CartesianDistCalc()
+        public CartesianDistanceCalculator()
         {
             squared = false;
         }
@@ -42,7 +43,7 @@ namespace Spatial4n.Distance
         /// actual distance doesn't matter so long as the sort order is
         /// consistent.
         /// </param>
-        public CartesianDistCalc(bool squared)
+        public CartesianDistanceCalculator(bool squared)
         {
             this.squared = squared;
         }
@@ -126,8 +127,7 @@ namespace Spatial4n.Distance
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
 
-            var that = o as CartesianDistCalc;
-            if (that == null) return false;
+            if (!(o is CartesianDistanceCalculator that)) return false;
             return squared == that.squared;
         }
 
