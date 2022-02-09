@@ -25,7 +25,7 @@ namespace Spatial4n.Shapes
 #endif
 {
     /// <summary>
-    /// INERNAL: A buffered line of infinite length.
+    /// INTERNAL: A buffered line of infinite length.
     /// Public for test access.
     /// </summary>
 #if LEGACY_NAMESPACE
