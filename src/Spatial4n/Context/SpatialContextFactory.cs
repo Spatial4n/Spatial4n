@@ -315,15 +315,15 @@ namespace Spatial4n.Context
                 return;
             if (calcStr.Equals("haversine", StringComparison.OrdinalIgnoreCase))
             {
-                DistanceCalculator = new GeodesicSphereDistCalc.Haversine();
+                DistanceCalculator = new GeodesicSphereDistanceCalculator.Haversine();
             }
             else if (calcStr.Equals("lawOfCosines", StringComparison.OrdinalIgnoreCase))
             {
-                DistanceCalculator = new GeodesicSphereDistCalc.LawOfCosines();
+                DistanceCalculator = new GeodesicSphereDistanceCalculator.LawOfCosines();
             }
             else if (calcStr.Equals("vincentySphere", StringComparison.OrdinalIgnoreCase))
             {
-                DistanceCalculator = new GeodesicSphereDistCalc.Vincenty();
+                DistanceCalculator = new GeodesicSphereDistanceCalculator.Vincenty();
             }
             else if (calcStr.Equals("cartesian", StringComparison.OrdinalIgnoreCase))
             {

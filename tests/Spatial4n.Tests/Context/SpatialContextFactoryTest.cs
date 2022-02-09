@@ -68,7 +68,7 @@ namespace Spatial4n.Context
             ctx = Call("IsGeo", "true",
                       "DistanceCalculator", "lawOfCosines");
             Assert.True(ctx.IsGeo);
-            var test = new GeodesicSphereDistCalc.LawOfCosines();
+            var test = new GeodesicSphereDistanceCalculator.LawOfCosines();
             Assert.Equal(test, ctx.DistanceCalculator);
         }
 
@@ -88,7 +88,7 @@ namespace Spatial4n.Context
             ctx = Call("geo", "true",
                       "distCalculator", "lawOfCosines");
             Assert.True(ctx.IsGeo);
-            var test = new GeodesicSphereDistCalc.LawOfCosines();
+            var test = new GeodesicSphereDistanceCalculator.LawOfCosines();
             Assert.Equal(test, ctx.DistanceCalculator);
         }
 

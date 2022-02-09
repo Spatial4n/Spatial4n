@@ -24,7 +24,7 @@ namespace Spatial4n.Distance
     /// <summary>
     /// A base class for a Distance Calculator that assumes a spherical earth model. 
     /// </summary>
-    public abstract class GeodesicSphereDistCalc : AbstractDistanceCalculator
+    public abstract class GeodesicSphereDistanceCalculator : AbstractDistanceCalculator
     {
         private readonly double radiusDEG = DistanceUtils.ToDegrees(1);//in degrees
 
@@ -91,7 +91,7 @@ namespace Spatial4n.Distance
 
         protected abstract double DistanceLatLonRAD(double lat1, double lon1, double lat2, double lon2);
 
-        public class Haversine : GeodesicSphereDistCalc
+        public class Haversine : GeodesicSphereDistanceCalculator
         {
 
             protected override double DistanceLatLonRAD(double lat1, double lon1, double lat2, double lon2)
@@ -100,7 +100,7 @@ namespace Spatial4n.Distance
             }
         }
 
-        public class LawOfCosines : GeodesicSphereDistCalc
+        public class LawOfCosines : GeodesicSphereDistanceCalculator
         {
             protected override double DistanceLatLonRAD(double lat1, double lon1, double lat2, double lon2)
             {
@@ -109,7 +109,7 @@ namespace Spatial4n.Distance
 
         }
 
-        public class Vincenty : GeodesicSphereDistCalc
+        public class Vincenty : GeodesicSphereDistanceCalculator
         {
             protected override double DistanceLatLonRAD(double lat1, double lon1, double lat2, double lon2)
             {

@@ -100,7 +100,7 @@ namespace Spatial4n.Context
             if (factory.DistanceCalculator is null)
             {
                 this.calculator = IsGeo
-                        ? (IDistanceCalculator)new GeodesicSphereDistCalc.Haversine()
+                        ? (IDistanceCalculator)new GeodesicSphereDistanceCalculator.Haversine()
                         : new CartesianDistanceCalculator();
             }
             else

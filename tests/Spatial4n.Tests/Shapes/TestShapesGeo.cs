@@ -32,9 +32,9 @@ namespace Spatial4n.Shapes
             get
             {
                 //TODO ENABLE LawOfCosines WHEN WORKING
-                //DistanceCalculator distCalcL = new GeodesicSphereDistCalc.Haversine(units.earthRadius());//default
-                IDistanceCalculator distCalcH = new GeodesicSphereDistCalc.Haversine();
-                IDistanceCalculator distCalcV = new GeodesicSphereDistCalc.Vincenty();
+                //DistanceCalculator distCalcL = new GeodesicSphereDistanceCalculator.Haversine(units.earthRadius());//default
+                IDistanceCalculator distCalcH = new GeodesicSphereDistanceCalculator.Haversine();
+                IDistanceCalculator distCalcV = new GeodesicSphereDistanceCalculator.Vincenty();
 
                 yield return new object[] { new SpatialContextFactory() { IsGeo = true, DistanceCalculator = new RoundingDistCalc(distCalcH) }.CreateSpatialContext() };
                 yield return new object[] { new SpatialContextFactory() { IsGeo = true, DistanceCalculator = new RoundingDistCalc(distCalcV) }.CreateSpatialContext() };

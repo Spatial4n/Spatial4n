@@ -24,7 +24,7 @@ namespace Spatial4n.Core.Distance
     /// <summary>
     /// A base class for a Distance Calculator that assumes a spherical earth model. 
     /// </summary>
-    [Obsolete("Use Spatial4n.Distance.GeodesicSphereDistCalc instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete("Use Spatial4n.Distance.GeodesicSphereDistanceCalculator instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public abstract class GeodesicSphereDistCalc : AbstractDistanceCalculator
     {
         private readonly double radiusDEG = DistanceUtils.ToDegrees(1);//in degrees
