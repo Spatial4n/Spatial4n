@@ -158,13 +158,4 @@ namespace Spatial4n.IO.Nts
             geom.Apply(new CoordinateSequenceFilterAnonymousHelper(this));
         }
     }
-
-    [Obsolete("Use Spatial4n.IO.Nts.NtsWktReaderShapeParser class instead. This class will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), CLSCompliant(false)]
-    public class NtsWKTReaderShapeParser : NtsWktReaderShapeParser
-    {
-        public NtsWKTReaderShapeParser(NtsSpatialContext ctx, NtsSpatialContextFactory factory)
-            : base(ctx, factory)
-        {
-        }
-    }
 }
