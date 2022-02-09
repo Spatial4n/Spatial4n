@@ -163,21 +163,4 @@ namespace Spatial4n.Shapes
             };
         }
     }
-
-    [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public static class SpatialRelationComparators
-    {
-
-        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Transpose() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static SpatialRelation Transpose(SpatialRelation sr) => sr.Transpose();
-
-        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Combine() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static SpatialRelation Combine(SpatialRelation @this, SpatialRelation other) => @this.Combine(other);
-
-        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Intersects() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static bool Intersects(SpatialRelation @this) => @this.Intersects();
-
-        [Obsolete("Use Spatial4n.Shapes.SpatialRelationExtensions.Inverse() instead. This will be removed in 0.5.0."), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static SpatialRelation Inverse(SpatialRelation @this) => @this.Inverse();
-    }
 }
