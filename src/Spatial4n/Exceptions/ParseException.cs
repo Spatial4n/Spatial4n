@@ -30,13 +30,13 @@ namespace Spatial4n.Exceptions
 #endif
     public class ParseException : Exception
     {
-        public ParseException(string message, int errorOffset)
+        public ParseException(string? message, int errorOffset)
             : base(message)
         {
             ErrorOffset = errorOffset;
         }
 
-        public ParseException(string message, int errorOffset, Exception innerException)
+        public ParseException(string? message, int errorOffset, Exception? innerException)
             : base(message, innerException)
         {
             ErrorOffset = errorOffset;
