@@ -51,6 +51,7 @@ namespace Spatial4n.IO
         /// </summary>
         /// <param name="shape">Not null</param>
         /// <returns>Not null</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="shape"/> is <c>null</c>.</exception>
         public static string WriteShape(IShape shape)
         {
             return WriteShape(shape, "0.000000");

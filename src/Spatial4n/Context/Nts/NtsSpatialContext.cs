@@ -200,8 +200,12 @@ namespace Spatial4n.Context.Nts
             // NTS geometry
             m_useNtsLineString;
 
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public override IShape MakeLineString(IList<IPoint> points)
         {
+            if (points is null)
+                throw new ArgumentNullException(nameof(points)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (!m_useNtsLineString)
                 return base.MakeLineString(points);
             //convert List<Point> to Coordinate[]
