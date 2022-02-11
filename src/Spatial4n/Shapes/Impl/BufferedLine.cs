@@ -23,11 +23,12 @@ using System.Diagnostics;
 namespace Spatial4n.Shapes
 {
     /// <summary>
-    /// INTERNAL: A line between two points with a buffer distance extending in every direction. By
+    /// A line between two points with a buffer distance extending in every direction. By
     /// contrast, an un-buffered line covers no area and as such is extremely unlikely to intersect with
     /// a point. <see cref="BufferedLine"/> isn't yet aware of geodesics (e.g. the dateline); it operates in Euclidean
     /// space.
     /// </summary>
+    // Spatial4n: Removed "INTERNAL" designation as per https://github.com/locationtech/spatial4j/issues/216#issuecomment-1035126797
     public class BufferedLine : IShape
     {
         private readonly IPoint pA, pB;
