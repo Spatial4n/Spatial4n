@@ -190,7 +190,7 @@ namespace Spatial4n.Distance
         [Obsolete, System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static double[] VectorBoxCorner(double[] center, double[] result, double distance, bool upperRight)
         {
-            if (result == null || result.Length != center.Length)
+            if (result is null || result.Length != center.Length)
             {
                 result = new double[center.Length];
             }

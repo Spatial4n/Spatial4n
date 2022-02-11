@@ -125,7 +125,7 @@ namespace Spatial4n.Distance
         public override bool Equals(object o)
         {
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             if (!(o is CartesianDistanceCalculator that)) return false;
             return squared == that.squared;

@@ -287,7 +287,7 @@ namespace Spatial4n.Shapes
         public override bool Equals(object o)
         {
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             BufferedLineString that = (BufferedLineString)o;
 

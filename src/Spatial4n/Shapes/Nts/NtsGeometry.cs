@@ -232,7 +232,7 @@ namespace Spatial4n.Shapes.Nts
         {
             get
             {
-                if (IsEmpty) //geom.getCentroid == null
+                if (IsEmpty) //geom.getCentroid is null
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                     return new NtsPoint(ctx.GeometryFactory.CreatePoint((Coordinate)null), ctx);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
@@ -352,7 +352,7 @@ namespace Spatial4n.Shapes.Nts
         public override bool Equals(object o)
         {
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             var that = (NtsGeometry)o;
             return geom.EqualsExact(that.geom);//fast equality for normalized geometries

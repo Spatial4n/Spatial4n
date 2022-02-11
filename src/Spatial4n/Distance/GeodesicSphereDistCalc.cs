@@ -74,7 +74,7 @@ namespace Spatial4n.Distance
 
         public override bool Equals(object o)
         {
-            if (o == null) return false;
+            if (o is null) return false;
             return GetType() == o.GetType();
         }
 

@@ -69,7 +69,7 @@ namespace Spatial4n
 
             Type type = PropertyType ?? methodUnderTest.ReflectedType;
             PropertyInfo propInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            if (propInfo == null)
+            if (propInfo is null)
             {
                 string typeName = type.FullName;
                 if (methodUnderTest.DeclaringType != null)
@@ -80,17 +80,17 @@ namespace Spatial4n
                     typeName = "neither " + typeName + " nor " + methodUnderTest.DeclaringType.FullName;
                 }
 
-                if (propInfo == null)
+                if (propInfo is null)
                     throw new ArgumentException(string.Format("Could not find public static property {0} on {1}", propertyName,
                                                           typeName));
             }
 
             object obj = propInfo.GetValue(null, null);
-            if (obj == null)
+            if (obj is null)
                 return null;
 
             IEnumerable<object[]> dataItems = obj as IEnumerable<object[]>;
-            if (dataItems == null)
+            if (dataItems is null)
                 throw new ArgumentException(string.Format("Property {0} on {1} did not return IEnumerable<object[]>", propertyName, type.FullName));
 
             return dataItems;

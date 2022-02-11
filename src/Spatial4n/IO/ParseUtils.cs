@@ -49,7 +49,7 @@ namespace Spatial4n.IO
                 throw new ArgumentNullException(nameof(externalVal)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             //TODO: Should we support sparse vectors?
-            if (_out == null || _out.Length != dimension) _out = new string[dimension];
+            if (_out is null || _out.Length != dimension) _out = new string[dimension];
             int idx = externalVal.IndexOf(',');
             int end = idx;
             int start = 0;
@@ -107,7 +107,7 @@ namespace Spatial4n.IO
             if (externalVal is null)
                 throw new ArgumentNullException(nameof(externalVal)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
-            if (@out == null || @out.Length != dimension) @out = new double[dimension];
+            if (@out is null || @out.Length != dimension) @out = new double[dimension];
             int idx = externalVal.IndexOf(',');
             int end = idx;
             int start = 0;

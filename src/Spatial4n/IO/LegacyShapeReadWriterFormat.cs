@@ -163,7 +163,7 @@ namespace Spatial4n.IO
                         {
                             throw new InvalidShapeException("Extra arguments: " + tokens[++nextToken] /*st.nextToken()*/ + " :: " + str);
                         }
-                        if (d == null)
+                        if (d is null)
                         {
                             throw new InvalidShapeException("Missing Distance: " + str);
                         }
