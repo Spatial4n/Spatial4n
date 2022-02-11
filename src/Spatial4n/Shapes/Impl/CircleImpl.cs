@@ -256,8 +256,12 @@ namespace Spatial4n.Shapes
         /// </summary>
         protected virtual double XAxis => point.X;
 
+        /// <exception cref="ArgumentNullException"><paramref name="circle"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(ICircle circle)
         {
+            if (circle is null)
+                throw new ArgumentNullException(nameof(circle));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             double crossDist = ctx.DistanceCalculator.Distance(point, circle.Center);
             double aDist = radiusDEG, bDist = circle.Radius;
             if (crossDist > aDist + bDist)
@@ -275,7 +279,7 @@ namespace Spatial4n.Shapes
             return string.Format("Circle({0}, d={1:0.0}\u00B0)", point, radiusDEG);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(this, obj);
         }
@@ -284,16 +288,14 @@ namespace Spatial4n.Shapes
         /// All <see cref="ICircle"/> implementations should use this definition of <see cref="object.Equals(object)"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
-        public static bool Equals(ICircle thiz, object o)
+        public static bool Equals(ICircle thiz, object? o)
         {
             if (thiz is null)
                 throw new ArgumentNullException(nameof(thiz));
 
             if (thiz == o) return true;
-
-            var circle = o as ICircle;
-            if (circle is null) return false;
-
+            if (o is null) return false; // Spatial4n: Added to optimize
+            if (!(o is ICircle circle)) return false;
             if (!thiz.Center.Equals(circle.Center)) return false;
             if (!circle.Radius.Equals(thiz.Radius)) return false;
 

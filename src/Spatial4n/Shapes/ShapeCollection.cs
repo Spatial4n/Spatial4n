@@ -261,7 +261,7 @@ namespace Spatial4n.Shapes
             return buf.ToString();
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             // Spatial4n NOTE: This was modified from the original implementation
             // to act like the collections of Java, which compare values rather than references.

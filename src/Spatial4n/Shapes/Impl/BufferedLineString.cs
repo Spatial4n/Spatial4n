@@ -41,6 +41,7 @@ namespace Spatial4n.Shapes
         /// Needs at least 1 point, usually more than that.  If just one then it's
         /// internally treated like 2 points.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public BufferedLineString(IList<IPoint> points, double buf, SpatialContext ctx)
             : this(points, buf, false, ctx)
         {
@@ -240,7 +241,7 @@ namespace Spatial4n.Shapes
                     yield return ((BufferedLine)lines[i - 1]).B;
             }
 
-            public int IndexOf(IPoint item)
+            public int IndexOf(IPoint? item)
             {
                 if (item is null)
                 {
@@ -284,7 +285,7 @@ namespace Spatial4n.Shapes
         }
 
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (this == o) return true;
             if (o is null || GetType() != o.GetType()) return false;

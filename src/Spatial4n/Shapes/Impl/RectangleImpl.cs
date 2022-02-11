@@ -50,12 +50,11 @@ namespace Spatial4n.Shapes
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="lowerLeft"/> or <paramref name="upperRight"/> is <c>null</c>.</exception>
         public Rectangle(IPoint lowerLeft, IPoint upperRight, SpatialContext? ctx)
-            : this(lowerLeft?.X ?? 0d, upperRight?.X ?? 0d, lowerLeft?.Y ?? 0d, upperRight?.Y ?? 0d, ctx)
+            // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            : this(lowerLeft is null ? throw new ArgumentNullException(nameof(lowerLeft)) : lowerLeft.X,
+                  upperRight is null ? throw new ArgumentNullException(nameof(upperRight)) : upperRight.X,
+                  lowerLeft.Y, upperRight.Y, ctx)
         {
-            if (lowerLeft is null)
-                throw new ArgumentNullException(nameof(lowerLeft));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
-            if (upperRight is null)
-                throw new ArgumentNullException(nameof(upperRight));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
         }
 
         /// <summary>
@@ -63,10 +62,9 @@ namespace Spatial4n.Shapes
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="r"/> is <c>null</c>.</exception>
         public Rectangle(IRectangle r, SpatialContext? ctx)
-            : this(r?.MinX ?? 0d, r?.MaxX ?? 0d, r?.MinY ?? 0d, r?.MaxY ?? 0d, ctx)
+            // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            : this(r is null ? throw new ArgumentNullException(nameof(r)) : r.MinX, r.MaxX, r.MinY, r.MaxY, ctx)
         {
-            if (r is null)
-                throw new ArgumentNullException(nameof(r));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
         }
 
         public virtual void Reset(double minX, double maxX, double minY, double maxY)
@@ -348,7 +346,7 @@ namespace Spatial4n.Shapes
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(this, obj);
         }
@@ -357,13 +355,13 @@ namespace Spatial4n.Shapes
         /// All <see cref="IRectangle"/> implementations should use this definition of <see cref="object.Equals(object)"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
-        public static bool Equals(IRectangle thiz, object o)
+        public static bool Equals(IRectangle thiz, object? o)
         {
             if (thiz is null)
                 throw new ArgumentNullException(nameof(thiz));
 
             if (thiz == o) return true;
-
+            if (o is null) return false; // Spatial4n: Added to optimize
             if (!(o is IRectangle rectangle)) return false;
 
             return thiz.MaxX.Equals(rectangle.MaxX) && thiz.MinX.Equals(rectangle.MinX) &&

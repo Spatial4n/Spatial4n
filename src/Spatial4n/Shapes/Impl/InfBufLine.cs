@@ -88,6 +88,9 @@ namespace Spatial4n.Shapes
 
         internal virtual bool Contains(IPoint p)
         {
+            if (p is null)
+                throw new ArgumentNullException(nameof(p));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return (DistanceUnbuffered(p) <= buf);
         }
 
@@ -96,6 +99,9 @@ namespace Spatial4n.Shapes
         /// </summary>
         public virtual double DistanceUnbuffered(IPoint c)
         {
+            if (c is null)
+                throw new ArgumentNullException(nameof(c));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (double.IsInfinity(slope))
                 return Math.Abs(c.X - intercept);
             // http://math.ucsd.edu/~wgarner/math4c/derivations/distance/distptline.htm
@@ -121,6 +127,9 @@ namespace Spatial4n.Shapes
         /// </summary>
         public virtual int Quadrant(IPoint c)
         {
+            if (c is null)
+                throw new ArgumentNullException(nameof(c));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //check vertical line case 1st
             if (double.IsInfinity(slope))
             {
@@ -150,6 +159,9 @@ namespace Spatial4n.Shapes
 
         public static void CornerByQuadrant(IRectangle r, int cornerQuad, IPoint output)
         {
+            if (r is null)
+                throw new ArgumentNullException(nameof(r));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             double x = (cornerQuad == 1 || cornerQuad == 4) ? r.MaxX : r.MinX;
             double y = (cornerQuad == 1 || cornerQuad == 2) ? r.MaxY : r.MinY;
             output.Reset(x, y);
