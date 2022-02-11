@@ -37,19 +37,19 @@ namespace Spatial4n.IO
         /// Given a string containing <c>dimension</c> values encoded in it, separated by commas, return a string array of length <c>dimension</c>
         /// containing the values.
         /// </summary>
-        /// <param name="_out">A preallocated array.  Must be size dimension.  If it is not it will be resized.</param>
+        /// <param name="output">A preallocated array.  Must be size dimension.  If it is not it will be resized.</param>
         /// <param name="externalVal">The value to parse</param>
         /// <param name="dimension">The expected number of values for the point</param>
         /// <returns>An array of the values that make up the point (aka vector)</returns>
         /// <exception cref="InvalidShapeException">If the dimension specified does not match the number of values in the <paramref name="externalVal"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="externalVal"/> is <c>null</c>.</exception>
-        public static string[] ParsePoint(string[] _out, string externalVal, int dimension)
+        public static string[] ParsePoint(string[]? output, string externalVal, int dimension)
         {
             if (externalVal is null)
                 throw new ArgumentNullException(nameof(externalVal)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             //TODO: Should we support sparse vectors?
-            if (_out is null || _out.Length != dimension) _out = new string[dimension];
+            if (output is null || output.Length != dimension) output = new string[dimension];
             int idx = externalVal.IndexOf(',');
             int end = idx;
             int start = 0;
@@ -57,7 +57,7 @@ namespace Spatial4n.IO
             if (idx == -1 && dimension == 1 && externalVal.Length > 0)
             {
                 //we have a single point, dimension better be 1
-                _out[0] = externalVal.Trim();
+                output[0] = externalVal.Trim();
                 i = 1;
             }
             else if (idx > 0)
@@ -74,7 +74,7 @@ namespace Spatial4n.IO
                     }
                     //Substring in .NET is (startPosn, length), But in Java it's (startPosn, endPosn)
                     //see http://docs.oracle.com/javase/1.4.2/docs/api/java/lang/String.html#substring(int, int)
-                    _out[i] = externalVal.Substring(start, (end - start));
+                    output[i] = externalVal.Substring(start, (end - start));
                     start = idx + 1;
                     end = externalVal.IndexOf(',', start);
                     idx = end;
@@ -89,25 +89,25 @@ namespace Spatial4n.IO
                 throw new InvalidShapeException("incompatible dimension (" + dimension +
                                                 ") and values (" + externalVal + ").  Only " + i + " values specified");
             }
-            return _out;
+            return output;
         }
 
         /// <summary>
         /// Given a string containing <c>dimension</c> values encoded in it, separated by commas, return a double array of length <c>dimension</c>
         /// containing the values.
         /// </summary>
-        /// <param name="out">A preallocated array.  Must be size dimension.  If it is not it will be resized.</param>
+        /// <param name="output">A preallocated array.  Must be size dimension.  If it is not it will be resized.</param>
         /// <param name="externalVal">The value to parse</param>
         /// <param name="dimension">The expected number of values for the point</param>
         /// <returns>An array of the values that make up the point (aka vector)</returns>
         /// <exception cref="InvalidShapeException">If the dimension specified does not match the number of values in the <paramref name="externalVal"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="externalVal"/> is <c>null</c>.</exception>
-        public static double[] ParsePointDouble(double[]? @out, string externalVal, int dimension)
+        public static double[] ParsePointDouble(double[]? output, string externalVal, int dimension)
         {
             if (externalVal is null)
                 throw new ArgumentNullException(nameof(externalVal)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
-            if (@out is null || @out.Length != dimension) @out = new double[dimension];
+            if (output is null || output.Length != dimension) output = new double[dimension];
             int idx = externalVal.IndexOf(',');
             int end = idx;
             int start = 0;
@@ -115,7 +115,7 @@ namespace Spatial4n.IO
             if (idx == -1 && dimension == 1 && externalVal.Length > 0)
             {
                 //we have a single point, dimension better be 1
-                @out[0] = double.Parse(externalVal.Trim(), CultureInfo.InvariantCulture);
+                output[0] = double.Parse(externalVal.Trim(), CultureInfo.InvariantCulture);
                 i = 1;
             }
             else if (idx > 0)
@@ -133,7 +133,7 @@ namespace Spatial4n.IO
                     }
                     //Substring in .NET is (startPosn, length), But in Java it's (startPosn, endPosn)
                     //see http://docs.oracle.com/javase/1.4.2/docs/api/java/lang/String.html#substring(int, int)
-                    @out[i] = double.Parse(externalVal.Substring(start, (end - start)), CultureInfo.InvariantCulture);
+                    output[i] = double.Parse(externalVal.Substring(start, (end - start)), CultureInfo.InvariantCulture);
                     start = idx + 1;
                     end = externalVal.IndexOf(',', start);
                     idx = end;
@@ -148,7 +148,7 @@ namespace Spatial4n.IO
                 throw new InvalidShapeException("incompatible dimension (" + dimension +
                                                 ") and values (" + externalVal + ").  Only " + i + " values specified");
             }
-            return @out;
+            return output;
         }
 
         /// <summary>

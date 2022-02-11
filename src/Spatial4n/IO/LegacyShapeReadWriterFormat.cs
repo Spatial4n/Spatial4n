@@ -64,8 +64,12 @@ namespace Spatial4n.IO
         /// <param name="shape">Not null</param>
         /// <param name="numberFormat">A standard or custom numeric .NET format string (float).</param>
         /// <returns>Not null</returns>
-        public static string WriteShape(IShape shape, string numberFormat)
+        /// <exception cref="ArgumentNullException"><paramref name="shape"/> is <c>null</c>.</exception>
+        public static string WriteShape(IShape shape, string? numberFormat)
         {
+            if (shape is null)
+                throw new ArgumentNullException(nameof(shape)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (shape is IPoint)
             {
                 IPoint point = (IPoint)shape;
@@ -198,8 +202,7 @@ namespace Spatial4n.IO
         /// </summary>
         private static IPoint ReadLatCommaLonPoint(string value, SpatialContext ctx)
         {
-            double[]
-            latLon = ParseUtils.ParseLatitudeLongitude(value);
+            double[] latLon = ParseUtils.ParseLatitudeLongitude(value);
             return ctx.MakePoint(latLon[1], latLon[0]);
         }
     }

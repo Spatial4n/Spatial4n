@@ -48,22 +48,32 @@ namespace Spatial4n.IO.Nts
             useFloat = (factory.PrecisionModel.PrecisionModelType == PrecisionModels.FloatingSingle);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         protected override double ReadDim(BinaryReader dataInput)
         {
+            // Spatial4n: Added guard clause
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput));
+
             if (useFloat)
                 return dataInput.ReadSingle();
             return base.ReadDim(dataInput);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> is <c>null</c>.</exception>
         protected override void WriteDim(BinaryWriter dataOutput, double v)
         {
+            // Spatial4n: Added guard clause
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput));
+
             if (useFloat)
                 dataOutput.Write((float)v);
             else
                 base.WriteDim(dataOutput, v);
         }
 
-        protected override ShapeType TypeForShape(IShape s)
+        protected override ShapeType TypeForShape(IShape? s)
         {
             ShapeType type = base.TypeForShape(s);
             if (type == 0)
@@ -73,20 +83,31 @@ namespace Spatial4n.IO.Nts
             return type;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         protected override IShape? ReadShapeByTypeIfSupported(BinaryReader dataInput, ShapeType type)
         {
+            // Spatial4n: Added guard clause
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput));
+
             if (type != ShapeType.Geometry)
                 return base.ReadShapeByTypeIfSupported(dataInput, type);
             return ReadNtsGeom(dataInput);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="s"/> is <c>null</c>.</exception>
         protected override bool WriteShapeByTypeIfSupported(BinaryWriter dataOutput, IShape s, ShapeType type)
         {
+            // Spatial4n: Added guard clauses
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput));
+            if (s is null)
+                throw new ArgumentNullException(nameof(s));
+
             if (type != ShapeType.Geometry)
                 return base.WriteShapeByTypeIfSupported(dataOutput, s, type);
             WriteNtsGeom(dataOutput, s);
             return true;
-
         }
 
 
@@ -144,8 +165,13 @@ namespace Spatial4n.IO.Nts
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataInput"/> is <c>null</c>.</exception>
         public virtual IShape ReadNtsGeom(BinaryReader dataInput)
         {
+            // Spatial4n: Added guard clause
+            if (dataInput is null)
+                throw new ArgumentNullException(nameof(dataInput));
+
             NtsSpatialContext ctx = (NtsSpatialContext)base.ctx;
 #pragma warning disable 612, 618
             WKBReader reader = new WKBReader(ctx.GeometryFactory);
@@ -218,8 +244,15 @@ namespace Spatial4n.IO.Nts
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="dataOutput"/> or <paramref name="s"/> is <c>null</c>.</exception>
         public virtual void WriteNtsGeom(BinaryWriter dataOutput, IShape s)
         {
+            // Spatial4n: Added guard clauses
+            if (dataOutput is null)
+                throw new ArgumentNullException(nameof(dataOutput));
+            if (s is null)
+                throw new ArgumentNullException(nameof(s));
+
             NtsSpatialContext ctx = (NtsSpatialContext)base.ctx;
             IGeometry geom = ctx.GetGeometryFrom(s);//might even translate it
             new WKBWriter().Write(geom, new OutputStreamAnonymousHelper(dataOutput));
