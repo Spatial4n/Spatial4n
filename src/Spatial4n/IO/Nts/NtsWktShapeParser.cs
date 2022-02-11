@@ -85,8 +85,15 @@ namespace Spatial4n.IO.Nts
         /// </summary>
         public virtual DatelineRule DatelineRule => m_datelineRule;
 
-        protected override IShape? ParseShapeByType(WktShapeParser.State state, string shapeType)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> or <paramref name="shapeType"/> is <c>null</c>.</exception>
+        protected override IShape? ParseShapeByType(State state, string shapeType)
         {
+            // Spatial4n: Added guard clauses
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+            if (shapeType is null)
+                throw new ArgumentNullException(nameof(shapeType));
+
             if (shapeType.Equals("POLYGON", StringComparison.OrdinalIgnoreCase))
             {
                 return ParsePolygonShape(state);
@@ -102,8 +109,13 @@ namespace Spatial4n.IO.Nts
         /// Bypasses <see cref="NtsSpatialContext.MakeLineString(IList{Shapes.IPoint})"/> so that we can more
         /// efficiently get the <see cref="LineString"/> without creating a <c>List&lt;Shapes.IPoint&gt;</c>.
         /// </summary>
-        protected override IShape ParseLineStringShape(WktShapeParser.State state)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <c>null</c>.</exception>
+        protected override IShape ParseLineStringShape(State state)
         {
+            // Spatial4n: Added guard clause
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+
             if (!m_ctx.UseNtsLineString)
                 return base.ParseLineStringShape(state);
 
@@ -125,8 +137,13 @@ namespace Spatial4n.IO.Nts
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
-        protected virtual IShape ParsePolygonShape(WktShapeParser.State state)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <c>null</c>.</exception>
+        protected virtual IShape ParsePolygonShape(State state)
         {
+            // Spatial4n: Added guard clause
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+
             IGeometry geometry;
             if (state.NextIfEmptyAndSkipZM())
             {
@@ -146,8 +163,13 @@ namespace Spatial4n.IO.Nts
             return MakeShapeFromGeometry(geometry);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="geometry"/> is <c>null</c>.</exception>
         protected virtual IRectangle MakeRectFromPoly(IGeometry geometry)
         {
+            // Spatial4n: Added guard clause
+            if (geometry is null)
+                throw new ArgumentNullException(nameof(geometry));
+
             Debug.Assert(geometry.IsRectangle);
             Envelope env = geometry.EnvelopeInternal;
             bool crossesDateline = false;
@@ -174,8 +196,13 @@ namespace Spatial4n.IO.Nts
         /// <summary>
         /// Reads a polygon, returning a NTS polygon.
         /// </summary>
-        protected virtual IPolygon Polygon(WktShapeParser.State state)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <c>null</c>.</exception>
+        protected virtual IPolygon Polygon(State state)
         {
+            // Spatial4n: Added guard clause
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+
             GeometryFactory geometryFactory = m_ctx.GeometryFactory;
 
             IList<Coordinate[]> coordinateSequenceList = CoordinateSequenceList(state);
@@ -200,10 +227,15 @@ namespace Spatial4n.IO.Nts
         ///   '(' polygon (',' polygon )* ')'
         /// </code>
         /// </summary>
-        protected virtual IShape ParseMulitPolygonShape(WktShapeParser.State state)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <c>null</c>.</exception>
+        protected virtual IShape ParseMulitPolygonShape(State state)
         {
+            // Spatial4n: Added guard clause
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+
             if (state.NextIfEmptyAndSkipZM())
-                return m_ctx.MakeCollection(new List<IShape>());
+                return m_ctx.MakeCollection(Util.CollectionUtils.EmptyList<IShape>());
 
             IList<IShape> polygons = new List<IShape>();
             state.NextExpect('(');
@@ -222,8 +254,13 @@ namespace Spatial4n.IO.Nts
         ///   '(' coordinateSequence (',' coordinateSequence )* ')'
         /// </code>
         /// </summary>
-        protected virtual IList<Coordinate[]> CoordinateSequenceList(WktShapeParser.State state)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <c>null</c>.</exception>
+        protected virtual IList<Coordinate[]> CoordinateSequenceList(State state)
         {
+            // Spatial4n: Added guard clause
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+
             IList<Coordinate[]> sequenceList = new List<Coordinate[]>();
             state.NextExpect('(');
             do
@@ -240,8 +277,13 @@ namespace Spatial4n.IO.Nts
         ///   '(' coordinate (',' coordinate )* ')'
         /// </code>
         /// </summary>
-        protected virtual Coordinate[] CoordinateSequence(WktShapeParser.State state)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <c>null</c>.</exception>
+        protected virtual Coordinate[] CoordinateSequence(State state)
         {
+            // Spatial4n: Added guard clauses
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+
             List<Coordinate> sequence = new List<Coordinate>();
             state.NextExpect('(');
             do
@@ -259,8 +301,13 @@ namespace Spatial4n.IO.Nts
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
-        protected virtual Coordinate Coordinate(WktShapeParser.State state)
+        /// <exception cref="ArgumentNullException"><paramref name="state"/> is <c>null</c>.</exception>
+        protected virtual Coordinate Coordinate(State state)
         {
+            // Spatial4n: Added guard clauses
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+
             double x = m_ctx.NormX(state.NextDouble());
             m_ctx.VerifyX(x);
             double y = m_ctx.NormY(state.NextDouble());
@@ -277,8 +324,13 @@ namespace Spatial4n.IO.Nts
         /// <summary>
         /// Creates the NtsGeometry, potentially validating, repairing, and preparing.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="geometry"/> is <c>null</c>.</exception>
         protected virtual NtsGeometry MakeShapeFromGeometry(IGeometry geometry)
         {
+            // Spatial4n: Added guard clauses
+            if (geometry is null)
+                throw new ArgumentNullException(nameof(geometry));
+
             bool dateline180Check = DatelineRule != DatelineRule.None;
             NtsGeometry ntsGeom;
             try

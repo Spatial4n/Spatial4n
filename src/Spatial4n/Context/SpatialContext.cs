@@ -142,6 +142,7 @@ namespace Spatial4n.Context
         /// <summary>
         /// Convenience that uses <see cref="DistanceCalculator"/>
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="p"/> is <c>null</c>.</exception>
         public virtual double CalcDistance(IPoint p, double x2, double y2)
         {
             return DistanceCalculator.Distance(p, x2, y2);
@@ -150,6 +151,7 @@ namespace Spatial4n.Context
         /// <summary>
         /// Convenience that uses <see cref="DistanceCalculator"/>
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="p"/> or <paramref name="p2"/> is <c>null</c>.</exception>
         public virtual double CalcDistance(IPoint p, IPoint p2)
         {
             return DistanceCalculator.Distance(p, p2);
@@ -332,6 +334,7 @@ namespace Spatial4n.Context
         /// </summary>
         /// <param name="points"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public virtual IShape MakeLineString(IList<IPoint> points)
         {
             return new BufferedLineString(points, 0, false, this);
@@ -345,6 +348,7 @@ namespace Spatial4n.Context
         /// <param name="points"></param>
         /// <param name="buf"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public virtual IShape MakeBufferedLineString(IList<IPoint> points, double buf)
         {
             return new BufferedLineString(points, buf, IsGeo, this);
@@ -355,6 +359,7 @@ namespace Spatial4n.Context
         /// </summary>
         /// <param name="coll"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"><paramref name="coll"/> is <c>null</c>.</exception>
         public virtual ShapeCollection MakeCollection(IList<IShape> coll) //where S : Shape
         {
             return new ShapeCollection(coll, this);
@@ -373,6 +378,7 @@ namespace Spatial4n.Context
         /// <param name="wkt">non-null WKT.</param>
         /// <returns>non-null</returns>
         /// <exception cref="ParseException">if it failed to parse.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="wkt"/> is <c>null</c>.</exception>
         public virtual IShape ReadShapeFromWkt(string wkt)
         {
             return wktShapeParser.Parse(wkt);
@@ -388,6 +394,7 @@ namespace Spatial4n.Context
         /// </summary>
         /// <param name="value">non-null</param>
         /// <returns>non-null</returns>
+        /// <exception cref="InvalidShapeException"><paramref name="value"/> is <c>null</c> or empty, or is not a valid shape.</exception>
         [Obsolete, System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual IShape ReadShape(string value)
         {
@@ -418,6 +425,7 @@ namespace Spatial4n.Context
         /// </summary>
         /// <param name="shape">non-null</param>
         /// <returns>non-null</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="shape"/> is <c>null</c>.</exception>
         [Obsolete, System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public virtual string ToString(IShape shape)
         {

@@ -102,6 +102,6 @@ namespace Spatial4n.Shapes
         /// Point implementations of different classes are equal if they share the same x
         /// &amp; y.
         /// </summary>
-        bool Equals(object other);
+        bool Equals(object? other);
     }
 }

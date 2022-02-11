@@ -160,6 +160,7 @@ namespace Spatial4n.Context.Nts
             base.BinaryCodecType = typeof(NtsBinaryCodec);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="args"/> is <c>null</c>.</exception>
         protected override void Init(IDictionary<string, string> args, Assembly? assembly)
         {
             base.Init(args, assembly);

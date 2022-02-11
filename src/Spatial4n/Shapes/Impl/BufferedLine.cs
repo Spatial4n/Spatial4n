@@ -23,11 +23,12 @@ using System.Diagnostics;
 namespace Spatial4n.Shapes
 {
     /// <summary>
-    /// INTERNAL: A line between two points with a buffer distance extending in every direction. By
+    /// A line between two points with a buffer distance extending in every direction. By
     /// contrast, an un-buffered line covers no area and as such is extremely unlikely to intersect with
     /// a point. <see cref="BufferedLine"/> isn't yet aware of geodesics (e.g. the dateline); it operates in Euclidean
     /// space.
     /// </summary>
+    // Spatial4n: Removed "INTERNAL" designation as per https://github.com/locationtech/spatial4j/issues/216#issuecomment-1035126797
     public class BufferedLine : IShape
     {
         private readonly IPoint pA, pB;
@@ -167,13 +168,20 @@ namespace Spatial4n.Shapes
         }
 
         /// <summary>
-        /// Calls <see cref="DistanceUtils.CalcLonDegreesAtLat(double, double)"/> given pA or pB's latitude;
+        /// Calls <see cref="DistanceUtils.CalcLonDegreesAtLat(double, double)"/> given <paramref name="pA"/>
+        /// or <paramref name="pB"/>'s latitude;
         /// whichever is farthest. It's useful to expand a buffer of a line segment when used in
         /// a geospatial context to cover the desired area.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="pA"/> or <paramref name="pB"/> is <c>null</c>.</exception>
         public static double ExpandBufForLongitudeSkew(IPoint pA, IPoint pB,
                                                        double buf)
         {
+            if (pA is null)
+                throw new ArgumentNullException(nameof(pA)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (pB is null)
+                throw new ArgumentNullException(nameof(pB)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             double absA = Math.Abs(pA.Y);
             double absB = Math.Abs(pB.Y);
             double maxLat = Math.Max(absA, absB);
@@ -195,8 +203,12 @@ namespace Spatial4n.Shapes
             throw new NotSupportedException();
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="r"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IRectangle r)
         {
+            if (r is null)
+                throw new ArgumentNullException(nameof(r));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //Check BBox for disjoint & within.
             SpatialRelation bboxR = bbox.Relate(r);
             if (bboxR == SpatialRelation.Disjoint || bboxR == SpatialRelation.Within)
@@ -216,6 +228,7 @@ namespace Spatial4n.Shapes
             return SpatialRelation.Intersects;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="p"/> is <c>null</c>.</exception>
         public virtual bool Contains(IPoint p)
         {
             if (p is null)
@@ -264,10 +277,10 @@ namespace Spatial4n.Shapes
         }
 
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             BufferedLine that = (BufferedLine)o;
 

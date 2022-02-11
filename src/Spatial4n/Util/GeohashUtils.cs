@@ -149,8 +149,14 @@ namespace Spatial4n.Util
         /// <param name="geohash">Geohash to deocde</param>
         /// <param name="ctx"></param>
         /// <returns>Array with the latitude at index 0, and longitude at index 1</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="geohash"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public static IPoint Decode(string geohash, SpatialContext ctx)
         {
+            if (geohash is null)
+                throw new ArgumentNullException(nameof(geohash)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             IRectangle rect = DecodeBoundary(geohash, ctx);
             double latitude = (rect.MinY + rect.MaxY) / 2D;
             double longitude = (rect.MinX + rect.MaxX) / 2D;
@@ -160,8 +166,14 @@ namespace Spatial4n.Util
         /// <summary>
         /// Returns min-max lat, min-max lon.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="geohash"/> or <paramref name="ctx"/> is <c>null</c>.</exception>
         public static IRectangle DecodeBoundary(string geohash, SpatialContext ctx)
         {
+            if (geohash is null)
+                throw new ArgumentNullException(nameof(geohash)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             double minY = -90, maxY = 90, minX = -180, maxX = 180;
             bool isEven = true;
 
@@ -204,7 +216,7 @@ namespace Spatial4n.Util
         }
 
         /// <summary>Array of geohashes 1 level below the baseGeohash. Sorted.</summary>
-        public static string[] GetSubGeohashes(string baseGeohash)
+        public static string[] GetSubGeohashes(string? baseGeohash)
         {
             var hashes = new string[Base32.Length];
             for (int i = 0; i < Base32.Length; i++)

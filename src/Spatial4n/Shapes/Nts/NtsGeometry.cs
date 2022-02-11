@@ -232,7 +232,7 @@ namespace Spatial4n.Shapes.Nts
         {
             get
             {
-                if (IsEmpty) //geom.getCentroid == null
+                if (IsEmpty) //geom.getCentroid is null
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                     return new NtsPoint(ctx.GeometryFactory.CreatePoint((Coordinate)null), ctx);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
@@ -240,8 +240,12 @@ namespace Spatial4n.Shapes.Nts
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IShape other)
         {
+            if (other is null)
+                throw new ArgumentNullException(nameof(other)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (other is IPoint point)
                 return Relate(point);
             else if (other is IRectangle rectangle)
@@ -255,8 +259,12 @@ namespace Spatial4n.Shapes.Nts
             return other.Relate(this).Transpose();
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="pt"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IPoint pt)
         {
+            if (pt is null)
+                throw new ArgumentNullException(nameof(pt)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (!BoundingBox.Relate(pt).Intersects())
                 return SpatialRelation.Disjoint;
             IGeometry ptGeom;
@@ -267,8 +275,12 @@ namespace Spatial4n.Shapes.Nts
             return Relate(ptGeom);//is point-optimized
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="rectangle"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(IRectangle rectangle)
         {
+            if (rectangle is null)
+                throw new ArgumentNullException(nameof(rectangle)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             SpatialRelation bboxR = bbox.Relate(rectangle);
             if (bboxR == SpatialRelation.Within || bboxR == SpatialRelation.Disjoint)
                 return bboxR;
@@ -276,8 +288,12 @@ namespace Spatial4n.Shapes.Nts
             return Relate(ctx.GetGeometryFrom(rectangle));
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="circle"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(ICircle circle)
         {
+            if (circle is null)
+                throw new ArgumentNullException(nameof(circle)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             SpatialRelation bboxR = bbox.Relate(circle);
             if (bboxR == SpatialRelation.Within || bboxR == SpatialRelation.Disjoint)
                 return bboxR;
@@ -305,14 +321,22 @@ namespace Spatial4n.Shapes.Nts
             return SpatialRelation.Within;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="ntsGeometry"/> is <c>null</c>.</exception>
         public virtual SpatialRelation Relate(NtsGeometry ntsGeometry)
         {
+            if (ntsGeometry is null)
+                throw new ArgumentNullException(nameof(ntsGeometry)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //don't bother checking bbox since geom.relate() does this already
             return Relate(ntsGeometry.geom);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="oGeom"/> is <c>null</c>.</exception>
         protected virtual SpatialRelation Relate(IGeometry oGeom)
         {
+            if (oGeom is null)
+                throw new ArgumentNullException(nameof(oGeom)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //see http://docs.geotools.org/latest/userguide/library/jts/dim9.html#preparedgeometry
             if (oGeom is GeoAPI.Geometries.IPoint) // TODO: This may not be the correct data type....
             {
@@ -331,8 +355,12 @@ namespace Spatial4n.Shapes.Nts
             return SpatialRelation.Disjoint;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="matrix"/> is <c>null</c>.</exception>
         public static SpatialRelation IntersectionMatrixToSpatialRelation(IntersectionMatrix matrix)
         {
+            if (matrix is null)
+                throw new ArgumentNullException(nameof(matrix)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //As indicated in SpatialRelation javadocs, Spatial4j CONTAINS & WITHIN are
             // OGC's COVERS & COVEREDBY
             if (matrix.IsCovers())
@@ -349,10 +377,10 @@ namespace Spatial4n.Shapes.Nts
             return geom.ToString();
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             var that = (NtsGeometry)o;
             return geom.EqualsExact(that.geom);//fast equality for normalized geometries

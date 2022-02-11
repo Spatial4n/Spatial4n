@@ -121,7 +121,7 @@ namespace Spatial4n.Shapes
                                 }
                                 else
                                 {
-                                    if (randomPointSpace == null)
+                                    if (randomPointSpace is null)
                                     {
                                         if (pointR == SpatialRelation.Disjoint)
                                         {
@@ -135,7 +135,7 @@ namespace Spatial4n.Shapes
                                     p = RandomPointIn(randomPointSpace);
                                 }
                                 SpatialRelation pointRNew = s.Relate(p);
-                                if (pointR == null)
+                                if (pointR is null)
                                 {
                                     pointR = pointRNew;
                                 }

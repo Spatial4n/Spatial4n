@@ -33,14 +33,22 @@ namespace Spatial4n.Shapes
 
         public static Range XRange(IRectangle rect, SpatialContext ctx)
         {
+            if (rect is null)
+                throw new ArgumentNullException(nameof(rect));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (ctx.IsGeo)
                 return new LongitudeRange(rect.MinX, rect.MaxX);
             else
                 return new Range(rect.MinX, rect.MaxX);
         }
 
-        public static Range YRange(IRectangle rect, SpatialContext ctx)
+        public static Range YRange(IRectangle rect, SpatialContext? ctx)
         {
+            if (rect is null)
+                throw new ArgumentNullException(nameof(rect));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return new Range(rect.MinY, rect.MaxY);
         }
 
@@ -54,10 +62,10 @@ namespace Spatial4n.Shapes
 
         public virtual double Max => m_max;
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             Range range = (Range)o;
 
@@ -111,12 +119,12 @@ namespace Spatial4n.Shapes
             public static readonly LongitudeRange WORLD_180E180W = new LongitudeRange(-180, 180);
 
             public LongitudeRange(double min, double max)
-                    : base(min, max)
+                : base(min, max)
             {
             }
 
             public LongitudeRange(IRectangle r)
-                    : base(r.MinX, r.MaxX)
+                : base(r is null ? throw new ArgumentNullException(nameof(r)) : r.MinX, r.MaxX)
             {
             }
 
@@ -154,6 +162,9 @@ namespace Spatial4n.Shapes
 
             public double CompareTo(LongitudeRange b)
             {
+                if (b is null)
+                    throw new ArgumentNullException(nameof(b));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
                 return Diff(Center, b.Center);
             }
 
@@ -182,6 +193,9 @@ namespace Spatial4n.Shapes
 
             public virtual LongitudeRange ExpandTo(LongitudeRange other)
             {
+                if (other is null)
+                    throw new ArgumentNullException(nameof(other));// spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
                 LongitudeRange a, b;// a.ctr <= b.ctr
                 if (this.CompareTo(other) <= 0)
                 {

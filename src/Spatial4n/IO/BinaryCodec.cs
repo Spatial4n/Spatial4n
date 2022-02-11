@@ -155,7 +155,7 @@ namespace Spatial4n.IO
             return true;
         }
 
-        protected virtual ShapeType TypeForShape(IShape s)
+        protected virtual ShapeType TypeForShape(IShape? s)
         {
             if (s is IPoint)
             {
@@ -211,6 +211,8 @@ namespace Spatial4n.IO
         {
             if (dataOutput is null)
                 throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (pt is null)
+                throw new ArgumentNullException(nameof(pt)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             WriteDim(dataOutput, pt.X);
             WriteDim(dataOutput, pt.Y);
@@ -230,6 +232,8 @@ namespace Spatial4n.IO
         {
             if (dataOutput is null)
                 throw new ArgumentNullException(nameof(dataOutput)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+            if (r is null)
+                throw new ArgumentNullException(nameof(r)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
 
             WriteDim(dataOutput, r.MinX);
             WriteDim(dataOutput, r.MaxX);

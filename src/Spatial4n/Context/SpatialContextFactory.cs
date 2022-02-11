@@ -154,6 +154,7 @@ namespace Spatial4n.Context
             return instance.CreateSpatialContext();
         }
 
+        /// <exception cref="ArgumentNullException"><see cref="args"/> is <c>null</c>.</exception>
         protected virtual void Init(IDictionary<string, string> args, Assembly? assembly)
         {
             this.args = args ?? throw new ArgumentNullException(nameof(args)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
@@ -177,6 +178,7 @@ namespace Spatial4n.Context
                 InitField("binaryCodecClass");
         }
 
+        /// <exception cref="ArgumentNullException"><see cref="args"/> is <c>null</c>.</exception>
         protected virtual void Init(IDictionary<string, string> args) // spatial4n specific - this API unfortunately made it into the release before Classloader equivalent was identified as Assembly. This is just here to avoid a breaking change.
         {
             Init(args, null);

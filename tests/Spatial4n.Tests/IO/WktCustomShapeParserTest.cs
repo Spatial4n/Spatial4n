@@ -98,7 +98,7 @@ namespace Spatial4n.IO
             protected override IShape ParseShapeByType(State state, string shapeType)
             {
                 IShape result = base.ParseShapeByType(state, shapeType);
-                if (result == null && shapeType.Contains("custom"))
+                if (result is null && shapeType.Contains("custom"))
                 {
                     state.NextExpect('(');
                     state.NextExpect(')');

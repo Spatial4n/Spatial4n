@@ -50,8 +50,13 @@ namespace Spatial4n.IO.Nts
         {
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="wktString"/> is <c>null</c>.</exception>
         public override IShape ParseIfSupported(string wktString)
         {
+            // Spatial4n: Added guard clause
+            if (wktString is null)
+                throw new ArgumentNullException(nameof(wktString));
+
             return ParseIfSupported(wktString, new WKTReader(m_ctx.GeometryFactory));
         }
 
@@ -61,8 +66,15 @@ namespace Spatial4n.IO.Nts
         /// <param name="str"></param>
         /// <param name="reader"><c>new WKTReader(ctx.GeometryFactory)</c></param>
         /// <returns>Non-Null</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="str"/> or <paramref name="reader"/> is <c>null</c>.</exception>
         protected virtual IShape ParseIfSupported(string str, WKTReader reader)
         {
+            // Spatial4n: Added guard clauses
+            if (str is null)
+                throw new ArgumentNullException(nameof(str));
+            if (reader is null)
+                throw new ArgumentNullException(nameof(reader));
+
             try
             {
                 IGeometry geom = reader.Read(str);
@@ -107,8 +119,13 @@ namespace Spatial4n.IO.Nts
 
             private bool changed = false;
 
+            /// <exception cref="ArgumentNullException"><paramref name="seq"/> is <c>null</c>.</exception>
             public void Filter(ICoordinateSequence seq, int i)
             {
+                // Spatial4n: Added guard clause
+                if (seq is null)
+                    throw new ArgumentNullException(nameof(seq));
+
                 double x = seq.GetX(i);
                 double y = seq.GetY(i);
 
@@ -138,8 +155,13 @@ namespace Spatial4n.IO.Nts
             public bool GeometryChanged => changed;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="geom"/> is <c>null</c>.</exception>
         protected virtual void CheckCoordinates(IGeometry geom)
         {
+            // Spatial4n: Added guard clause
+            if (geom is null)
+                throw new ArgumentNullException(nameof(geom));
+
             // note: NTS WKTReader has already normalized coords with the JTS PrecisionModel.
             geom.Apply(new CoordinateSequenceFilterAnonymousHelper(this));
         }

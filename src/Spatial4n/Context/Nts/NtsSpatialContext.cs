@@ -200,8 +200,12 @@ namespace Spatial4n.Context.Nts
             // NTS geometry
             m_useNtsLineString;
 
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public override IShape MakeLineString(IList<IPoint> points)
         {
+            if (points is null)
+                throw new ArgumentNullException(nameof(points)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (!m_useNtsLineString)
                 return base.MakeLineString(points);
             //convert List<Point> to Coordinate[]
@@ -223,7 +227,7 @@ namespace Spatial4n.Context.Nts
         }
 
         /// <summary>
-        /// INTERNAL
+        /// EXPERT
         /// <see cref="MakeShape(IGeometry)"/>
         /// </summary>
         /// <param name="geom">Non-null</param>
@@ -234,16 +238,18 @@ namespace Spatial4n.Context.Nts
         /// cross the dateline even though NTS doesn't have geodetic support.
         /// </param>
         /// <param name="allowMultiOverlap"><see cref="IsAllowMultiOverlap"/></param>
+        // Spatial4n: Marked EXPERT as per https://github.com/locationtech/spatial4j/issues/216#issuecomment-1035126797
         public virtual NtsGeometry MakeShape(IGeometry geom, bool dateline180Check, bool allowMultiOverlap)
         {
             return new NtsGeometry(geom, this, dateline180Check, allowMultiOverlap);
         }
 
         /// <summary>
-        /// INTERNAL: Creates a <see cref="IShape"/> from a NTS <see cref="IGeometry"/>. Generally, this shouldn't be
+        /// EXPERT: Creates a <see cref="IShape"/> from a NTS <see cref="IGeometry"/>. Generally, this shouldn't be
         /// called when one of the other factory methods are available, such as for points. The caller
         /// needs to have done some verification/normalization of the coordinates by now, if any.
         /// </summary>
+        // Spatial4n: Marked EXPERT as per https://github.com/locationtech/spatial4j/issues/216#issuecomment-1035126797
         public virtual NtsGeometry MakeShape(IGeometry geom)
         {
             return MakeShape(geom, dateline180Check: true, m_allowMultiOverlap);

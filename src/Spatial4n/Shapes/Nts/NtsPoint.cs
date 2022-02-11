@@ -98,7 +98,7 @@ namespace Spatial4n.Shapes.Nts
             return string.Format("Pt(x={0:0.0#############},y={1:0.0#############})", X, Y);
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             return Point.Equals(this, o);
         }

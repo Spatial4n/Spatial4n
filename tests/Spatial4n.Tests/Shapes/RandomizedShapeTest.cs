@@ -210,7 +210,7 @@ namespace Spatial4n.Shapes
             SpatialRelation sect = a.Relate(b);
             if (sect == expected)
                 return;
-            msg = ((msg == null) ? "" : msg + "\r") + a + " intersect " + b;
+            msg = ((msg is null) ? "" : msg + "\r") + a + " intersect " + b;
             if (expected == SpatialRelation.Within || expected == SpatialRelation.Contains)
             {
                 if (a.GetType().Equals(b.GetType())) // they are the same shape type
@@ -269,7 +269,7 @@ namespace Spatial4n.Shapes
         protected virtual IRectangle RandomRectangle(IPoint nearP)
         {
             IRectangle bounds = ctx.WorldBounds;
-            if (nearP == null)
+            if (nearP is null)
                 nearP = RandomPointIn(bounds);
 
 #pragma warning disable CS0618 // Type or member is obsolete

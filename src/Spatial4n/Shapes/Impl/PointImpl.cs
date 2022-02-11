@@ -96,7 +96,7 @@ namespace Spatial4n.Shapes
             return string.Format("Pt(x={0:0.0#############},y={1:0.0#############})", x, y);
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             return Equals(this, o);
         }
@@ -105,15 +105,14 @@ namespace Spatial4n.Shapes
         /// All <see cref="IPoint"/> implementations should use this definition of <see cref="object.Equals(object)"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="thiz"/> is <c>null</c>.</exception>
-        public static bool Equals(IPoint thiz, object o)
+        public static bool Equals(IPoint thiz, object? o)
         {
             if (thiz is null)
                 throw new ArgumentNullException(nameof(thiz));
 
             if (thiz == o) return true;
-
-            var point = o as IPoint;
-            if (point is null) return false;
+            if (o is null) return false; // Spatial4n: Added to optimize
+            if (!(o is IPoint point)) return false;
 
             return thiz.X.Equals(point.X) && thiz.Y.Equals(point.Y);
         }

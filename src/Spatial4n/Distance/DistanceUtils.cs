@@ -190,7 +190,7 @@ namespace Spatial4n.Distance
         [Obsolete, System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static double[] VectorBoxCorner(double[] center, double[] result, double distance, bool upperRight)
         {
-            if (result == null || result.Length != center.Length)
+            if (result is null || result.Length != center.Length)
             {
                 result = new double[center.Length];
             }
@@ -219,6 +219,8 @@ namespace Spatial4n.Distance
         /// <param name="ctx"></param>
         /// <param name="reuse">A preallocated object to hold the results.</param>
         /// <returns>The destination point, in radians.  First entry is latitude, second is longitude</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> and <paramref name="reuse"/> are both <c>null</c>.
+        /// <paramref name="ctx"/> must be non-<c>null</c> if <paramref name="reuse"/> is <c>null</c>.</exception>
         public static IPoint PointOnBearingRAD(double startLat, double startLon, double distanceRAD, double bearingRAD, SpatialContext ctx, IPoint? reuse)
         {
             /*
@@ -273,6 +275,9 @@ namespace Spatial4n.Distance
 
             if (reuse is null)
             {
+                if (ctx is null)
+                    throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
                 return ctx.MakePoint(lon2, lat2);
             }
             else
@@ -318,6 +323,8 @@ namespace Spatial4n.Distance
         /// and distance. <paramref name="reuse"/> is an optional argument to store the
         /// results to avoid object creation.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="ctx"/> and <paramref name="reuse"/> are both <c>null</c>.
+        /// <paramref name="ctx"/> must be non-<c>null</c> if <paramref name="reuse"/> is <c>null</c>.</exception>
         public static IRectangle CalcBoxByDistFromPtDEG(double lat, double lon, double distDEG, SpatialContext ctx, IRectangle? reuse)
         {
             //See http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates Section 3.1, 3.2 and 3.3
@@ -374,6 +381,9 @@ namespace Spatial4n.Distance
             }
             if (reuse is null)
             {
+                if (ctx is null)
+                    throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
                 return ctx.MakeRectangle(minX, maxX, minY, maxY);
             }
             else

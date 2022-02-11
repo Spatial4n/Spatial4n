@@ -48,8 +48,12 @@ namespace Spatial4n.Distance
             this.squared = squared;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c>.</exception>
         public override double Distance(IPoint from, double toX, double toY)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             double deltaX = from.X - toX;
             double deltaY = from.Y - toY;
             double xSquaredPlusYSquared = deltaX * deltaX + deltaY * deltaY;
@@ -60,15 +64,24 @@ namespace Spatial4n.Distance
             return Math.Sqrt(xSquaredPlusYSquared);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c>.</exception>
         public override bool Within(IPoint from, double toX, double toY, double distance)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             double deltaX = from.X - toX;
             double deltaY = from.Y - toY;
             return deltaX * deltaX + deltaY * deltaY <= distance * distance;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c> or <paramref name="ctx"/> and <paramref name="reuse"/> are both <c>null</c>.
+        /// <paramref name="ctx"/> must be non-<c>null</c> if <paramref name="reuse"/> is <c>null</c>.</exception>
         public override IPoint PointOnBearing(IPoint from, double distDEG, double bearingDEG, SpatialContext ctx, IPoint? reuse)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (distDEG == 0)
             {
                 if (reuse is null)
@@ -81,6 +94,9 @@ namespace Spatial4n.Distance
             double y = from.Y + Math.Cos(bearingRAD) * distDEG;
             if (reuse is null)
             {
+                if (ctx is null)
+                    throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
                 return ctx.MakePoint(x, y);
             }
             else
@@ -90,14 +106,22 @@ namespace Spatial4n.Distance
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c> or <paramref name="ctx"/> and <paramref name="reuse"/> are both <c>null</c>.
+        /// <paramref name="ctx"/> must be non-<c>null</c> if <paramref name="reuse"/> is <c>null</c>.</exception>
         public override IRectangle CalcBoxByDistFromPt(IPoint from, double distDEG, SpatialContext ctx, IRectangle? reuse)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             double minX = from.X - distDEG;
             double maxX = from.X + distDEG;
             double minY = from.Y - distDEG;
             double maxY = from.Y + distDEG;
             if (reuse is null)
             {
+                if (ctx is null)
+                    throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
                 return ctx.MakeRectangle(minX, maxX, minY, maxY);
             }
             else
@@ -107,25 +131,37 @@ namespace Spatial4n.Distance
             }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c>.</exception>
         public override double CalcBoxByDistFromPt_yHorizAxisDEG(IPoint from, double distDEG, SpatialContext ctx)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return from.Y;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="rect"/> is <c>null</c>.</exception>
         public override double Area(IRectangle rect)
         {
+            if (rect is null)
+                throw new ArgumentNullException(nameof(rect)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return rect.GetArea(null);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="circle"/> is <c>null</c>.</exception>
         public override double Area(ICircle circle)
         {
+            if (circle is null)
+                throw new ArgumentNullException(nameof(circle)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return circle.GetArea(null);
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
+            if (o is null || GetType() != o.GetType()) return false;
 
             if (!(o is CartesianDistanceCalculator that)) return false;
             return squared == that.squared;
