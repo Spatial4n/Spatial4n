@@ -42,7 +42,7 @@ namespace Spatial4n.Distance
         /// distance, and bearing (given in degrees -- 0-360).  If reuse is given, then
         /// this method may <see cref="IPoint.Reset(double, double)"/> it and return it.
         /// </summary>
-        IPoint PointOnBearing(IPoint from, double distDEG, double bearingDEG, SpatialContext ctx, IPoint reuse);
+        IPoint PointOnBearing(IPoint from, double distDEG, double bearingDEG, SpatialContext ctx, IPoint? reuse);
 
         /// <summary>
         /// Calculates the bounding box of a circle, as specified by its center point

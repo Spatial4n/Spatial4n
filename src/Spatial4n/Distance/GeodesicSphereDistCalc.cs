@@ -28,8 +28,13 @@ namespace Spatial4n.Distance
     {
         private readonly double radiusDEG = DistanceUtils.ToDegrees(1);//in degrees
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c> or <paramref name="ctx"/> and <paramref name="reuse"/> are both <c>null</c>.
+        /// <paramref name="ctx"/> must be non-<c>null</c> if <paramref name="reuse"/> is <c>null</c>.</exception>
         public override IPoint PointOnBearing(IPoint from, double distDEG, double bearingDEG, SpatialContext ctx, IPoint? reuse)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             if (distDEG == 0)
             {
                 if (reuse is null)
@@ -45,18 +50,31 @@ namespace Spatial4n.Distance
             return result;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c> or <paramref name="ctx"/> and <paramref name="reuse"/> are both <c>null</c>.
+        /// <paramref name="ctx"/> must be non-<c>null</c> if <paramref name="reuse"/> is <c>null</c>.</exception>
         public override IRectangle CalcBoxByDistFromPt(IPoint from, double distDEG, SpatialContext ctx, IRectangle? reuse)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return DistanceUtils.CalcBoxByDistFromPtDEG(from.Y, from.X, distDEG, ctx, reuse);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c>.</exception>
         public override double CalcBoxByDistFromPt_yHorizAxisDEG(IPoint from, double distDEG, SpatialContext ctx)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return DistanceUtils.CalcBoxByDistFromPt_latHorizAxisDEG(from.Y, from.X, distDEG);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="rect"/> is <c>null</c>.</exception>
         public override double Area(IRectangle rect)
         {
+            if (rect is null)
+                throw new ArgumentNullException(nameof(rect)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //From http://mathforum.org/library/drmath/view/63767.html
             double lat1 = DistanceUtils.ToRadians(rect.MinY);
             double lat2 = DistanceUtils.ToRadians(rect.MaxY);
@@ -65,14 +83,18 @@ namespace Spatial4n.Distance
                     rect.Width;
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="circle"/> is <c>null</c>.</exception>
         public override double Area(ICircle circle)
         {
+            if (circle is null)
+                throw new ArgumentNullException(nameof(circle)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             //formula is a simplified case of area(rect).
             double lat = DistanceUtils.ToRadians(90 - circle.Radius);
             return 2 * Math.PI * radiusDEG * radiusDEG * (1 - Math.Sin(lat));
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (o is null) return false;
             return GetType() == o.GetType();
@@ -83,8 +105,12 @@ namespace Spatial4n.Distance
             return GetType().GetHashCode();
         }
 
-        public override double Distance(IPoint @from, double toX, double toY)
+        /// <exception cref="ArgumentNullException"><paramref name="from"/> is <c>null</c>.</exception>
+        public override double Distance(IPoint from, double toX, double toY)
         {
+            if (from is null)
+                throw new ArgumentNullException(nameof(from)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
             return DistanceUtils.ToDegrees(DistanceLatLonRAD(DistanceUtils.ToRadians(from.Y),
                 DistanceUtils.ToRadians(from.X), DistanceUtils.ToRadians(toY), DistanceUtils.ToRadians(toX)));
         }
