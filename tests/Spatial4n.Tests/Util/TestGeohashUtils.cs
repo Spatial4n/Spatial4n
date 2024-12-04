@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+using System;
 using Spatial4n.Context;
 using Spatial4n.Shapes;
 using Xunit;
@@ -122,6 +123,14 @@ namespace Spatial4n.Util
             Assert.Equal(3, GeohashUtils.LookupHashLenForWidthHeight(11.1, 999));
 
             Assert.Equal(GeohashUtils.MaxPrecision, GeohashUtils.LookupHashLenForWidthHeight(10e-20, 10e-20));
+        }
+
+        // SPATIAL4N-specific: issue #1
+        [Fact]
+        public void TestInvalidGeohashOutOfRange()
+        {
+            const string geohash = "{~}"; // purposefully invalid
+            Assert.Throws<ArgumentException>(() => GeohashUtils.Decode(geohash, ctx));
         }
     }
 }
