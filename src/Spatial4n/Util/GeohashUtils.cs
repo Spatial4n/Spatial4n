@@ -180,7 +180,7 @@ namespace Spatial4n.Util
 
             // spatial4n specific - validate that the geohash is in the correct format
             if (!ValidGeohashPattern.IsMatch(geohash))
-                throw new ArgumentException("Not a valid geohash: " + geohash);
+                throw new ArgumentException("Not a valid geohash: " + geohash, nameof(geohash));
 
             double minY = -90, maxY = 90, minX = -180, maxX = 180;
             bool isEven = true;
