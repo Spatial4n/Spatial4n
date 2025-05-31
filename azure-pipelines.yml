@@ -48,7 +48,7 @@ stages:
 
   - job: Build
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
 
     steps:
     - pwsh: |
@@ -105,7 +105,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
@@ -134,7 +134,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
@@ -163,7 +163,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
@@ -192,7 +192,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
@@ -221,7 +221,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
@@ -250,7 +250,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
@@ -277,7 +277,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'))
     displayName: 'Test net40,x64 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -292,7 +292,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'), eq(variables['RunX86Tests'], 'true'))
     displayName: 'Test net40,x86 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -307,7 +307,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'))
     displayName: 'Test net35,x64 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -322,7 +322,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'), eq(variables['RunX86Tests'], 'true'))
     displayName: 'Test net35,x86 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -339,7 +339,7 @@ stages:
   - job: Publish
     condition: and(succeeded(), ne(variables['ArtifactFeedID'], ''))
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
 
     steps:
     - template: '.build/azure-templates/show-all-environment-variables.yml'
