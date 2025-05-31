@@ -48,7 +48,7 @@ stages:
 
   - job: Build
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
 
     steps:
     - pwsh: |
@@ -105,7 +105,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
@@ -134,15 +134,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        Linux:
-          osName: 'Linux'
-          imageName: 'ubuntu-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        macOS:
-          osName: 'macOS'
-          imageName: 'macOS-latest'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
     displayName: 'Test net6.0,x86 on'
     pool:
@@ -163,11 +155,11 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
-          imageName: 'ubuntu-latest'
+          imageName: 'ubuntu-22.04' # 24.04 now fails for net5.0 because of OpenSSL version issue, so we have to pin this.
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         macOS:
           osName: 'macOS'
@@ -192,15 +184,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        Linux:
-          osName: 'Linux'
-          imageName: 'ubuntu-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        macOS:
-          osName: 'macOS'
-          imageName: 'macOS-latest'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
     displayName: 'Test net5.0,x86 on'
     pool:
@@ -221,11 +205,11 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         Linux:
           osName: 'Linux'
-          imageName: 'ubuntu-latest'
+          imageName: 'ubuntu-22.04' # 24.04 now fails for netcoreapp3.1 because of OpenSSL version issue, so we have to pin this.
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
         macOS:
           osName: 'macOS'
@@ -250,15 +234,7 @@ stages:
       matrix:
         Windows:
           osName: 'Windows'
-          imageName: 'windows-2019'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        Linux:
-          osName: 'Linux'
-          imageName: 'ubuntu-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        macOS:
-          osName: 'macOS'
-          imageName: 'macOS-latest'
+          imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
     displayName: 'Test netcoreapp3.1,x86 on'
     pool:
@@ -277,7 +253,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'))
     displayName: 'Test net40,x64 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -292,7 +268,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'), eq(variables['RunX86Tests'], 'true'))
     displayName: 'Test net40,x86 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -307,7 +283,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'))
     displayName: 'Test net35,x64 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -322,7 +298,7 @@ stages:
     condition: and(succeeded(), ne(variables['RunTests'], 'false'), eq(variables['RunX86Tests'], 'true'))
     displayName: 'Test net35,x86 on Windows'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: '.build/azure-templates/run-tests-on-os.yml'
       parameters:
@@ -339,7 +315,7 @@ stages:
   - job: Publish
     condition: and(succeeded(), ne(variables['ArtifactFeedID'], ''))
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
 
     steps:
     - template: '.build/azure-templates/show-all-environment-variables.yml'
