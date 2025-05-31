@@ -136,14 +136,6 @@ stages:
           osName: 'Windows'
           imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        Linux:
-          osName: 'Linux'
-          imageName: 'ubuntu-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        macOS:
-          osName: 'macOS'
-          imageName: 'macOS-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
     displayName: 'Test net6.0,x86 on'
     pool:
       vmImage: $(imageName)
@@ -194,14 +186,6 @@ stages:
           osName: 'Windows'
           imageName: 'windows-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        Linux:
-          osName: 'Linux'
-          imageName: 'ubuntu-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        macOS:
-          osName: 'macOS'
-          imageName: 'macOS-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
     displayName: 'Test net5.0,x86 on'
     pool:
       vmImage: $(imageName)
@@ -251,14 +235,6 @@ stages:
         Windows:
           osName: 'Windows'
           imageName: 'windows-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        Linux:
-          osName: 'Linux'
-          imageName: 'ubuntu-latest'
-          maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
-        macOS:
-          osName: 'macOS'
-          imageName: 'macOS-latest'
           maximumAllowedFailures: 0 # Maximum allowed failures for a successful build
     displayName: 'Test netcoreapp3.1,x86 on'
     pool:
