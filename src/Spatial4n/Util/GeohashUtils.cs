@@ -20,6 +20,7 @@ using Spatial4n.Shapes;
 using System;
 using System.Diagnostics;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Spatial4n.Util
 {
@@ -36,6 +37,9 @@ namespace Spatial4n.Util
     /// </summary>
     public static class GeohashUtils
     {
+        // spatial4n specific - validate that the geohash is in the correct format
+        private static readonly Regex ValidGeohashPattern = new Regex("^[0123456789bcdefghjkmnpqrstuvwxyz]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static readonly char[] Base32 = {
                                                      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                                      'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm',
@@ -173,6 +177,10 @@ namespace Spatial4n.Util
                 throw new ArgumentNullException(nameof(geohash)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
             if (ctx is null)
                 throw new ArgumentNullException(nameof(ctx)); // spatial4n specific - use ArgumentNullException instead of NullReferenceException
+
+            // spatial4n specific - validate that the geohash is in the correct format
+            if (!ValidGeohashPattern.IsMatch(geohash))
+                throw new ArgumentException("Not a valid geohash: " + geohash, nameof(geohash));
 
             double minY = -90, maxY = 90, minX = -180, maxX = 180;
             bool isEven = true;
